@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en-US"
+      class="no-js">
+
+    <head>
+
+        {% if content is defined and title is not defined %}
+            {% set title = ez_content_name(content) %}
+        {% endif %}
+
+        <title>{{ title|default('Home')|trans }} - {{ 'eZ Platform' }}</title>
+
+        <meta http-equiv="Content-Type"
+              content="text/html; charset=utf-8" />
+
+        <meta http-equiv="X-UA-Compatible"
+              content="IE=edge,chrome=1" />
+
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0" />
+
+        <link rel="Shortcut icon"
+              href="{{ asset('assets/images/favicon.ico') }}"
+              type="image/x-icon" />
+
+    </head>
+
+    <body>
+
+        <div id="uberdiv">
+
+            {% block header %}
+            <header>
+                <navigation>
+                    [
+                        <a href="https://doc.ez.no/display/DEVELOPER/Documentation"
+                           title="eZ Platform and eZ Enterprise Developer Documentation"
+                           target="_blank">Docs</a>
+                        |
+                        <a href="https://github.com/ezsystems/ezplatform"
+                           title="eZ Platform on GitHub"
+                           target="_blank">GitHub</a>
+                        |
+                        <a href="http://ez-community-on-slack.herokuapp.com/"
+                           title="A self-inviter to the eZ Platform Community on Slack: ezcommunity.slack.com"
+                           target="_blank">Slack</a>
+                    ]
+                </navigation>
+            </header>
+            {% endblock %}
+
+            {% block content %}{% endblock %}
+
+            {% block footer %}
+            <footer>
+                Copyright &copy; 1999-{{ "now"|date("Y", "Europe/Oslo") }} eZ Systems AS.
+            </footer>
+            {% endblock %}
+
+        </div><!-- End of div #uberdiv -->
+
+    </body>
+
+</html>

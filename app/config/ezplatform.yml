@@ -29,3 +29,13 @@ ezpublish:
             # so removing eng-GB from this list may lead to errors or content not being shown, unless you change
             # all eng-GB data to other locales first.
             languages: [eng-GB]
+        default:
+            user:
+                layout: pagelayout.html.twig
+                
+            content_view:
+                full:
+                    home:
+                        template: full\home.html.twig
+                        match:
+                            Id\Location: 2
