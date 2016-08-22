@@ -3,7 +3,10 @@
 /nbproject/
 /.idea/
 /bin/behat
+/bin/doctrine-dbal
+/bin/pscss
 /bin/phpunit
+/bin/security-checker
 /app/check.php
 /app/SymfonyRequirements.php
 /app/cache/
