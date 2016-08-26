@@ -37,9 +37,7 @@
             {% block content %}{% endblock %}
 
             {% block footer %}
-            <footer>
-                Copyright &copy; 1999-{{ "now"|date("Y", "Europe/Oslo") }} eZ Systems AS.
-            </footer>
+                {{  render( controller( "AppBundle:Site:getSettings", { 'template': 'pagelayout_footer.html.twig' } )) }}
             {% endblock %}
 
         </div><!-- End of div #uberdiv -->
