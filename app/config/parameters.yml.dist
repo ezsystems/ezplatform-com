@@ -1,7 +1,7 @@
 # This file is a "template" of what your parameters.yml file should look like
 parameters:
     # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    secret: TheSpiceIsTheWormTheWormIsTheS
     locale_fallback: en
 
     # Setting for mail system, used by SwiftMailer
