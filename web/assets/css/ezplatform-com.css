@@ -1,0 +1,99 @@
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenPro-Regular.eot"),
+    url("../fonts/MavenPro-Regular.ttf") format("truetype"),
+    url("../fonts/MavenPro-Regular.svg#MavenPro-Regular") format("svg"),
+    url("../fonts/MavenPro-Regular.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenProLight100-Regular.eot"),
+    url("../fonts/MavenProLight100-Regular.ttf") format("truetype"),
+    url("../fonts/MavenProLight100-Regular.svg#MavenProLight100-Regular") format("svg"),
+    url("../fonts/MavenProLight100-Regular.woff") format("woff");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenProLight200-Regular.eot"),
+    url("../fonts/MavenProLight200-Regular.ttf") format("truetype"),
+    url("../fonts/MavenProLight200-Regular.svg#MavenProLight200-Regular") format("svg"),
+    url("../fonts/MavenProLight200-Regular.woff") format("woff");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenProLight300-Regular.eot"),
+    url("../fonts/MavenProLight300-Regular.ttf") format("truetype"),
+    url("../fonts/MavenProLight300-Regular.svg#MavenProLight300-Regular") format("svg"),
+    url("../fonts/MavenProLight300-Regular.woff") format("woff");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenPro-Medium.eot"),
+    url("../fonts/MavenPro-Medium.ttf") format("truetype"),
+    url("../fonts/MavenPro-Medium.svg#MavenPro-Medium") format("svg"),
+    url("../fonts/MavenPro-Medium.woff") format("woff");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenPro-Bold.eot"),
+    url("../fonts/MavenPro-Bold.ttf") format("truetype"),
+    url("../fonts/MavenPro-Bold.svg#MavenProBold") format("svg"),
+    url("../fonts/MavenPro-Bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Maven Pro";
+    src: url("../fonts/MavenPro-Black.eot"),
+    url("../fonts/MavenPro-Black.ttf") format("truetype"),
+    url("../fonts/MavenPro-Black.svg#MavenProBlack") format("svg"),
+    url("../fonts/MavenPro-Black.woff") format("woff");
+    font-weight: 800;
+    font-style: normal;
+}
+
+body {
+    font-family: "MavenPro", sans-serif;
+}
+
+.navbar {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.navbar-brand,
+.navbar-nav li a {
+    line-height: 23px;
+    height: 60px;
+}
+
+.navbar-nav>li>a {
+    color: #63605d;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
+    color: #f15a22;
+    background-color: transparent;
+}
+
+.navbar-toggle {
+    margin-top: 12px;
+}

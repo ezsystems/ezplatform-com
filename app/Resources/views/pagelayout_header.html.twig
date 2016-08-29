@@ -1,23 +1,40 @@
 <header>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-    <div class="ez_logo" style="width:90px;height:40px;"><!-- style tag is temporary until CSS is complete -->
-        <img src="{{ asset('assets/images/ez-logo.svg') }}" />
-    </div>
+                <a class="navbar-brand" href="//ezplatform.com">
+                    <img src="{{ asset('assets/images/ez-logo.svg') }}">
+                </a>
+            </div>
 
-    <navigation>
-        [
-        <a href="https://doc.ez.no/display/DEVELOPER/Documentation"
-           title="eZ Platform and eZ Enterprise Developer Documentation"
-           target="_blank">Docs</a>
-        |
-        <a href="https://github.com/ezsystems/ezplatform"
-           title="eZ Platform on GitHub"
-           target="_blank">GitHub</a>
-        |
-        <a href="http://ez-community-on-slack.herokuapp.com/"
-           title="A self-inviter to the eZ Platform Community on Slack: ezcommunity.slack.com"
-           target="_blank">Slack</a>
-        ]
-    </navigation>
-
+            <div class="collapse navbar-collapse navbar-right" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="//doc.ez.no/display/DEVELOPER/Documentation" target="_blank">Docs</a></li>
+                    <li><a href="//github.com/ezsystems/ezplatform" target="_blank">Github</a></li>
+                    <li><a href="//ez-community-on-slack.herokuapp.com" target="_blank">Slack</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>
+
+<script>
+    {% autoescape 'js' %}
+        $(document).ready(function(){
+            $('#navbar').on('hidden.bs.collapse', function () {
+                $('.navbar-header').removeClass('navbar-show');
+                $('#navbar').removeClass('navbar-show').removeClass('navbar-list-show');
+            }).on('show.bs.collapse', function () {
+                $('.navbar-header').addClass('navbar-show');
+                $('#navbar').addClass('navbar-show').addClass('navbar-list-show');
+            });
+        });
+    {% endautoescape %}
+</script>
