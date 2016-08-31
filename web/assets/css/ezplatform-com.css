@@ -73,8 +73,38 @@ body {
     font-family: "MavenPro", sans-serif;
 }
 
+.ez-platform-label {
+    position: absolute;
+    margin: 0;
+    color: #e88501;
+    display: inline;
+    left: 18.5%;
+    top: 34.6%;
+    font-size: 2.44vw;
+}
+
+.btn.download {
+    position: absolute;
+    left: 17.2%;
+    top: 59%;
+    font-size: 1.12vw;
+    margin: 0;
+    padding: 0.72vw;
+}
+
+.btn.btn-primary {
+    background: #f7941d;
+    border: none;
+}
+
+.btn.btn-primary:hover {
+    background: #ffae37;
+    border: none;
+}
+
 .navbar {
     border-bottom: 1px solid #d3d3d3;
+    margin-bottom: 0;
 }
 
 .navbar-brand,

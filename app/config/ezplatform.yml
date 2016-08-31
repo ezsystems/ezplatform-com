@@ -37,5 +37,11 @@ ezpublish:
                 full:
                     home:
                         template: full\home.html.twig
+                        controller: AppBundle:Home:show
                         match:
                             Id\Location: 2
+                row:
+                    banner_slider:
+                        template: row\banner_slider.html.twig
+                        match:
+                            Identifier\ContentType: banner_slider
