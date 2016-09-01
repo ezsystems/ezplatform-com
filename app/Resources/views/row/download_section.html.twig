@@ -1,0 +1,150 @@
+<section id="download">
+    <h2>{{ ez_render_field(content, 'title') }}</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-xs-12">
+                <ul class="nav nav-pills nav-justified">
+                    {% if not ez_is_field_empty(content, 'composer_description') %}
+                        <li class="nav active">
+                            <a href="#composer-option" data-toggle="tab">
+                                <img src="{{ asset('assets/images/composer.svg') }}" alt="Download" class="download" />
+                                <div class="label">Composer</div>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if not ez_is_field_empty(content, 'download_description') %}
+                        <li class="nav">
+                            <a href="#download-option" data-toggle="tab">
+                                <img src="{{ asset('assets/images/download.svg') }}" alt="Download" class="download" />
+                                <div class="label">Download</div>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                <div class="tab-content">
+                    {% if not ez_is_field_empty(content, 'composer_description' ) %}
+                        <div role="tabpanel" class="tab-pane active" id="composer-option">
+                            <div class="details">
+                                <h3>Composer</h3>
+                                <div class="description text-center">
+                                    {{ ez_render_field(content, 'composer_description') }}
+                                </div>
+                            </div>
+
+                            <div class="window">
+                                <div class="titlebar">
+                                    <div class="buttons">
+                                        <div class="close">
+                                            <a class="closebutton" href="#"><span><strong>x</strong></span></a>
+                                        </div>
+                                        <div class="minimize">
+                                            <a class="minimizebutton" href="#"><span><strong>&ndash;</strong></span></a>
+                                        </div>
+                                        <div class="zoom">
+                                            <a class="zoombutton" href="#"><span><strong>+</strong></span></a>
+                                        </div>
+                                    </div>
+                                    ezplatform@eZ-Systems: ~/www
+                                </div>
+                                <div class="content">
+                                    <div class="orange">
+                                        <p>&#36; curl -sS https://getcomposer.org/installer | php </p>
+                                        <p>&#36; php composer.phar create-project -h </p>
+                                    </div>
+
+                                    <div class="help">
+                                        <p>Usage:</p>
+                                        <p>create-project [options] [--] [&lt;package&gt;] [&lt;directory&gt;] [&lt;version&gt;]</p>
+
+                                        <p>
+                                            <span class="orange">&lt;package&gt;</span>: Distribution to install, ezsystems/ezplatform is a clean installs of eZ Platform
+                                        </p>
+                                        <p>
+                                            <span class="orange">&lt;directory&gt;</span>: Folder to extract to, if omitted same as package name so in example: ezplatform.
+                                        </p>
+                                        <p>
+                                            <span class="orange">&lt;version&gt;</span>: Optional, when omitted you'll get latest stable. Examples: <br>
+
+                                            ~1.3.0: To pick latests 1.3 release, to pick latests 1.x release use ~1.3.<br>
+                                            v1.1.0 : To pick a specific tag, could also have been v1.0.0-rc1<br>
+                                            dev-master : Picks a development version from a branch, here master.
+                                        </p>
+                                    </div>
+
+                                    <div class="orange">
+                                        <p>&#36; php -d memory_limit=-1 composer.phar create-project --no-dev ezsystems/ezplatform</p>
+                                        <p>&#36; cd ezplatform/</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if not ez_is_field_empty(content, 'composer_description') %}
+                        <div role="tabpanel" class="tab-pane" id="download-option">
+                            <div class="details">
+                                <h3>Download</h3>
+                                <div class="description text-center">
+                                    {{ ez_render_field(content, 'download_description') }}
+                                </div>
+                            </div>
+
+                            <table class="table table-striped text-center download-table">
+                                <thead>
+                                <tr>
+                                    <th>Version</th>
+                                    <th>File</th>
+                                    <th>Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if betas is not empty %}
+                                    <tr class="beta">
+                                        <th scope="row">
+                                            <a href="{{ ez_field_value(betas|first, 'file') }}">beta</a>
+                                        </th>
+                                        <td class="file">
+                                            <a href="{{ ez_field_value(betas|first, 'file') }}">Download {{ ez_render_field(betas|first, 'release_version') }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ ez_field_value(betas|first, 'file') }}">
+                                                <img src="{{ asset('assets/images/download-arrow.svg') }}" alt="Download" class="download" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+
+                                {% for release in releases %}
+                                    <tr class="releases">
+                                        <th scope="row">
+                                            <a href="{{ ez_field_value(release, 'file') }}">{{ ez_render_field(release, 'release_version') }}</a>
+                                        </th>
+                                        <td class="file">
+                                            <a href="{{ ez_field_value(release, 'file') }}">
+                                                {{ ez_field_value(release, 'file').fileName }}
+                                            </a>
+                                        </td>
+                                        <td class="date">
+                                            <a href="{{ ez_field_value(release, 'file') }}">
+                                                {{ ez_field_value(release, 'release_date')|date('d M Y') }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                    <tr class="releases ezpublish">
+                                        <th colspan="3">
+                                            Looking for <a href="//share.ez.no"> eZ Publish / eZ Publish Platform</a> ?
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
