@@ -1,5 +1,5 @@
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenPro-Regular.eot"),
     url("../fonts/MavenPro-Regular.ttf") format("truetype"),
     url("../fonts/MavenPro-Regular.svg#MavenPro-Regular") format("svg"),
@@ -9,7 +9,7 @@
 }
 
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenProLight100-Regular.eot"),
     url("../fonts/MavenProLight100-Regular.ttf") format("truetype"),
     url("../fonts/MavenProLight100-Regular.svg#MavenProLight100-Regular") format("svg"),
@@ -19,7 +19,7 @@
 }
 
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenProLight200-Regular.eot"),
     url("../fonts/MavenProLight200-Regular.ttf") format("truetype"),
     url("../fonts/MavenProLight200-Regular.svg#MavenProLight200-Regular") format("svg"),
@@ -29,7 +29,7 @@
 }
 
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenProLight300-Regular.eot"),
     url("../fonts/MavenProLight300-Regular.ttf") format("truetype"),
     url("../fonts/MavenProLight300-Regular.svg#MavenProLight300-Regular") format("svg"),
@@ -39,7 +39,7 @@
 }
 
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenPro-Medium.eot"),
     url("../fonts/MavenPro-Medium.ttf") format("truetype"),
     url("../fonts/MavenPro-Medium.svg#MavenPro-Medium") format("svg"),
@@ -49,7 +49,7 @@
 }
 
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenPro-Bold.eot"),
     url("../fonts/MavenPro-Bold.ttf") format("truetype"),
     url("../fonts/MavenPro-Bold.svg#MavenProBold") format("svg"),
@@ -59,7 +59,7 @@
 }
 
 @font-face {
-    font-family: "Maven Pro";
+    font-family: "MavenPro";
     src: url("../fonts/MavenPro-Black.eot"),
     url("../fonts/MavenPro-Black.ttf") format("truetype"),
     url("../fonts/MavenPro-Black.svg#MavenProBlack") format("svg"),
