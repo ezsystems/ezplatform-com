@@ -20,6 +20,27 @@ installed on your machine.
 
 *For Windows you'll also need to [install bash](https://msdn.microsoft.com/en-us/commandline/wsl/about), or adapt instructions below for Windows command line where needed.*
 
+
+#### Concept: Docker Compose "Building blocks" for eZ Platform
+
+The current Docker Compose files are made to be mixed and matched togtehr as you'd like. Currently available:
+- base-prod.yml _(required, always needs to be first, contains: db, web and app container)_
+- base-dev.yml _(alternative to `base-prod.yml`, same applies here if used)_
+- redis.yml _(optional, adds redis service and appends config to app)_
+- solr.yml _(optional, work in progress config to add solr service and configure app for it, for testing only)_
+- blackfire.yml _(optional, adds blackfire service and lets you trigger profiling against the setup)_
+- selenium.yml _(optional, always needs to be last, adds selenium service and appends config to app)_
+
+
+These can be used with `-f` argument on docker-compose, like:
+```bash
+docker-compose -f doc/docker-compose/base-prod.yml -f doc/docker-compose/redis.yml up -d --force-recreate
+```
+
+However below environment variable `COMPOSE_FILE` is used instead since this is also what is used to have a default in
+`.env` file at root of the project.
+
+
 ## Project setup
 
 ### Production / Demo "image" use
@@ -27,17 +48,16 @@ installed on your machine.
 From root of your projects clone of this distribution, [setup composer auth.json](#composer) and execute the following:
 ```sh
 # Optional step if you'd like to use blackfire with the setup, change <id> and <token> with your own values
-#export COMPOSE_FILE=doc/docker-compose/prod.yml:doc/docker-compose/blackfire.yml BLACKFIRE_SERVER_ID=<id> BLACKFIRE_SERVER_TOKEN=<token>
+#export COMPOSE_FILE=doc/docker-compose/base-prod.yml:doc/docker-compose/blackfire.yml BLACKFIRE_SERVER_ID=<id> BLACKFIRE_SERVER_TOKEN=<token>
 
-docker-compose up -d --force-recreate --build
+# First time: Install setup, and generate database dump:
+docker-compose -f doc/docker-compose/install.yml up --abort-on-container-exit
+
+# Boot up full setup:
+docker-compose up -d --force-recreate
 ```
 
-*Last step is to execute the eZ Platform install.*
-```sh
-docker-compose exec --user www-data app /bin/sh -c "php /scripts/wait_for_db.php; php app/console ezplatform:install clean"
-```
-
-At this point you should be able to browse the site on `localhost:8080` and the backend UI on `localhost:8080/ez`.
+After some 5-10 seconds you should be able to browse the site on `localhost:8080` and the backend on `localhost:8080/ez`.
 
 ### Development "mount" use
 
@@ -47,22 +67,20 @@ by default under the hood, which leads to much slower IO performance.*
 
 From root of your projects clone of this distribution, [setup composer auth.json](#composer) and execute the following:
 ```sh
-export COMPOSE_FILE=doc/docker-compose/prod.yml:doc/docker-compose/dev.yml SYMFONY_ENV=dev SYMFONY_DEBUG=1
+export COMPOSE_FILE=doc/docker-compose/base-dev.yml SYMFONY_ENV=dev SYMFONY_DEBUG=1
 
 # Optional: If you use Docker Machine with NFS, you'll need to specify where project is, & give composer a valid directory.
 #export COMPOSE_DIR=/data/SOURCES/MYPROJECTS/ezplatform/doc/docker-compose COMPOSER_HOME=/tmp
 
-docker-compose -f doc/docker-compose/install.yml up install
+# First time: Install setup, and generate database dump:
+docker-compose -f doc/docker-compose/install.yml up --abort-on-container-exit
+
+# Boot up full setup:
+docker-compose up -d --force-recreate
 ```
 
-*Lastly we execute docker-compose to get containers running, and then eZ Platform install script.*
-```sh
-docker-compose up -d --force-recreate --no-build
-docker-compose exec --user www-data app /bin/sh -c "php /scripts/wait_for_db.php; php app/console ezplatform:install clean"
-```
 
-
-At this point, you should be able to browse the site on `localhost:8080` and the backend UI on `localhost:8080/ez`.
+After some 5-10 seconds you should be able to browse the site on `localhost:8080` and the backend on `localhost:8080/ez`.
 
 
 ### Behat and Selenium use
@@ -73,25 +91,27 @@ image to Docker Hub/Registry.*
 
 From root of your projects clone of this distribution, [setup composer auth.json](#composer) and execute the following:
 ```sh
-export COMPOSE_FILE=doc/docker-compose/prod.yml:doc/docker-compose/selenium.yml
+export COMPOSE_FILE=doc/docker-compose/base-prod.yml:doc/docker-compose/selenium.yml
 
-docker-compose up -d --force-recreate --build
+# First time: Install setup, and generate database dump:
+docker-compose -f doc/docker-compose/install.yml up --abort-on-container-exit
+
+# Boot up full setup:
+docker-compose up -d --force-recreate
 ```
 
-*Next step is to execute the eZ Platform install.*
-```sh
-docker-compose exec --user www-data app /bin/sh -c "php /scripts/wait_for_db.php; php app/console ezplatform:install clean"
+*Last step is to execute behat scenarios using `app` container which now has access to web and selenium containers, example:*
+```
+docker-compose exec --user www-data app sh -c "php /scripts/wait_for_db.php; php bin/behat -vv --profile=rest --suite=fullJson --tags=~@broken"
 ```
 
-*Last step is to execute behat scenarios using `behatphpcli` container which has access to web and selenium containers, example:*
+
+*Tip: You can typically re run the install command to get back to a clean installation in between behat runs using:*
 ```
-docker-compose run -u www-data --rm behatphpcli bin/behat -vv --profile=rest --suite=fullJson --tags=~@broken
+docker-compose exec --user www-data app app/console ezplatform:install clean
 ```
 
-*Tip: You can typically re run the install command to get back to a clean installation in between behat runs, without recreating the full docker setup.*
-
-
-## Common Docker-Compose usage
+## Further info
 
 ### <a name="composer"></a>Configuring Composer
 
@@ -125,6 +145,13 @@ To display running services:
 docker-compose ps
 ```
 
+### Database dumps
+
+Database dump is placed in `doc/docker-compose/entrypoint/mysql/`, this folder is used my mysql/mariadb which will execute
+everything inside the folder. This means there should only be data represent one install in the folder at any given time.
+
+
+
 ### Updating service images
 
 To updated the used service images, you can run:
@@ -139,15 +166,15 @@ After this you can re run the production or dev steps to setup containers again 
 
 ### Cleanup
 
- Once you are done with your setup, you can stop it, and remove the involved containers.
- ```sh
+Once you are done with your setup, you can stop it, and remove the involved containers.
+```sh
 docker-compose down -v
- ```
+```
 
- And if you have defined any environment variables you can unset them using:
- ```sh
+And if you have defined any environment variables you can unset them using:
+```sh
 unset COMPOSE_FILE SYMFONY_ENV SYMFONY_DEBUG COMPOSE_DIR COMPOSER_HOME
 
 # To unset blackfire variables
 unset BLACKFIRE_SERVER_ID BLACKFIRE_SERVER_TOKEN
- ```
+```
