@@ -1,0 +1,13 @@
+services:
+    ezplatform.controller.download:
+        class: AppBundle\Controller\DownloadController
+        arguments:
+            - '@ezpublish.api.service.search'
+            - '@ezplatform.query_type.latest_releases'
+            - '%release_container_location_id%'
+            - '%beta_container_location_id%'
+
+    ezplatform.query_type.latest_releases:
+        class: AppBundle\QueryType\LatestReleasesQueryType
+        tags:
+            - name: ezpublish.query_type

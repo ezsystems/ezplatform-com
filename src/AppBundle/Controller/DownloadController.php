@@ -2,72 +2,78 @@
 
 namespace AppBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
-use eZ\Publish\API\Repository\Values\Content\LocationQuery;
-use eZ\Publish\API\Repository\Values\Content\Query;
-use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
-use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\Core\MVC\Symfony\View\ContentView;
+use eZ\Publish\API\Repository\SearchService;
+use AppBundle\QueryType\LatestReleasesQueryType;
 
-class DownloadController extends Controller
+class DownloadController
 {
+    /** @var int */
+    private $releaseContainerLocationid;
+
+    /** @var int */
+    private $betaContainerLocationId;
+
+    /** @var \eZ\Publish\API\Repository\SearchService */
+    private $searchService;
+
+    /** @var \AppBundle\QueryType\LatestReleasesQueryType */
+    private $latestReleasesQueryType;
+
     /**
-     * This method will return all the releases: sub-items of Releases and Betas content objects.
+     * @param \eZ\Publish\API\Repository\SearchService $searchService
+     * @param \AppBundle\QueryType\LatestReleasesQueryType $latestReleasesQueryType
+     * @param int $releaseContainerLocationid
+     * @param int $betaContainerLocationId
+     */
+    public function __construct(
+        SearchService $searchService,
+        LatestReleasesQueryType $latestReleasesQueryType,
+        $releaseContainerLocationid,
+        $betaContainerLocationId
+    ) {
+        $this->searchService = $searchService;
+        $this->latestReleasesQueryType = $latestReleasesQueryType;
+        $this->releaseContainerLocationid = $releaseContainerLocationid;
+        $this->betaContainerLocationId = $betaContainerLocationId;
+    }
+
+    /**
+     * Renders view for the Download section including all the eZ Platform releases.
      *
      * @param \eZ\Publish\Core\MVC\Symfony\View\ContentView $view
      *
      * @return \eZ\Publish\Core\MVC\Symfony\View\ContentView
      */
-    public function showFilesAction(ContentView $view)
+    public function show(ContentView $view)
     {
-        $releaseContainerId = $this->container->getParameter('release_container_location_id');
-        $betaContainerId = $this->container->getParameter('beta_container_location_id');
-
-        $criteria = array();
-        $criteria[] = new Criterion\ParentLocationId($releaseContainerId);
-        $criteria[] = new Criterion\Visibility(Criterion\Visibility::VISIBLE);
-        $criteria[] = new Criterion\ContentTypeIdentifier('release');
-
-        $query = new LocationQuery();
-
-        $query->query = new Criterion\LogicalAnd($criteria);
-        $query->sortClauses = array(
-            new SortClause\Field('release', 'release_date', Query::SORT_DESC)
-        );
-
-        $searchService = $this->getRepository()->getSearchService();
-        $subContent = $searchService->findContent($query);
-        $releases = array();
-        foreach ($subContent->searchHits as $hit) {
-            $releases[] = $hit->valueObject;
-        }
-
-        $criteria = array();
-        $criteria[] = new Criterion\ParentLocationId($betaContainerId);
-        $criteria[] = new Criterion\Visibility(Criterion\Visibility::VISIBLE);
-        $criteria[] = new Criterion\ContentTypeIdentifier('release');
-
-        $query = new LocationQuery();
-
-        $query->query = new Criterion\LogicalAnd($criteria);
-        $query->sortClauses = array(
-            new SortClause\Field('release', 'release_date', Query::SORT_DESC)
-        );
-
-        $searchService = $this->getRepository()->getSearchService();
-        $subContent = $searchService->findContent($query);
-        $betas = array();
-        foreach ($subContent->searchHits as $hit) {
-            $betas[] = $hit->valueObject;
-        }
-
-        $view->addParameters(
-            array(
-                'releases' => $releases,
-                'betas' => $betas
-            )
-        );
+        $view->addParameters([
+            'releases' => $this->getSearchResults($this->releaseContainerLocationid),
+            'betas' => $this->getSearchResults($this->betaContainerLocationId),
+        ]);
 
         return $view;
+    }
+
+    /**
+     * Returns releases search results for the given $parentLocationId.
+     *
+     * @param int $parentLocationId
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\Content[]
+     */
+    private function getSearchResults($parentLocationId)
+    {
+        $query = $this->latestReleasesQueryType->getQuery([
+            'parent_location_id' => $parentLocationId,
+        ]);
+        $searchResults = $this->searchService->findContent($query);
+
+        $results = [];
+        foreach ($searchResults->searchHits as $hit) {
+            $results[] = $hit->valueObject;
+        }
+
+        return $results;
     }
 }
