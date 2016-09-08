@@ -1,0 +1,32 @@
+ezpublish:
+    system:
+        default:
+            pagelayout: pagelayout.html.twig
+            user:
+                layout: pagelayout.html.twig
+
+            content_view:
+                full:
+                    home:
+                        controller: ez_query:LocationQueryAction
+                        params:
+                            query:
+                                query_type: AppBundle:Children
+                                parameters:
+                                    parent_location_id: 2
+                                    excluded_content_types: layout
+                                assign_results_to: items
+                        template: full\home.html.twig
+                        match:
+                            Id\Location: 2
+
+                row:
+                    banner_slider:
+                        template: row\banner_slider.html.twig
+                        match:
+                            Identifier\ContentType: banner_slider
+                    download_section:
+                        template: row\download_section.html.twig
+                        controller: ezplatform.controller.download:show
+                        match:
+                            Identifier\ContentType: download_section
