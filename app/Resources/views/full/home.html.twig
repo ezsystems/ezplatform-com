@@ -1,15 +1,15 @@
 {% extends "pagelayout.html.twig" %}
 
 {% block content %}
-    {% if items is not empty %}
-        {% for item in items %}
+    {% if items.searchHits is not empty %}
+        {% for item in items.searchHits %}
             {% if not loop.first %}
                 {% set delimiter = "delimiter" %}
             {% else %}
                 {% set delimiter = '' %}
             {% endif %}
             {{ render_esi(controller('ez_content:viewLocation', {
-                'locationId': item.contentInfo.mainLocationId,
+                'locationId': item.valueObject.contentInfo.mainLocationId,
                 'viewType': 'row',
                 'params': {
                     'delimiter': delimiter,

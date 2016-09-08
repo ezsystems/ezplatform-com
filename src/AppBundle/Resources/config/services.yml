@@ -11,3 +11,8 @@ services:
         class: AppBundle\QueryType\LatestReleasesQueryType
         tags:
             - name: ezpublish.query_type
+
+    ezplatform.query_type.children:
+        class: AppBundle\QueryType\ChildrenQueryType
+        tags:
+            - name: ezpublish.query_type
