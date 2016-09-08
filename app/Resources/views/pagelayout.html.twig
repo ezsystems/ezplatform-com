@@ -55,7 +55,7 @@
             {% block content %}{% endblock %}
 
             {% block footer %}
-                {{  render( controller( "AppBundle:Site:getSettings", { 'template': 'pagelayout_footer.html.twig' } )) }}
+                {{  render( controller( "AppBundle:Layout:showPart", { 'template': 'pagelayout_footer.html.twig' } )) }}
             {% endblock %}
 
         </div><!-- End of div #uberdiv -->
