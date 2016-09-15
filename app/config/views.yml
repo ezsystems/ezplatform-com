@@ -27,6 +27,6 @@ ezpublish:
                             Identifier\ContentType: banner_slider
                     download_section:
                         template: row\download_section.html.twig
-                        controller: ezplatform.controller.download:show
+                        controller: ezplatform.controller.download:showAction
                         match:
                             Identifier\ContentType: download_section

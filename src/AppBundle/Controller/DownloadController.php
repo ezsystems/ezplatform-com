@@ -45,7 +45,7 @@ class DownloadController
      *
      * @return \eZ\Publish\Core\MVC\Symfony\View\ContentView
      */
-    public function show(ContentView $view)
+    public function showAction(ContentView $view)
     {
         $view->addParameters([
             'releases' => $this->getSearchResults($this->releaseContainerLocationid),
