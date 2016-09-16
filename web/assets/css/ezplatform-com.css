@@ -83,23 +83,41 @@ body {
     font-size: 2.44vw;
 }
 
-.btn.download {
+.btn.btn-primary.download {
     position: absolute;
-    left: 17.2%;
+    left: 15%;
     top: 59%;
     font-size: 1.12vw;
     margin: 0;
-    padding: 0.72vw;
+    padding: 0.72vw 3vw;
 }
 
+.btn {
+    font-weight: 600;
+    font-size: 21px;
+    border-radius: 25px;
+    padding: 10px 50px;
+    white-space: normal;
+}
 .btn.btn-primary {
-    background: #f7941d;
     border: none;
+    background: #f15a22;
 }
 
 .btn.btn-primary:hover {
-    background: #ffae37;
+    background: #cb4716;
     border: none;
+}
+
+.btn.btn-outline {
+    border: 2px solid #63605d;
+    color: #63605d;
+}
+
+.btn.btn-outline:hover {
+    background: #b1b1b1;
+    border: 2px solid #b1b1b1;
+    color: #fff;
 }
 
 .navbar {
