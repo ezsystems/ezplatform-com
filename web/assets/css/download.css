@@ -21,6 +21,10 @@ section#download div.details {
     border: 2px solid #f7f5f2;
 }
 
+section#download li.nav img {
+    max-height: 97px;
+}
+
 section#download div.details {
     margin-top: 35px;
 }
@@ -342,4 +346,9 @@ section#download .download-table tr.releases.ezpublish th a {
 
 section#download .download-table tr.releases.ezpublish {
     border-bottom: 1px solid #ccc;
+}
+
+section#download #platform-sh-option img.rocket {
+    margin: 40px 0;
+    max-height: 250px;
 }

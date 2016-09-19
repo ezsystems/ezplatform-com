@@ -22,6 +22,14 @@
                             </a>
                         </li>
                     {% endif %}
+                    {% if not ez_is_field_empty(content, 'platform_sh_description') %}
+                        <li class="nav">
+                            <a href="#platform-sh-option" data-toggle="tab">
+                                <img src="{{ asset('assets/images/platform-sh-logo.svg') }}" alt="Download" class="download">
+                                <div class="label">platform.sh</div>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <div class="tab-content">
@@ -141,6 +149,22 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    {% endif %}
+
+                    {% if not ez_is_field_empty(content, 'platform_sh_description') %}
+                        <div role="tabpanel" class="tab-pane" id="platform-sh-option">
+                            <div class="details">
+                                <h3>platform.sh</h3>
+                                <div class="description text-center">
+                                    {{ ez_render_field(content, 'platform_sh_description') }}
+                                </div>
+                            </div>
+
+                            <div class="launch text-center">
+                                <img src="{{ asset('assets/images/rocket.svg') }}" alt="rocket" class="rocket">
+                                <a href="//accounts.platform.sh/platform/trial/ezplatform/setup?branch=demo" class="btn btn-primary">Deploy on platform.sh</a>
+                            </div>
                         </div>
                     {% endif %}
                 </div>
