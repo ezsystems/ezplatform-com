@@ -26,3 +26,10 @@ _ezpublishPlatformUIRoutes:
 
 _ezplatformRepositoryFormsRoutes:
     resource: "@EzSystemsRepositoryFormsBundle/Resources/config/routing.yml"
+
+_ezplatform_blog_ajax:
+    path: /ezplatform/blog/load/page/{page}
+    defaults: { _controller: ezplatform.controller.blog:showBlogPostsAction }
+    methods:  [POST]
+    requirements:
+        "page": "\d+"

@@ -1,0 +1,39 @@
+<div class="blog-post-line{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
+    <div class="blog-post-line-border">
+        {{ render_esi(controller('ez_content:viewAction', {
+            'contentId': ez_field_value(content, 'author'),
+            'viewType': 'blog'
+        })) }}
+
+        <div class="blog-post-line-date">
+            {{ ez_field_value(content, 'published_date')|date('M d, Y') }}
+        </div>
+
+        {% if not ez_is_field_empty(content, 'listing_image') %}
+            <div class="blog-post-line-thumbnail">
+                <a href="{{ path(location) }}">
+                    {{ ez_render_field(content, 'listing_image', {
+                        'parameters': {
+                            'alias': 'blog_thumbnail',
+                            'class': 'img-responsive'
+                        }
+                    }) }}
+                </a>
+            </div>
+        {% endif %}
+
+        <h2>
+            <a href="{{ path(location) }}">
+                {{ ez_render_field(content, 'title') }}
+            </a>
+        </h2>
+
+        <div class="blog-post-line-intro">
+            {{ ez_render_field(content, 'intro') }}
+        </div>
+
+        <div class="blog-post-line-link">
+            <a href="{{ path(location) }}">Continue reading <i class="fa fa-angle-double-right"></i></a>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,13 @@
 services:
+    ezplatform.pre_content_view_listener:
+        class: AppBundle\EventListener\PreContentViewListener
+        arguments:
+            - blogLocationId: '%blog.location_id%'
+        tags:
+            - name: kernel.event_listener
+              event: ezpublish.pre_content_view
+              method: onPreContentView
+
     ezplatform.controller.download:
         class: AppBundle\Controller\DownloadController
         arguments:
@@ -6,6 +15,15 @@ services:
             - '@ezplatform.query_type.latest_releases'
             - '%release_container_location_id%'
             - '%beta_container_location_id%'
+
+    ezplatform.controller.blog:
+        class: AppBundle\Controller\BlogController
+        arguments:
+            - '@templating'
+            - '@ezpublish.api.service.search'
+            - '@ezplatform.query_type.children'
+            - '%blog.location_id%'
+            - '%blog.posts_limit%'
 
     ezplatform.query_type.latest_releases:
         class: AppBundle\QueryType\LatestReleasesQueryType
