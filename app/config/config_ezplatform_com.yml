@@ -1,6 +1,15 @@
 parameters:
+    # `layout` locationId
     layout_id: 54
-    # Folder in the media library containing all the releases
+
+    # `folder` in the media library containing all the releases
     release_container_location_id: 57
-    # Folder in the media library containing all the betas
+    # `folder` in the media library containing all the betas
     beta_container_location_id: 58
+
+    # `blog` locationId
+    blog.location_id: 71
+    # `blog_post` limit on the `blog` page
+    blog.posts_limit: 10
+    # `authors` folder locationId
+    blog.authors_container_location_id: 72

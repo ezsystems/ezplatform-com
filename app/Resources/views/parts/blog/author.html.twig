@@ -1,0 +1,17 @@
+<div class="blog-author-image">
+    {% if not ez_is_field_empty(content, 'profile_picture') %}
+        {{ ez_render_field(content, 'profile_picture', {
+            'parameters': {
+                'alias': 'blog_author'
+            }
+        }) }}
+    {% endif %}
+</div>
+
+<div class="blog-author-name">
+    By <span>{{ ez_field_value(content, 'first_name') }} {{ ez_field_value(content, 'last_name') }}</span>
+</div>
+
+<div class="blog-author-bio">
+    {{ ez_render_field(content, 'bio') }}
+</div>

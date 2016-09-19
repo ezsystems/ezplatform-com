@@ -1,4 +1,5 @@
 imports:
+    - { resource: image_variations.yml }
     - { resource: views.yml }
 
 ezpublish:

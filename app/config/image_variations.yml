@@ -1,0 +1,12 @@
+ezpublish:
+    system:
+        default:
+            image_variations:
+                blog_author:
+                    reference: ~
+                    filters:
+                        - { name: geometry/scaleexact, params: [60, 60] }
+                blog_thumbnail:
+                    reference: ~
+                    filters:
+                        - { name: geometry/scalewidthdownonly, params: [710] }
