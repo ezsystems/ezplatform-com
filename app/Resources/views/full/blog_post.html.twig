@@ -1,0 +1,41 @@
+{% extends 'pagelayout.html.twig' %}
+
+{% block content %}
+    <div class="blog-post">
+        <div class="blog-post-header">
+            <div class="container">
+                <h1>
+                    {{ ez_content_name(content) }}
+                </h1>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row blog-post-author">
+                {{ render_esi(controller('ez_content:viewAction', {
+                    'contentId': ez_field_value(content, 'author'),
+                    'viewType': 'blog_post'
+                })) }}
+
+                <div class="blog-post-date">
+                    {{ ez_field_value(content, 'published_date')|date('M d, Y') }}
+                </div>
+            </div>
+
+            <div class="row blog-post-body">
+                {{ ez_render_field(content, 'body') }}
+            </div>
+
+            <div class="row blog-post-leave-comments">
+                Leave us a comment
+            </div>
+
+            <div class="row blog-post-comments">
+                {{ ez_comments_render_content(content.contentInfo, {
+                    'identifier': content.id,
+                    'url': app.request.uri
+                }) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

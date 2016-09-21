@@ -1,0 +1,19 @@
+<div class="blog-post-author-image">
+    {{ ez_render_field(content, 'profile_picture', {
+        'parameters': {
+            'alias': 'blog_post_author'
+        }
+    }) }}
+</div>
+
+<div class="blog-post-author-name">
+    By <span>{{ ez_field_value(content, 'first_name') }} {{ ez_field_value(content, 'last_name') }}</span>
+</div>
+
+<div class="blog-post-author-bio">
+    {{ ez_render_field(content, 'bio') }}
+</div>
+
+<div class="blog-post-author-company">
+    {{ ez_render_field(content, 'company') }}
+</div>
