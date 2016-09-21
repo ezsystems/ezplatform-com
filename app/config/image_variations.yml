@@ -6,6 +6,10 @@ ezpublish:
                     reference: ~
                     filters:
                         - { name: geometry/scaleexact, params: [60, 60] }
+                blog_post_author:
+                    reference: ~
+                    filters:
+                        - { name: geometry/scaleexact, params: [80, 80] }
                 blog_thumbnail:
                     reference: ~
                     filters:

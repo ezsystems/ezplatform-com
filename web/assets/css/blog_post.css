@@ -1,0 +1,126 @@
+.blog-post-header {
+    height: 380px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.blog-post-header h1 {
+    font-size: 55px;
+    color: #404040;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.blog-post .container {
+    max-width: 800px;
+}
+
+.blog-post-author {
+    margin-top: 25px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.blog-post-body {
+    margin-top: 20px;
+    font-size: 19px;
+    line-height: 1.8;
+    color: #000;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.blog-post-body h1,
+.blog-post-body h2,
+.blog-post-body h3,
+.blog-post-body h4 {
+    margin-top: 0;
+}
+
+.blog-post-body img {
+    margin-bottom: 15px;
+}
+
+.blog-post-comments {
+    margin-top: 25px;
+}
+
+.blog-post-author-image {
+    display: inline-block;
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}
+
+.blog-post-author-image img {
+    border-radius: 5px;
+}
+
+.blog-post-author-name,
+.blog-post-author-bio,
+.blog-post-author-company {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    color: #000;
+}
+
+.blog-post-author-name span {
+    color: #f15a22;
+    font-size: 15px;
+}
+
+.blog-post-leave-comments {
+    margin: 40px 0;
+    text-align: center;
+    font-size: 23px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.blog-post-author-profiles {
+    margin-top: 25px;
+}
+
+.blog-post-author-profiles i.fa {
+    border-radius: 75px;
+    color: #a3a3a3;
+    width: 35px;
+    height: 35px;
+    border: 2px solid #a3a3a3;
+    font-size: 20px;
+    text-align: center;
+    margin: 2px 10px 0 0;
+    padding-top: 7px;
+}
+
+.blog-post-author-profiles a:hover {
+    text-decoration: none;
+}
+
+.blog-post-author-profiles a:hover i.fa-github {
+    color: #000;
+    border: 2px solid #000;
+}
+
+.blog-post-author-profiles a:hover i.fa-twitter {
+    color: #2aa9e0;
+    border: 2px solid #2aa9e0;
+}
+
+.blog-post-author-profiles a:hover i.fa-linkedin {
+    color: #0274b3;
+    border: 2px solid #0274b3;
+}
+
+.blog-post-author-profiles a:hover i.fa-facebook {
+    color: #4867aa;
+    border: 2px solid #4867aa;
+}
+
+.blog-post-author-profiles a:hover i.fa-google {
+    color: #dd4a40;
+    border: 2px solid #dd4a40;
+}

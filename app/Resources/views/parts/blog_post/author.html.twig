@@ -1,0 +1,67 @@
+<div class="col-md-6">
+    <div class="blog-post-author-image">
+        {% if not ez_is_field_empty(content, 'profile_picture') %}
+            {{ ez_render_field(content, 'profile_picture', {
+                'parameters': {
+                    'alias': 'blog_post_author'
+                }
+            }) }}
+        {% endif %}
+    </div>
+
+    <div class="blog-post-author-name">
+        By <span>{{ ez_field_value(content, 'first_name') }} {{ ez_field_value(content, 'last_name') }}</span>
+    </div>
+
+    <div class="blog-post-author-bio">
+        {{ ez_render_field(content, 'bio') }}
+    </div>
+
+    <div class="blog-post-author-company">
+        {{ ez_render_field(content, 'company') }}
+    </div>
+
+    <div class="blog-post-date">
+        {{ blog_post_date }}
+    </div>
+</div>
+
+{% if not ez_is_field_empty(content, 'github_account') or
+    not ez_is_field_empty(content, 'twitter_account') or
+    not ez_is_field_empty(content, 'linkedin_account') or
+    not ez_is_field_empty(content, 'facebook_account') or
+    not ez_is_field_empty(content, 'google_account') %}
+
+    <div class="col-md-6 text-right blog-post-author-profiles">
+        {% if not ez_is_field_empty(content, 'github_account') %}
+            <a href="{{ ez_field_value(content, 'github_account') }}" target="_blank">
+                <i class="fa fa-github"></i>
+            </a>
+        {% endif %}
+
+        {% if not ez_is_field_empty(content, 'twitter_account') %}
+            <a href="{{ ez_field_value(content, 'twitter_account') }}" target="_blank">
+                <i class="fa fa-twitter"></i>
+            </a>
+        {% endif %}
+
+        {% if not ez_is_field_empty(content, 'linkedin_account') %}
+            <a href="{{ ez_field_value(content, 'linkedin_account') }}" target="_blank">
+                <i class="fa fa-linkedin"></i>
+            </a>
+        {% endif %}
+
+        {% if not ez_is_field_empty(content, 'facebook_account') %}
+            <a href="{{ ez_field_value(content, 'facebook_account') }}" target="_blank">
+                <i class="fa fa-facebook"></i>
+            </a>
+        {% endif %}
+
+        {% if not ez_is_field_empty(content, 'google_account') %}
+            <a href="{{ ez_field_value(content, 'google_account') }}" target="_blank">
+                <i class="fa fa-google"></i>
+            </a>
+        {% endif %}
+    </div>
+
+{% endif %}
