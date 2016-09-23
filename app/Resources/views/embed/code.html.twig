@@ -1,0 +1,20 @@
+{% block content %}
+    {% set languageOptions = ez_field_options('code', 'language') %}
+    {% set language = 'none' %}
+    {% set embedLanguage = ez_field_value(content, 'language') %}
+    {% if languageOptions[embedLanguage] is defined %}
+        {% set language = languageOptions[embedLanguage] %}
+    {% endif %}
+
+    {% spaceless %}
+        <div class="embed-code">
+            <pre>
+                <code class="language-{{ language }} line-numbers">{{ ez_field_value(content, 'code') }}</code>
+            </pre>
+
+            <div class="embed-code-filename">
+                {{ ez_content_name(content) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

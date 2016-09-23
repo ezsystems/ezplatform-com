@@ -1,0 +1,517 @@
+.uno-1 {
+    color: #2d2006;
+}
+
+.uno-2 {
+    color: #896724;
+}
+
+.uno-3 {
+    color: #b29762;
+}
+
+.uno-4 {
+    color: #b6ad9a;
+}
+
+.duo-1 {
+    color: #063289;
+}
+
+.duo-2 {
+    color: #728fcb;
+}
+
+.duo-3 {
+    color: #aeb1b7;
+}
+
+.meta {
+    color: #b6ad9a;
+}
+
+.html.elements,
+.entity,
+.tag,
+.function-call {
+    color: #2d2006;
+}
+
+.variable,
+.attribute-name,
+.character.escape {
+    color: #896724;
+}
+
+.support {
+    color: #b29762;
+}
+
+.string,
+.constant,
+.storage.type {
+    color: #063289;
+}
+
+.keyword,
+.storage {
+    color: #728fcb;
+}
+
+.punctuation,
+.bracket,
+.brace {
+    color: #b6ad9a;
+}
+
+.string .punctuation {
+    color: #aeb1b7;
+}
+
+.comment {
+    color: #b6ad9a;
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.c .parens,
+.c .block {
+    color: #896724;
+}
+
+.c .parens .punctuation,
+.c .block .punctuation,
+.c .parens .bracket,
+.c .block .bracket,
+.c .parens .brace,
+.c .block .brace {
+    color: #b6ad9a;
+}
+
+.c .parens .string .punctuation,
+.c .block .string .punctuation {
+    color: #aeb1b7;
+}
+
+.c .comment {
+    color: #aeb1b7;
+}
+
+.source.clojure .expression {
+    color: #063289;
+}
+
+.source.clojure .expression .punctuation {
+    color: #b6ad9a;
+}
+
+.source.clojure .symbol {
+    color: #896724;
+}
+
+.source.clojure .vector {
+    color: #b29762;
+}
+
+.coffee.source {
+    color: #b29762;
+}
+
+.source.cs .meta {
+    color: #b29762;
+}
+
+.source.cs .method {
+    color: #896724;
+}
+
+.css.source {
+    color: #b6ad9a;
+}
+
+.css.at-rule {
+    color: #2d2006;
+}
+
+.css.at-rule .keyword.punctuation {
+    color: inherit;
+}
+
+.css.attribute-name.id,
+.css.attribute-name.class {
+    color: #2d2006;
+}
+
+.gfm {
+    color: #2d2006;
+}
+
+.gfm .punctuation,
+.gfm .bracket,
+.gfm .brace {
+    color: #b6ad9a;
+}
+
+.gfm .string .punctuation {
+    color: #aeb1b7;
+}
+
+.gfm .link {
+    color: #896724;
+}
+
+.gfm.markup {
+    color: #896724;
+}
+
+.gfm.markup.bold {
+    font-weight: bold;
+}
+
+.gfm.markup.italic {
+    font-style: italic;
+}
+
+.gfm.markup.strike {
+    color: #b6ad9a;
+    text-decoration: line-through;
+}
+
+.gfm.markup.raw {
+    color: #063289;
+}
+
+.gfm.markup.raw .support,
+.gfm.markup.code .support {
+    color: #b6ad9a;
+}
+
+.gfm.comment {
+    color: #b6ad9a;
+}
+
+.gfm.comment.quote {
+    color: #896724;
+}
+
+.gfm.table {
+    color: #063289;
+}
+
+.gfm.table .border,
+.gfm.table .pipe {
+    color: #b6ad9a;
+}
+
+.gfm.variable,
+.gfm.entity {
+    color: #063289;
+}
+
+.gfm.support {
+    color: #728fcb;
+}
+
+.gfm.heading-1,
+.gfm.heading-2,
+.gfm.heading-3 {
+    color: #063289;
+}
+
+.gfm.heading-4,
+.gfm.heading-5,
+.gfm.heading-6 {
+    color: #728fcb;
+}
+
+.haskell.source {
+    color: #896724;
+}
+
+.haskell.source .punctuation,
+.haskell.source .bracket,
+.haskell.source .brace {
+    color: #b6ad9a;
+}
+
+.haskell.source .string .punctuation {
+    color: #aeb1b7;
+}
+
+.html.meta {
+    color: #b6ad9a;
+}
+
+.html.text {
+    color: #b29762;
+}
+
+.html .string .id {
+    color: #063289;
+}
+
+.jade.text {
+    color: #b29762;
+}
+
+.jade .meta.control.flow {
+    color: #896724;
+}
+
+.jade .constant.name.attribute.tag {
+    color: #b6ad9a;
+}
+
+.jade .attribute-name.id {
+    color: #063289;
+}
+
+.java .method {
+    color: #896724;
+}
+
+.java .method .punctuation,
+.java .method .bracket,
+.java .method .brace {
+    color: #b6ad9a;
+}
+
+.java .method .string .punctuation {
+    color: #aeb1b7;
+}
+
+.java .dereference {
+    color: #b6ad9a;
+}
+
+.js.source {
+    color: #896724;
+}
+
+.js.source .punctuation,
+.js.source .bracket,
+.js.source .brace {
+    color: #b6ad9a;
+}
+
+.js.source .string .punctuation {
+    color: #aeb1b7;
+}
+
+.json .string {
+    color: #896724;
+}
+
+.json .string .punctuation {
+    color: #b6ad9a;
+}
+
+.json .value > .string {
+    color: #063289;
+}
+
+.json .value > .string .punctuation {
+    color: #b6ad9a;
+}
+
+.json .value .constant {
+    color: #728fcb;
+}
+
+.less.variable:first-child {
+    color: #2d2006;
+}
+
+.less .mixin {
+    color: #728fcb;
+}
+
+.mediawiki {
+    color: #2d2006;
+}
+
+.mediawiki .punctuation,
+.mediawiki .bracket,
+.mediawiki .brace {
+    color: #b6ad9a;
+}
+
+.mediawiki .string .punctuation {
+    color: #aeb1b7;
+}
+
+.mediawiki .wiki-link {
+    color: #896724;
+}
+
+.mediawiki .heading {
+    color: #063289;
+}
+
+.mediawiki .function-call {
+    color: #728fcb;
+}
+
+.mediawiki .value {
+    color: #063289;
+}
+
+.mediawiki .fix_this_later {
+    color: #896724;
+}
+
+.mediawiki .pipe,
+.mediawiki .link,
+.mediawiki .tag {
+    color: #b6ad9a;
+}
+
+.php .string-contents {
+    color: #063289;
+}
+
+.sass .at-rule .at-rule,
+.sass .at-rule .at-rule > .punctuation {
+    color: #2d2006;
+}
+
+.sass .mixin + .function,
+.sass .include + .function {
+    color: #728fcb;
+}
+
+.sass.property-value {
+    color: #063289;
+}
+
+.sass.property-value .function {
+    color: #896724;
+}
+
+.sass.property-value .punctuation {
+    color: #b6ad9a;
+}
+
+.sass.variable.parameter.url {
+    color: #063289;
+}
+
+.scss .at-rule .at-rule,
+.scss .at-rule .at-rule > .punctuation {
+    color: #2d2006;
+}
+
+.scss .mixin + .function,
+.scss .include + .function {
+    color: #728fcb;
+}
+
+.scss.property-value {
+    color: #063289;
+}
+
+.scss.property-value .function {
+    color: #896724;
+}
+
+.scss.property-value .punctuation {
+    color: #b6ad9a;
+}
+
+.scss.variable.parameter.url {
+    color: #063289;
+}
+
+.slim.meta {
+    color: #b6ad9a;
+}
+
+.slim.text {
+    color: #b29762;
+}
+
+.slim .string .id {
+    color: #063289;
+}
+
+.stylus .function .name {
+    color: #728fcb;
+}
+
+.tex .other {
+    color: #728fcb;
+}
+
+.tex .reference {
+    color: #896724;
+}
+
+.plain .text {
+    color: #2d2006;
+}
+
+.yaml .tag {
+    color: #896724;
+}
+
+.yaml .constant {
+    color: #728fcb;
+}
+
+.yaml .punctuation {
+    color: #b6ad9a;
+}
+
+/* line numbers */
+
+pre.line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre.line-numbers > code {
+    position: relative;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.line-numbers-rows > span {
+    pointer-events: none;
+    display: block;
+    counter-increment: linenumber;
+}
+
+.line-numbers-rows > span:before {
+    content: counter(linenumber);
+    color: #999;
+    display: block;
+    padding-right: 0.8em;
+    text-align: right;
+}
+
+/* prevent wordwrap */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    word-wrap: normal;
+    white-space: pre;
+}
