@@ -20,6 +20,7 @@
         {% stylesheets filter='cssrewrite'
             'assets/css/ezplatform-com.css'
             'assets/css/responsive.css'
+            'assets/css/prism.css'
             'assets/css/slider.css'
             'assets/css/download.css'
             'assets/css/error.css'
@@ -28,6 +29,12 @@
         %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}">
         {% endstylesheets %}
+
+        {% javascripts
+            'assets/js/prism.js'
+        %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

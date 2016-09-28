@@ -67,3 +67,9 @@ ezpublish:
                         template: parts\blog_post\author.html.twig
                         match:
                             Identifier\ContentType: author
+
+                embed:
+                    code:
+                        template: embed\code.html.twig
+                        match:
+                            Identifier\ContentType: code
