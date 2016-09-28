@@ -13,3 +13,17 @@ parameters:
     blog.posts_limit: 10
     # `authors` folder locationId
     blog.authors_container_location_id: 72
+
+# configuration for the CommentsBundle
+ez_comments:
+    system:
+        default:
+            default_provider: disqus
+            content_comments:
+                my_comment_ruleset:
+                    enabled: true
+                    match:
+                        Identifier\ContentType:
+                            - blog_post
+            disqus:
+                shortname: ezplatform-com

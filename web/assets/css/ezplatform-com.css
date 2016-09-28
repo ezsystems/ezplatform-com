@@ -77,6 +77,22 @@ main {
     background: #f7f7f7;
 }
 
+h1 {
+    font-size: 55px;
+}
+
+h2 {
+    font-size: 45px;
+}
+
+h3 {
+    font-size: 38px;
+}
+
+h4 {
+    font-size: 27px;
+}
+
 .white-background {
     background: #fff;
 }
@@ -169,7 +185,8 @@ footer .logo {
 }
 
 .footer-content h4 {
-    margin-top: 0px;
+    margin-top: 0;
+    font-size: 18px;
 }
 
 .footer-content ul {

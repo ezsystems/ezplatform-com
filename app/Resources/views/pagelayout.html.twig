@@ -24,6 +24,7 @@
             'assets/css/download.css'
             'assets/css/error.css'
             'assets/css/blog.css'
+            'assets/css/blog_post.css'
         %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}">
         {% endstylesheets %}
@@ -33,6 +34,9 @@
 
         {% block head_tracking %}
             {% include 'pagelayout_tracking_head.html.twig' %}
+        {% endblock %}
+
+        {% block canonical %}
         {% endblock %}
     </head>
     <body>

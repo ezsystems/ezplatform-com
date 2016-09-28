@@ -10,3 +10,18 @@
         text-align: center;
     }
 }
+
+@media (max-width: 991px) {
+    .blog-post-author,
+    .blog-post-author-profiles {
+        text-align: center;
+    }
+
+    .blog-post-author-profiles {
+        margin-bottom: 25px;
+    }
+
+    .blog-post .blog-post-author-image {
+        display: none;
+    }
+}
