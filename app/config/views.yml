@@ -10,6 +10,9 @@ ezpublish:
                     home:
                         controller: ez_query:LocationQueryAction
                         params:
+                            omitted_location_ids:
+                                - '%blog.location_id%'
+                                - '%blog.authors_container_location_id%'
                             query:
                                 query_type: AppBundle:Children
                                 parameters:
@@ -19,6 +22,24 @@ ezpublish:
                         template: full\home.html.twig
                         match:
                             Id\Location: 2
+                    blog:
+                        controller: ez_query:LocationQueryAction
+                        params:
+                            query:
+                                query_type: AppBundle:Children
+                                parameters:
+                                    parent_location_id: '%blog.location_id%'
+                                    limit: '%blog.posts_limit%'
+                                assign_results_to: posts
+                        template: full\blog.html.twig
+                        match:
+                            Identifier\ContentType: blog
+
+                line:
+                    blog_post:
+                        template: line\blog_post.html.twig
+                        match:
+                            Identifier\ContentType: blog_post
 
                 row:
                     banner_slider:
@@ -30,3 +51,9 @@ ezpublish:
                         controller: ezplatform.controller.download:showAction
                         match:
                             Identifier\ContentType: download_section
+
+                blog:
+                    author:
+                        template: parts\blog\author.html.twig
+                        match:
+                            Identifier\ContentType: author

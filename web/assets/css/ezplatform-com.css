@@ -73,6 +73,14 @@ body {
     font-family: "MavenPro", sans-serif;
 }
 
+main {
+    background: #f7f7f7;
+}
+
+.white-background {
+    background: #fff;
+}
+
 .ez-platform-label {
     position: absolute;
     margin: 0;
@@ -186,7 +194,6 @@ footer .footer-social i.fa {
     height: 35px;
     line-height: 35px;
     border-radius: 75px;
-    border-width: 1px;
     border: 1px solid #fff;
     background: transparent;
     text-align: center;
