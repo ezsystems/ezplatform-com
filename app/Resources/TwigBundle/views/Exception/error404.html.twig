@@ -1,0 +1,20 @@
+{% extends 'pagelayout.html.twig' %}
+
+{% block main %}
+    <main class="error-page-background">
+{% endblock %}
+
+{% block content %}
+    <div class="content-view-full content-error-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7 content">
+                    <h1>Whoops!</h1>
+                    <h2>We couldn't find the page you were looking for.</h2>
+                    <a href="/" class="btn btn-outline">Back to Home</a>
+                </div>
+                <div class="col-md-5 banner"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

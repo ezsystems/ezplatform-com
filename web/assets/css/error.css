@@ -1,0 +1,27 @@
+.content-error-page .content h1 {
+    font-family: 'MavenPro', sans-serif;
+    font-size: 90px;
+    font-weight: 900;
+    color: #63605d;
+    margin: 106px 0 0 0;
+    text-transform: uppercase;
+}
+
+.content-error-page .content h2 {
+    font-family: 'MavenPro', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #63605d;
+    padding: 45px 0;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.content-error-page .banner {
+    background: url('/assets/images/error404.svg') bottom / contain no-repeat;
+    min-height: 400px;
+}
+
+.error-page-background {
+    background: #e9e9e9;
+}

@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html class="no-js">
     <head>
-        <title>{{ ez_content_name(content) }} - eZ Platform</title>
+        <title>
+            {% spaceless %}
+                {% if content is defined %}
+                    {{ ez_content_name(content) ~ ' - ' }}
+                {% endif %}
+                eZ Platform
+            {% endspaceless %}
+        </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +21,7 @@
             'assets/css/responsive.css'
             'assets/css/slider.css'
             'assets/css/download.css'
+            'assets/css/error.css'
         %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}">
         {% endstylesheets %}
@@ -26,7 +34,9 @@
         {% endblock %}
     </head>
     <body>
-        <main>
+        {% block main %}
+            <main>
+        {% endblock %}
             {% block header %}
                 {% include 'pagelayout_header.html.twig' %}
             {% endblock %}
