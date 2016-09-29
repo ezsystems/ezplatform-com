@@ -27,3 +27,8 @@ ez_comments:
                             - blog_post
             disqus:
                 shortname: ezplatform-com
+
+# additional Twig configuration
+twig:
+    globals:
+        blogLocationId: '%blog.location_id%'

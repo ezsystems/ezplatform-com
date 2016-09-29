@@ -1,13 +1,4 @@
 services:
-    ezplatform.pre_content_view_listener:
-        class: AppBundle\EventListener\PreContentViewListener
-        arguments:
-            - blogLocationId: '%blog.location_id%'
-        tags:
-            - name: kernel.event_listener
-              event: ezpublish.pre_content_view
-              method: onPreContentView
-
     ezplatform.controller.download:
         class: AppBundle\Controller\DownloadController
         arguments:
