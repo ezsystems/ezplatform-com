@@ -1,3 +1,7 @@
+imports:
+    - { resource: image_variations.yml }
+    - { resource: views.yml }
+
 parameters:
     # `layout` locationId
     layout_id: 54
