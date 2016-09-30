@@ -30,6 +30,9 @@ ezpublish:
                                 parameters:
                                     parent_location_id: '%blog.location_id%'
                                     limit: '%blog.posts_limit%'
+                                    sorting_content_type: blog_post
+                                    sorting_field: publication_date
+                                    sorting_order: desc
                                 assign_results_to: posts
                         template: full\blog.html.twig
                         match:
