@@ -12,7 +12,6 @@
     color: #404040;
     font-weight: bold;
     font-family: "Open Sans", sans-serif;
-    text-transform: uppercase;
     text-align: center;
 }
 
@@ -28,7 +27,7 @@
 .blog-post-body {
     margin-top: 20px;
     font-size: 19px;
-    line-height: 1.8;
+    line-height: 1.6;
     color: #000;
     font-family: 'Open Sans', sans-serif;
 }
@@ -40,12 +39,29 @@
     margin-top: 0;
 }
 
+.blog-post-body h2 {
+    margin-top: 50px;
+}
+
 .blog-post-body img {
-    margin-bottom: 15px;
+    margin: 0 0 30px 0;
+}
+
+.blog-post-body ol,
+.blog-post-body ul {
+    margin-bottom: 30px;
+}
+
+.blog-post-body p {
+    margin: 0 0 30px;
 }
 
 .blog-post-comments {
     margin-top: 25px;
+}
+
+.blog-post-author-details {
+    padding-left: 0;
 }
 
 .blog-post-author-image {
@@ -128,6 +144,7 @@
 .embed-code {
     background: #4c4c4c;
     padding: 5px;
+    margin: 30px 0;
 }
 
 .embed-code pre {
