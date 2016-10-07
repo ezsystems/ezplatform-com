@@ -93,6 +93,20 @@ h4 {
     font-size: 27px;
 }
 
+a {
+    color: #f15a22;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #da3c03;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #f15a22;
+}
+
 .white-background {
     background: #fff;
 }
