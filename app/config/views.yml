@@ -76,3 +76,7 @@ ezpublish:
                         template: embed\code.html.twig
                         match:
                             Identifier\ContentType: code
+                    youtube:
+                        template: embed\youtube.html.twig
+                        match:
+                          Identifier\ContentType: youtube

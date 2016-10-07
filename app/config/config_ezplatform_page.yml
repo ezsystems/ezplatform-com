@@ -46,6 +46,7 @@ assetic:
         css_default:
             inputs:
                 - 'assets/css/ezplatform-com.css'
+                - 'assets/css/embed.css'
                 - 'assets/css/responsive.css'
                 - 'assets/css/slider.css'
                 - 'assets/css/download.css'
