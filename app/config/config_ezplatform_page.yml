@@ -36,3 +36,25 @@ ez_comments:
 twig:
     globals:
         blogLocationId: '%blog.location_id%'
+
+# additional Assetic configuration
+assetic:
+    assets:
+        js_default:
+            inputs:
+                ~
+        css_default:
+            inputs:
+                - 'assets/css/ezplatform-com.css'
+                - 'assets/css/responsive.css'
+                - 'assets/css/slider.css'
+                - 'assets/css/download.css'
+                - 'assets/css/error.css'
+                - 'assets/css/blog.css'
+                - 'assets/css/blog_post.css'
+        js_prism:
+            inputs:
+                - 'assets/js/prism.js'
+        css_prism:
+            inputs:
+                - 'assets/css/prism.css'
