@@ -18,7 +18,7 @@ section#download h3 {
 
 section#download li.nav,
 section#download div.details {
-    border: 2px solid #f7f5f2;
+    border: 3px solid #f7f5f2;
 }
 
 section#download li.nav img {
@@ -66,6 +66,7 @@ section#download li.nav img {
 section#download .description {
     color: #63605d;
     font-size: 17px;
+    padding-bottom: 10px;
 }
 
 section#download .window a {
@@ -88,6 +89,7 @@ section#download .window {
     border-top-right-radius: 10px;
     box-shadow: none;
     font-family: HelveticaNeue, 'Helvetica Neue', 'Lucida Grande', Arial, sans-serif;
+    max-width: 750px;
 }
 
 section#download .window .orange {
