@@ -19,7 +19,7 @@
 }
 
 .blog-post-line {
-    margin-top: 100px;
+    margin-top: 15px;
     padding: 3px;
 }
 
@@ -33,7 +33,7 @@
     display: inline-block;
     float: left;
     margin-right: 13px;
-    margin-bottom: 35px;
+    margin-bottom: 23px;
 }
 
 .blog-author-image img {
@@ -69,7 +69,7 @@
 }
 
 .blog-post-line h2 {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     width: 100%;
     display: inline-block;
 }
@@ -91,7 +91,6 @@
     font-size: 16px;
     color: #63605d;
     font-family: 'Open Sans', sans-serif;
-    margin-bottom: 40px;
 }
 
 .blog-post-line-link a:link,
