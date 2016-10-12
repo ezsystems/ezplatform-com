@@ -18,6 +18,14 @@ parameters:
     # `authors` folder locationId
     blog.authors_container_location_id: 72
 
+# additional PlatformUI configuration
+ez_platformui:
+    system:
+        default:
+            javascript:
+                files:
+                    - 'assets/js/platformui_hotjar.js'
+
 # configuration for the CommentsBundle
 ez_comments:
     system:
