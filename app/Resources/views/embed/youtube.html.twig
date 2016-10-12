@@ -1,6 +1,6 @@
 {% if not ez_is_field_empty(content, 'youtube_id') %}
-    {% set autoPlay = ez_field_value(content, 'autoplay') ? '1' : '0' %}
-    {% set relatedVideos = ez_field_value(content, 'related_videos') ? '1' : '0' %}
+    {% set autoPlay = ez_field_value(content, 'autoplay').bool ? '1' : '0' %}
+    {% set relatedVideos = ez_field_value(content, 'related_videos').bool ? '1' : '0' %}
     {% set youtubeUrl = 'https://www.youtube.com/embed/' ~ ez_field_value(content, 'youtube_id')
         ~ '?autoplay=' ~ autoPlay
         ~ '&rel=' ~ relatedVideos %}
