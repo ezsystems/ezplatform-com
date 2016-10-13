@@ -1,0 +1,11 @@
+<div class="embed-image">
+    {{ ez_render_field(content, 'image', {
+        'parameters': {
+            'alias': objectParameters.size
+        }
+    }) }}
+
+    <div class="embed-image-caption">
+        {{ ez_render_field(content, 'name') }}
+    </div>
+</div>

@@ -80,3 +80,7 @@ ezpublish:
                         template: embed\youtube.html.twig
                         match:
                           Identifier\ContentType: youtube
+                    image:
+                        template: embed\image.html.twig
+                        match:
+                            Identifier\ContentType: image

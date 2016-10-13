@@ -43,10 +43,6 @@
     margin-top: 50px;
 }
 
-.blog-post-body img {
-    margin: 0 0 30px 0;
-}
-
 .blog-post-body ol,
 .blog-post-body ul {
     margin-bottom: 30px;
@@ -139,20 +135,4 @@
 .blog-post-author-profiles a:hover i.fa-google {
     color: #dd4a40;
     border: 2px solid #dd4a40;
-}
-
-.embed-code {
-    background: #4c4c4c;
-    padding: 5px;
-    margin: 30px 0;
-}
-
-.embed-code pre {
-    border-radius: 0;
-    margin-bottom: 5px;
-}
-
-.embed-code .embed-code-filename {
-    font-size: 12px;
-    color: #ccc;
 }
