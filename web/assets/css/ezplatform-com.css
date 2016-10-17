@@ -212,10 +212,13 @@ footer .logo {
     padding-bottom: 5px;
 }
 
-.footer-content a,
-.footer-content a:hover {
+.footer-content a {
     color: #fff;
     text-decoration: none;
+}
+
+.footer-content a:hover {
+    color: #f7941d;
 }
 
 footer .footer-social i.fa {
@@ -243,3 +246,13 @@ footer .footer-social i.fa {
 .copyright-content a:hover {
     color: #f7941d;
 }
+
+.footer-social a:hover i.fa-youtube,
+.footer-social a:hover i.fa-google-plus,
+.footer-social a:hover i.fa-facebook,
+.footer-social a:hover i.fa-linkedin,
+.footer-social a:hover i.fa-twitter {
+    color: #f7941d;
+    border-color: #f7941d;
+}
+
