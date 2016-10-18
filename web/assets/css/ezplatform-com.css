@@ -147,6 +147,10 @@ a:visited {
     border: none;
 }
 
+a.btn:visited {
+    color: #fff;
+}
+
 .btn.btn-outline {
     border: 2px solid #63605d;
     color: #63605d;
