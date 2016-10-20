@@ -220,6 +220,10 @@ section#download .window .content {
     padding: 20px;
 }
 
+section#download #composer-option .content {
+    font-family: monospace;
+}
+
 section#download .window h3 {
     margin-top: 0;
 }
