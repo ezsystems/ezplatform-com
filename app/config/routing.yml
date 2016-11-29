@@ -33,3 +33,7 @@ _ezplatform_blog_ajax:
     methods:  [POST]
     requirements:
         "page": "\d+"
+
+_contentOnTheFly:
+    resource: "@ContentOnTheFlyBundle/Resources/config/routing.yml"
+    prefix: "%ezpublish_rest.path_prefix%"

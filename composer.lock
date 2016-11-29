@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f37eb6e14099abd51bccccddd415d15",
-    "content-hash": "fadd960e17cb21b1b6c27251ec787af3",
+    "hash": "f7e7bd42bae6f9e4eb4b2eff83b12461",
+    "content-hash": "508c0344e12a33de4c801c9243e37acd",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -742,6 +742,49 @@
             ],
             "description": "Commenting system for eZ Publish",
             "time": "2015-12-02 18:54:18"
+        },
+        {
+            "name": "ezsystems/content-on-the-fly-prototype",
+            "version": "v0.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezsystems/content-on-the-fly-prototype-bundle.git",
+                "reference": "6fbb9874059b2c99b08f0c7824b4871f61cf6b1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezsystems/content-on-the-fly-prototype-bundle/zipball/6fbb9874059b2c99b08f0c7824b4871f61cf6b1a",
+                "reference": "6fbb9874059b2c99b08f0c7824b4871f61cf6b1a",
+                "shasum": ""
+            },
+            "require": {
+                "ezsystems/ezpublish-kernel": "^6.3",
+                "ezsystems/platform-ui-bundle": "^1.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EzSystems\\EzContentOnTheFly\\": "lib",
+                    "EzSystems\\EzContentOnTheFlyBundle\\": "bundle"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "eZ Systems",
+                    "email": "dev-team@ez.no"
+                }
+            ],
+            "description": " Platform UI Content on the Fly feature",
+            "time": "2016-08-02 10:40:14"
         },
         {
             "name": "ezsystems/ez-support-tools",
