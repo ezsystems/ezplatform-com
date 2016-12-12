@@ -82,7 +82,7 @@ section#download .window {
     width: 44vw;
     height: auto;
     margin: auto;
-    margin-top: 7.5vh;
+    margin-top: 3.5vh;
     background: #2e2e2e;
     border: none;
     border-top-left-radius: 10px;
@@ -94,6 +94,10 @@ section#download .window {
 
 section#download .window .orange {
     color: #f15a22;
+}
+
+section#download .window .green {
+    color: #029740;
 }
 
 section#download .window span.orange {
