@@ -55,7 +55,7 @@ ezpublish:
                             Identifier\ContentType: banner_slider
                     download_section:
                         template: row\download_section.html.twig
-                        controller: ezplatform.controller.download:showAction
+                        controller: app.controller.download:showAction
                         match:
                             Identifier\ContentType: download_section
 

@@ -1,0 +1,7 @@
+services:
+    app.twig_extension.field_options:
+        class: AppBundle\Twig\FieldOptionsTwigExtension
+        arguments:
+            - '@ezpublish.api.service.content_type'
+        tags:
+            - name: twig.extension

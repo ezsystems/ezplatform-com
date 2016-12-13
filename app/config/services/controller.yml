@@ -1,0 +1,17 @@
+services:
+    app.controller.download:
+        class: AppBundle\Controller\DownloadController
+        arguments:
+            - '@ezpublish.api.service.search'
+            - '@app.query_type.latest_releases'
+            - '%release_container_location_id%'
+            - '%beta_container_location_id%'
+
+    app.controller.blog:
+        class: AppBundle\Controller\BlogController
+        arguments:
+            - '@templating'
+            - '@ezpublish.api.service.search'
+            - '@app.query_type.children'
+            - '%blog.location_id%'
+            - '%blog.posts_limit%'

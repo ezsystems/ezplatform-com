@@ -1,0 +1,10 @@
+services:
+    app.query_type.latest_releases:
+        class: AppBundle\QueryType\LatestReleasesQueryType
+        tags:
+            - name: ezpublish.query_type
+
+    app.query_type.children:
+        class: AppBundle\QueryType\ChildrenQueryType
+        tags:
+            - name: ezpublish.query_type
