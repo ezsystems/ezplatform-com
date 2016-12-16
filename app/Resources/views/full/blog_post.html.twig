@@ -45,15 +45,15 @@
                 })) }}
             </div>
 
-            <div class="row blog-post-body">
+            <div class="blog-post-body">
                 {{ ez_render_field(content, 'body') }}
             </div>
 
-            <div class="row blog-post-leave-comments">
+            <div class="blog-post-leave-comments">
                 Leave us a comment
             </div>
 
-            <div class="row blog-post-comments">
+            <div class="blog-post-comments">
                 {{ ez_comments_render_content(content.contentInfo, {
                     'identifier': content.id,
                     'url': app.request.uri
