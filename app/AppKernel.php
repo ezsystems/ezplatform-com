@@ -48,6 +48,8 @@ class AppKernel extends Kernel
             new EzSystems\EzPlatformSolrSearchEngineBundle\EzSystemsEzPlatformSolrSearchEngineBundle(),
             new EzSystems\CommentsBundle\EzSystemsCommentsBundle(),
             new EzSystems\EzContentOnTheFlyBundle\EzSystemsEzContentOnTheFlyBundle(),
+            new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
+            new JMS\TranslationBundle\JMSTranslationBundle(),
             new AppBundle\AppBundle(),
         );
 
