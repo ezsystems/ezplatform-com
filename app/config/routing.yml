@@ -29,7 +29,7 @@ _ezplatformRepositoryFormsRoutes:
 
 _ezplatform_blog_ajax:
     path: /ezplatform/blog/load/page/{page}
-    defaults: { _controller: ezplatform.controller.blog:showBlogPostsAction }
+    defaults: { _controller: app.controller.blog:showBlogPostsAction }
     methods:  [POST]
     requirements:
         "page": "\d+"
