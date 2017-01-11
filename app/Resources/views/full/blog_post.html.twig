@@ -50,15 +50,21 @@
             </div>
 
             <div class="blog-post-leave-comments">
-                Leave us a comment
+                {% if location.isDraft %}
+                    Comments are disabled in the preview mode
+                {% else %}
+                    Leave us a comment
+                {% endif %}
             </div>
 
-            <div class="blog-post-comments">
-                {{ ez_comments_render_content(content.contentInfo, {
-                    'identifier': content.id,
-                    'url': app.request.uri
-                }) }}
-            </div>
+            {% if not location.isDraft %}
+                <div class="blog-post-comments">
+                    {{ ez_comments_render_content(content.contentInfo, {
+                        'identifier': content.id,
+                        'url': app.request.uri
+                    }) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
