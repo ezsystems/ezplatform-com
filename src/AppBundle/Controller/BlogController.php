@@ -60,6 +60,9 @@ class BlogController
             'parent_location_id' => $this->blogLocationId,
             'limit' => $this->blogPostsLimit,
             'offset' => $offset,
+            'sorting_content_type' => 'blog_post',
+            'sorting_field' => 'publication_date',
+            'sorting_order' => 'desc',
         ]);
         $searchResults = $this->searchService->findLocations($query);
 
