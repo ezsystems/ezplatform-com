@@ -1,6 +1,6 @@
 <div class="blog-post-line{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
     <div class="blog-post-line-border">
-        {{ render_esi(controller('ez_content:viewAction', {
+        {{ render(controller('ez_content:viewAction', {
             'contentId': ez_field_value(content, 'author').destinationContentId,
             'viewType': 'blog'
         })) }}
