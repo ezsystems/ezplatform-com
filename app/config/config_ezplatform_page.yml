@@ -61,6 +61,7 @@ assetic:
                 - 'assets/css/error.css'
                 - 'assets/css/blog.css'
                 - 'assets/css/blog_post.css'
+                - 'assets/css/article.css'
         js_prism:
             inputs:
                 - 'assets/js/prism.js'

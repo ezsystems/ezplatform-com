@@ -17,7 +17,9 @@ ezpublish:
                                 query_type: AppBundle:Children
                                 parameters:
                                     parent_location_id: 2
-                                    excluded_content_types: layout
+                                    excluded_content_types:
+                                        - layout
+                                        - article
                                 assign_results_to: items
                         template: full\home.html.twig
                         match:
@@ -41,6 +43,10 @@ ezpublish:
                         template: full\blog_post.html.twig
                         match:
                             Identifier\ContentType: blog_post
+                    article:
+                        template: full\article.html.twig
+                        match:
+                            Identifier\ContentType: article
 
                 line:
                     blog_post:
