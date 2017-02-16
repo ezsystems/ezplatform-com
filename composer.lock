@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7b8a7fd8aba75a8a2d0998327790ccc8",
-    "content-hash": "e52617e4f6bd028391503eabe0c90402",
+    "content-hash": "3eef3ee93eefd7e21cbfa32d8f3fe0dd",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -287,16 +286,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.10",
+            "version": "v2.5.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b"
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/fc376f7a61498e18520cd6fa083752a4ca08072b",
-                "reference": "fc376f7a61498e18520cd6fa083752a4ca08072b",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7b9e911f9d8b30d43b96853dab26898c710d8f44",
+                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44",
                 "shasum": ""
             },
             "require": {
@@ -354,7 +353,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-01-23T23:17:10+00:00"
+            "time": "2017-02-08T12:53:47+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -688,24 +687,24 @@
                 "events",
                 "listener"
             ],
-            "time": "2015-02-22 15:40:31"
+            "time": "2015-02-22T15:40:31+00:00"
         },
         {
             "name": "ezplatform-i18n/ezplatform-i18n-ach_ug",
-            "version": "v1.0.0-beta1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezplatform-i18n/ezplatform-i18n-ach_UG.git",
-                "reference": "a20bd952b3e0e0321e9315acabee2f4745c772ec"
+                "reference": "cf3dd6211ab8bd2ccd9ae344f390235a00d5aa01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezplatform-i18n/ezplatform-i18n-ach_UG/zipball/a20bd952b3e0e0321e9315acabee2f4745c772ec",
-                "reference": "a20bd952b3e0e0321e9315acabee2f4745c772ec",
+                "url": "https://api.github.com/repos/ezplatform-i18n/ezplatform-i18n-ach_UG/zipball/cf3dd6211ab8bd2ccd9ae344f390235a00d5aa01",
+                "reference": "cf3dd6211ab8bd2ccd9ae344f390235a00d5aa01",
                 "shasum": ""
             },
             "require": {
-                "ezsystems/ezpublish-kernel": "^6.7"
+                "ezsystems/ezpublish-kernel": "^6.8"
             },
             "type": "library",
             "extra": {
@@ -718,7 +717,7 @@
                 "GPL-2.0"
             ],
             "description": "eZ Platform ach_UG translations",
-            "time": "2017-02-02 09:13:52"
+            "time": "2017-02-09T16:37:17+00:00"
         },
         {
             "name": "ezsystems/comments-bundle",
@@ -772,7 +771,7 @@
                 }
             ],
             "description": "Commenting system for eZ Publish",
-            "time": "2015-12-02 18:54:18"
+            "time": "2015-12-02T18:54:18+00:00"
         },
         {
             "name": "ezsystems/content-on-the-fly-prototype",
@@ -865,6 +864,56 @@
             "time": "2016-11-23T13:30:00+00:00"
         },
         {
+            "name": "ezsystems/ezplatform-http-cache",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezsystems/ezplatform-http-cache.git",
+                "reference": "54c859ee47dd1adcd3bc7dcb60a2c81a7c9148fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezsystems/ezplatform-http-cache/zipball/54c859ee47dd1adcd3bc7dcb60a2c81a7c9148fb",
+                "reference": "54c859ee47dd1adcd3bc7dcb60a2c81a7c9148fb",
+                "shasum": ""
+            },
+            "require": {
+                "ezsystems/ezpublish-kernel": "^6.7",
+                "friendsofsymfony/http-cache-bundle": "~1.2|^1.3.8",
+                "symfony/symfony": "^2.7 | ^3.1"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-dependency-injection-test": "0.*",
+                "memio/spec-gen": "^0.6",
+                "phpspec/phpspec": "^3.2",
+                "phpunit/phpunit": "^4.7.0"
+            },
+            "type": "ezplatform-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EzSystems\\PlatformHttpCacheBundle\\": "src",
+                    "EzSystems\\PlatformHttpCacheBundle\\Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "eZ Systems",
+                    "email": "dev-team@ez.no"
+                }
+            ],
+            "description": "HTTP cache handling for eZ Platform.",
+            "time": "2017-02-14T22:35:00+00:00"
+        },
+        {
             "name": "ezsystems/ezplatform-solr-search-engine",
             "version": "v1.2.1",
             "source": {
@@ -916,16 +965,16 @@
         },
         {
             "name": "ezsystems/ezpublish-kernel",
-            "version": "v6.8.0-beta1",
+            "version": "v6.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezsystems/ezpublish-kernel.git",
-                "reference": "0d19c14631dbe7f7e88de62bb9b72bc871e0ac5e"
+                "reference": "7f2cea2fafe37672268df781f63462c0d6832094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezsystems/ezpublish-kernel/zipball/0d19c14631dbe7f7e88de62bb9b72bc871e0ac5e",
-                "reference": "0d19c14631dbe7f7e88de62bb9b72bc871e0ac5e",
+                "url": "https://api.github.com/repos/ezsystems/ezpublish-kernel/zipball/7f2cea2fafe37672268df781f63462c0d6832094",
+                "reference": "7f2cea2fafe37672268df781f63462c0d6832094",
                 "shasum": ""
             },
             "require": {
@@ -998,7 +1047,7 @@
             ],
             "description": "Kernel used by ezsystems/ezplatform and derivatives. Provides the Content Repository, its APIs, and the application's Symfony framework integration.",
             "homepage": "http://share.ez.no",
-            "time": "2017-02-02T12:53:40+00:00"
+            "time": "2017-02-09T11:29:52+00:00"
         },
         {
             "name": "ezsystems/platform-ui-assets-bundle",
@@ -1038,23 +1087,23 @@
         },
         {
             "name": "ezsystems/platform-ui-bundle",
-            "version": "v1.8.0-beta1",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezsystems/PlatformUIBundle.git",
-                "reference": "81c76d877aa13dad6ed914c62df2697709c1f6c5"
+                "reference": "4ecb5b09d97d0ae336bca1c16e7bd82e91b64bd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezsystems/PlatformUIBundle/zipball/81c76d877aa13dad6ed914c62df2697709c1f6c5",
-                "reference": "81c76d877aa13dad6ed914c62df2697709c1f6c5",
+                "url": "https://api.github.com/repos/ezsystems/PlatformUIBundle/zipball/4ecb5b09d97d0ae336bca1c16e7bd82e91b64bd4",
+                "reference": "4ecb5b09d97d0ae336bca1c16e7bd82e91b64bd4",
                 "shasum": ""
             },
             "require": {
                 "ezsystems/ez-support-tools": "^0.1",
-                "ezsystems/ezpublish-kernel": "^6.6@beta",
+                "ezsystems/ezpublish-kernel": "^6.6",
                 "ezsystems/platform-ui-assets-bundle": "^3.1.0",
-                "ezsystems/repository-forms": "^1.2@beta",
+                "ezsystems/repository-forms": "^1.2",
                 "jms/translation-bundle": "^1.3",
                 "willdurand/js-translation-bundle": "^2.5",
                 "zetacomponents/system-information": "^1.1"
@@ -1085,11 +1134,11 @@
                 "GPL-2.0"
             ],
             "description": "eZ Platform UI Bundle",
-            "time": "2017-02-02T16:06:34+00:00"
+            "time": "2017-02-09T13:25:22+00:00"
         },
         {
             "name": "ezsystems/repository-forms",
-            "version": "v1.6.0-beta1",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezsystems/repository-forms.git",
@@ -1897,16 +1946,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.34",
+            "version": "1.0.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "469ad53c13ea19a0e54e3e5d70f61227ddcc0299"
+                "reference": "dda7f3ab94158a002d9846a97dc18ebfb7acc062"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/469ad53c13ea19a0e54e3e5d70f61227ddcc0299",
-                "reference": "469ad53c13ea19a0e54e3e5d70f61227ddcc0299",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/dda7f3ab94158a002d9846a97dc18ebfb7acc062",
+                "reference": "dda7f3ab94158a002d9846a97dc18ebfb7acc062",
                 "shasum": ""
             },
             "require": {
@@ -1976,20 +2025,20 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-01-30T17:41:17+00:00"
+            "time": "2017-02-09T11:33:58+00:00"
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a"
+                "reference": "30aea40e441e30c2412da7f4b865b8b957d810d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d653f4d22b33c2c2870cb87df8a32508186a799a",
-                "reference": "d653f4d22b33c2c2870cb87df8a32508186a799a",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/30aea40e441e30c2412da7f4b865b8b957d810d7",
+                "reference": "30aea40e441e30c2412da7f4b865b8b957d810d7",
                 "shasum": ""
             },
             "require": {
@@ -2020,6 +2069,7 @@
                 "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/form": "~2.3|~3.0",
                 "symfony/phpunit-bridge": "~2.3|~3.0",
+                "symfony/validator": "~2.3|~3.0",
                 "symfony/yaml": "~2.3|~3.0",
                 "twig/twig": "~1.12"
             },
@@ -2034,13 +2084,16 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-1.0": "1.7-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
                     "Liip\\ImagineBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2058,7 +2111,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2017-01-20T01:55:04+00:00"
+            "time": "2017-02-07T20:58:25+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2311,16 +2364,16 @@
         },
         {
             "name": "oneup/flysystem-bundle",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/1up-lab/OneupFlysystemBundle.git",
-                "reference": "262ea51b327069df21d68a99dc9e469104af91a4"
+                "reference": "a8f5ce36b9624e1c8c7b8ccc89f10790e313c705"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/1up-lab/OneupFlysystemBundle/zipball/262ea51b327069df21d68a99dc9e469104af91a4",
-                "reference": "262ea51b327069df21d68a99dc9e469104af91a4",
+                "url": "https://api.github.com/repos/1up-lab/OneupFlysystemBundle/zipball/a8f5ce36b9624e1c8c7b8ccc89f10790e313c705",
+                "reference": "a8f5ce36b9624e1c8c7b8ccc89f10790e313c705",
                 "shasum": ""
             },
             "require": {
@@ -2388,7 +2441,7 @@
                 "abstraction",
                 "filesystem"
             ],
-            "time": "2017-02-03T09:26:03+00:00"
+            "time": "2017-02-03T10:49:25+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",
@@ -3654,16 +3707,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.16",
+            "version": "v2.8.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "9fef72a3ab561c4bfa703a70369db028dec387d2"
+                "reference": "c423a13a031c9388b7f9103f176b1872c00c7ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/9fef72a3ab561c4bfa703a70369db028dec387d2",
-                "reference": "9fef72a3ab561c4bfa703a70369db028dec387d2",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/c423a13a031c9388b7f9103f176b1872c00c7ffa",
+                "reference": "c423a13a031c9388b7f9103f176b1872c00c7ffa",
                 "shasum": ""
             },
             "require": {
@@ -3741,6 +3794,7 @@
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection": "^1.0.7",
+                "sensio/framework-extra-bundle": "^3.0.2",
                 "symfony/phpunit-bridge": "~3.2"
             },
             "type": "library",
@@ -3785,7 +3839,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-01-12T20:27:46+00:00"
+            "time": "2017-02-06T12:47:48+00:00"
         },
         {
             "name": "tedivm/stash",
@@ -5105,16 +5159,16 @@
         },
         {
             "name": "ezsystems/ezplatform-i18n",
-            "version": "v1.0.0-beta1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezsystems/ezplatform-i18n.git",
-                "reference": "ff244740bfeade971e2011e4ab61fcb7701c2ca7"
+                "reference": "6e10f1545c8674a3c9c370ed27bff6e256ae6fdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezsystems/ezplatform-i18n/zipball/ff244740bfeade971e2011e4ab61fcb7701c2ca7",
-                "reference": "ff244740bfeade971e2011e4ab61fcb7701c2ca7",
+                "url": "https://api.github.com/repos/ezsystems/ezplatform-i18n/zipball/6e10f1545c8674a3c9c370ed27bff6e256ae6fdb",
+                "reference": "6e10f1545c8674a3c9c370ed27bff6e256ae6fdb",
                 "shasum": ""
             },
             "require": {
@@ -5131,7 +5185,7 @@
                 "GPL-2.0"
             ],
             "description": "Meta repository to store every eZ Platform translations. This should be used during development to ease synchronization with Crowdin. SHOULD NOT BE USED IN PRODUCTION",
-            "time": "2017-02-03T10:26:04+00:00"
+            "time": "2017-02-15T10:59:53+00:00"
         },
         {
             "name": "fabpot/goutte",
@@ -5904,16 +5958,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.34",
+            "version": "4.8.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "7eb45205d27edd94bd2b3614085ea158bd1e2bca"
+                "reference": "791b1a67c25af50e230f841ee7a9c6eba507dc87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7eb45205d27edd94bd2b3614085ea158bd1e2bca",
-                "reference": "7eb45205d27edd94bd2b3614085ea158bd1e2bca",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/791b1a67c25af50e230f841ee7a9c6eba507dc87",
+                "reference": "791b1a67c25af50e230f841ee7a9c6eba507dc87",
                 "shasum": ""
             },
             "require": {
@@ -5972,7 +6026,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-01-26T16:15:36+00:00"
+            "time": "2017-02-06T05:18:07+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -6506,13 +6560,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "ezsystems/ezpublish-kernel": 10,
-        "ezsystems/repository-forms": 10,
-        "ezsystems/ezplatform-solr-search-engine": 10,
-        "ezsystems/platform-ui-bundle": 10,
-        "ezplatform-i18n/ezplatform-i18n-ach_ug": 10,
-        "willdurand/js-translation-bundle": 20,
-        "ezsystems/ezplatform-i18n": 10
+        "willdurand/js-translation-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
