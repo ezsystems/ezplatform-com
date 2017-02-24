@@ -1,6 +1,6 @@
 .blog-post-header {
     height: 380px;
-    background: #fff;
+    background: #3f3f3f;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -9,7 +9,7 @@
 
 .blog-post-header h1 {
     font-size: 55px;
-    color: #404040;
+    color: #fff;
     font-weight: bold;
     font-family: "Open Sans", sans-serif;
     text-align: center;
@@ -34,15 +34,24 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.blog-post-body h1 {
+    font-size: 43px;
+}
+
+.blog-post-body h2 {
+    font-size: 32px;
+}
+
+.blog-post-body h3 {
+    font-size: 23px;
+}
+
 .blog-post-body h1,
 .blog-post-body h2,
 .blog-post-body h3,
 .blog-post-body h4 {
-    margin-top: 0;
-}
-
-.blog-post-body h2 {
-    margin-top: 50px;
+    margin-top: 40px;
+    font-weight: 600;
 }
 
 .blog-post-body ol,
@@ -51,6 +60,7 @@
 }
 
 .blog-post-body p {
+    font-size: 18px;
     margin: 0 0 30px;
 }
 

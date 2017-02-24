@@ -1,3 +1,7 @@
+.blog {
+    background: #f7f7f7;
+}
+
 .blog-top-banner {
     background: #3f3f3f url('/assets/images/blog_banner.png') no-repeat center;
     background-size: cover;
