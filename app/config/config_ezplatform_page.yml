@@ -55,13 +55,13 @@ assetic:
             inputs:
                 - 'assets/css/ezplatform-com.css'
                 - 'assets/css/embed.css'
-                - 'assets/css/responsive.css'
                 - 'assets/css/slider.css'
                 - 'assets/css/download.css'
                 - 'assets/css/error.css'
                 - 'assets/css/blog.css'
                 - 'assets/css/blog_post.css'
                 - 'assets/css/article.css'
+                - 'assets/css/responsive.css'
         js_prism:
             inputs:
                 - 'assets/js/prism.js'

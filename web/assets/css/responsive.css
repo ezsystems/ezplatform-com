@@ -24,4 +24,15 @@
     .blog-post .blog-post-author-image {
         display: none;
     }
+
+    .content-error-page {
+        height: auto;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .content-error-page .content h1 {
+        font-size: 55px;
+        margin-top: 30px;
+    }
 }

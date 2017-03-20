@@ -156,6 +156,10 @@ a.btn:visited {
     color: #63605d;
 }
 
+a.btn.btn-outline:visited {
+    color: #63605d;
+}
+
 .btn.btn-outline:hover {
     background: #b1b1b1;
     border: 2px solid #b1b1b1;
