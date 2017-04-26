@@ -11,11 +11,11 @@ _ezpublishRoutes:
 
 _ezpublishRestRoutes:
     resource: "@EzPublishRestBundle/Resources/config/routing.yml"
-    prefix:   %ezpublish_rest.path_prefix%
+    prefix:   "%ezpublish_rest.path_prefix%"
 
 _ezpublishRestOptionsRoutes:
     resource: "@EzPublishRestBundle/Resources/config/routing.yml"
-    prefix: %ezpublish_rest.path_prefix%
+    prefix: "%ezpublish_rest.path_prefix%"
     type: rest_options
 
 _liip_imagine:
@@ -27,13 +27,17 @@ _ezpublishPlatformUIRoutes:
 _ezplatformRepositoryFormsRoutes:
     resource: "@EzSystemsRepositoryFormsBundle/Resources/config/routing.yml"
 
+_contentOnTheFly:
+    resource: "@ContentOnTheFlyBundle/Resources/config/routing.yml"
+    prefix:   "%ezpublish_rest.path_prefix%"
+
+_multiFileUpload:
+    resource: "@EzSystemsMultiFileUploadBundle/Resources/config/routing.yml"
+    prefix:   "%ezpublish_rest.path_prefix%"
+
 _ezplatform_blog_ajax:
     path: /ezplatform/blog/load/page/{page}
     defaults: { _controller: app.controller.blog:showBlogPostsAction }
     methods:  [POST]
     requirements:
         "page": "\d+"
-
-_contentOnTheFly:
-    resource: "@ContentOnTheFlyBundle/Resources/config/routing.yml"
-    prefix: "%ezpublish_rest.path_prefix%"
