@@ -24,7 +24,7 @@
                 </div>
                 <div class="bundles-list-load-more">
                     {% if extraParams.totalCount > items|length %}
-                        <button onclick="loadBundleCards()">Load more</button>
+                        <button id="loadBundleCards">Load more</button>
                     {% endif %}
                 </div>
             </div>
@@ -33,6 +33,10 @@
     <script>
         {% autoescape 'js' %}
         $(document).ready(function() {
+            $("#loadBundleCards").on('click', function() {
+               loadBundleCards();
+            });
+
             var page = 1,
                 loadMoreButton = $('.bundles-list-load-more button').html();
 
