@@ -13,8 +13,17 @@
 
 .bundle-card-line-content h2 {
     font-weight: 700;
-    font-size: 21px;
+    font-size: 24px;
     margin: 10px 0 20px 0;
+}
+
+.bundle-card-line-content h2 a {
+    text-decoration: none;
+    color: #000;
+}
+
+.bundle-card-line-description p {
+    font-size: 18px;
 }
 
 .bundle-card-line-author-username {
@@ -34,6 +43,10 @@
     text-align: center;
 }
 
+.bundle-card-line-author-photo img {
+    max-width: 100px;
+}
+
 .bundle-card-line-last-update {
     background: #e7e7e7;
     width: 100%;
@@ -47,6 +60,7 @@
 .bundle-card-line-last-update span {
     display: block;
     font-weight: 700;
+    font-size: 22px;
 }
 
 .bundle-card-line-contributors {
@@ -102,13 +116,17 @@
         border-radius: 5px;
     }
 
+    .bundle-card-line-description p {
+        font-size: 14px;
+    }
+
     .bundle-card-line-author {
         overflow: hidden;
     }
 
     .bundle-card-line-content h2 {
         margin: 0 0 10px 0;
-        font-size: 21px;
+        font-size: 20px;
     }
 
     .bundle-card-line-author-container {

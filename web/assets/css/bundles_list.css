@@ -6,9 +6,9 @@
     border-top: 1px solid #444;
 }
 
-.bundles-list-header .bundles-list-hello-message {
+.bundles-list-header p {
     padding: 50px 0 0 0;
-    font-size: 16px;
+    font-size: 19px;
 }
 
 .bundles-list-content .bundles-list-container {
@@ -51,9 +51,15 @@
 }
 
 @media (max-width: 768px) {
-    .bundles-list-header .bundles-add-button {
-        display: none;
+    .bundles-list-header p {
+        padding: 20px 0 0 0;
+        font-size: 14px;
     }
+
+    .bundles-list-content .bundles-list-container {
+        margin: 10px auto 0 auto;
+    }
+
     .bundles-list-load-more button {
         width: 100%;
     }
