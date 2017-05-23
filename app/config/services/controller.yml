@@ -15,3 +15,12 @@ services:
             - '@app.query_type.children'
             - '%blog.location_id%'
             - '%blog.posts_limit%'
+    app.controller.bundle:
+        class: AppBundle\Controller\BundleController
+        arguments:
+            - '@templating'
+            - '@ezpublish.api.service.search'
+            - '@app.query_type.bundles'
+            - '@app.packagist_service_provider'
+            - '%bundles.location_id%'
+            - '%bundles.cards_limit%'

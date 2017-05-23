@@ -41,3 +41,9 @@ _ezplatform_blog_ajax:
     methods:  [POST]
     requirements:
         "page": "\d+"
+_ezplatform_bundles_list_ajax:
+    path: /ezplatform/bundles/load/page/{page}
+    defaults: { _controller: app.controller.bundle:getBundlesListAction }
+    methods: [POST]
+    requirements:
+        "page": "\d+"

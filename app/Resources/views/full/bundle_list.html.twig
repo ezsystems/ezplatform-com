@@ -1,0 +1,83 @@
+{% extends 'pagelayout.html.twig' %}
+
+{% block content %}
+    <div class="bundles-list">
+        <div class="bundles-list-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="bundles-list-hello-message">{{ ez_render_field(content, 'description') }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bundles-list-content">
+            <div class="container">
+                <div class="col-xs-12 bundles-list-container">
+                {% include 'parts/bundle_list/list.html.twig' with {
+                    'items': items,
+                    'viewType': 'line',
+                    'extraParams': {
+                        'page': 1
+                    }
+                } %}
+                </div>
+                <div class="bundles-list-load-more">
+                    {% if extraParams.totalCount > items|length %}
+                        <button onclick="loadBundleCards()">Load more</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        {% autoescape 'js' %}
+        $(document).ready(function() {
+            var page = 1,
+                loadMoreButton = $('.bundles-list-load-more button').html();
+
+            function loadBundleCards() {
+                page += 1;
+
+                $('.bundles-list-load-more').fadeOut('fast', function () {
+                    $(this).html('<div class="bundles-list-load-progress"></div>')
+                        .fadeIn();
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/ezplatform/bundles/load/page/' + page,
+                    dataType: 'json',
+                    success: function (data) {
+                        $(data.html).hide().insertAfter(
+                            $('.bundle-card-line').last()
+                        ).fadeIn('slow', function () {
+                            $('html body').animate({
+                                scrollTop: $('.bundle-card-line.page-' + page)
+                                    .first()
+                                    .offset()
+                                    .top
+                            }, 500);
+
+                            if (false === data.showLoadMoreButton) {
+                                loadMoreButton = '';
+                            }
+
+                            $('.bundles-list-load-more').fadeOut('fast', function () {
+                                $(this).html(loadMoreButton).fadeIn();
+                            });
+                        });
+                    },
+                    error: function () {
+                        $('.bundles-list-load-more').fadeOut('fast', function () {
+                            $(this).html('Oh no, something went terribly wrong :-(')
+                                .addClass('bundles-list-load-error')
+                                .fadeIn();
+                        });
+                    }
+                });
+            }
+        });
+        {% endautoescape %}
+    </script>
+{% endblock %}

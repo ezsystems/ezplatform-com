@@ -1,0 +1,13 @@
+{% set extraParams = extraParams is defined ? extraParams %}
+{% if items|length %}
+    {% for element in items %}
+        {{ render(controller('ez_content:viewAction', {
+            'locationId': element.bundle.valueObject.contentInfo.mainLocationId,
+            'viewType': viewType,
+            'params': {
+                'extra': extraParams,
+                'packageDetails': element.packageDetails
+            }
+        })) }}
+    {% endfor %}
+{% endif %}

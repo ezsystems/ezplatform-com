@@ -8,3 +8,8 @@ services:
         class: AppBundle\QueryType\ChildrenQueryType
         tags:
             - name: ezpublish.query_type
+
+    app.query_type.bundles:
+        class: AppBundle\QueryType\BundlesQueryType
+        tags:
+            - name: ezpublish.query_type

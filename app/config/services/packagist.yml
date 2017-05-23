@@ -1,0 +1,9 @@
+services:
+    app.packagist_api_client:
+        class: Packagist\Api\Client
+    app.packagist_service_provider:
+        class: AppBundle\Service\Packagist\PackagistServiceProvider
+        arguments:
+            - '@stash.default_cache'
+            - '@app.packagist_api_client'
+            - '%bundles.cache_expiration_time%'

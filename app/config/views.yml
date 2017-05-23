@@ -13,6 +13,7 @@ ezpublish:
                             omitted_location_ids:
                                 - '%blog.location_id%'
                                 - '%blog.authors_container_location_id%'
+                                - '%bundles.location_id%'
                             query:
                                 query_type: AppBundle:Children
                                 parameters:
@@ -47,12 +48,21 @@ ezpublish:
                         template: full\article.html.twig
                         match:
                             Identifier\ContentType: article
+                    bundle_list:
+                        controller: app.controller.bundle:showBundlesListAction
+                        template: full/bundle_list.html.twig
+                        match:
+                            Identifier\ContentType: bundle_list
 
                 line:
                     blog_post:
                         template: line\blog_post.html.twig
                         match:
                             Identifier\ContentType: blog_post
+                    bundle:
+                        template: line\bundle_card.html.twig
+                        match:
+                            Identifier\ContentType: bundle
 
                 row:
                     banner_slider:

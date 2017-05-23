@@ -17,6 +17,12 @@ parameters:
     blog.posts_limit: 10
     # `authors` folder locationId
     blog.authors_container_location_id: 72
+    # `bundles_list` locationId
+    bundles.location_id: 168
+    # 'bundles_list` elements limit on `bundles_list` page
+    bundles.cards_limit: 10
+    # 'bundles' cache expiration time in seconds
+    bundles.cache_expiration_time: 604800
 
 # additional PlatformUI configuration
 ez_platformui:
@@ -44,6 +50,7 @@ ez_comments:
 twig:
     globals:
         blogLocationId: '%blog.location_id%'
+        bundlesListLocationId: '%bundles.location_id%'
 
 # additional Assetic configuration
 assetic:
@@ -62,6 +69,8 @@ assetic:
                 - 'assets/css/blog_post.css'
                 - 'assets/css/article.css'
                 - 'assets/css/responsive.css'
+                - 'assets/css/bundles_list.css'
+                - 'assets/css/bundle.css'
         js_prism:
             inputs:
                 - 'assets/js/prism.js'

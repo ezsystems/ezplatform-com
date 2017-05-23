@@ -35,6 +35,7 @@ class ChildrenQueryType implements QueryType
                 $parameters['sorting_order'] == 'desc' ? Query::SORT_DESC : Query::SORT_ASC
             );
         }
+
         $options['sortClauses'] = [$sortClauses];
 
         if (isset($parameters['limit'])) {
