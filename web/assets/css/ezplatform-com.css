@@ -269,3 +269,51 @@ footer .footer-social i.fa {
     border-color: #f7941d;
 }
 
+.button-load-more {
+    margin-top: 40px;
+}
+
+.button-load-more button {
+    text-transform: uppercase;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    border: 2px solid #b1b1b1;
+    border-radius: 23px;
+    font-size: 17px;
+    padding: 10px 0;
+    width: 100%;
+    white-space: normal;
+    color: #b1b1b1;
+    background: inherit;
+    outline: none;
+}
+
+.button-load-more button:hover {
+    background: #b1b1b1;
+    color: #fff;
+}
+
+.button-load-more-progress {
+    width: 48px;
+    height: 48px;
+    margin: auto;
+    background: url('/assets/images/loading.svg') no-repeat;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    -webkit-animation: loader_spin 1s linear infinite;
+    animation: loader_spin 1s linear infinite;
+}
+
+@keyframes loader_spin {
+    100% {
+        -webkit-transform: rotate(-360deg);
+        transform: rotate(-360deg);
+    }
+}
+
+.button-load-more-error {
+    text-align: center;
+    font-size: 17px;
+    color: #c34111;
+    font-weight: 600;
+}

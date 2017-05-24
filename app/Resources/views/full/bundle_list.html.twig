@@ -22,66 +22,14 @@
                     }
                 } %}
                 </div>
-                <div class="bundles-list-load-more">
-                    {% if extraParams.totalCount > items|length %}
-                        <button id="loadBundleCards">Load more</button>
-                    {% endif %}
+                <div class="row">
+                    <div class="button-load-more col-xs-12 col-md-6 col-md-offset-3">
+                        {% if extraParams.totalCount > items|length %}
+                            <button class="load-more" data-url="/ezplatform/bundles/load/page" data-page="2" data-target=".bundles-list-container">Load more</button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        {% autoescape 'js' %}
-        $(document).ready(function() {
-            $("#loadBundleCards").on('click', function() {
-               loadBundleCards();
-            });
-
-            var page = 1,
-                loadMoreButton = $('.bundles-list-load-more button').html();
-
-            function loadBundleCards() {
-                page += 1;
-
-                $('.bundles-list-load-more').fadeOut('fast', function () {
-                    $(this).html('<div class="bundles-list-load-progress"></div>')
-                        .fadeIn();
-                });
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/ezplatform/bundles/load/page/' + page,
-                    dataType: 'json',
-                    success: function (data) {
-                        $(data.html).hide().insertAfter(
-                            $('.bundle-card-line').last()
-                        ).fadeIn('slow', function () {
-                            $('html body').animate({
-                                scrollTop: $('.bundle-card-line.page-' + page)
-                                    .first()
-                                    .offset()
-                                    .top
-                            }, 500);
-
-                            if (false === data.showLoadMoreButton) {
-                                loadMoreButton = '';
-                            }
-
-                            $('.bundles-list-load-more').fadeOut('fast', function () {
-                                $(this).html(loadMoreButton).fadeIn();
-                            });
-                        });
-                    },
-                    error: function () {
-                        $('.bundles-list-load-more').fadeOut('fast', function () {
-                            $(this).html('Oh no, something went terribly wrong :-(')
-                                .addClass('bundles-list-load-error')
-                                .fadeIn();
-                        });
-                    }
-                });
-            }
-        });
-        {% endautoescape %}
-    </script>
 {% endblock %}
