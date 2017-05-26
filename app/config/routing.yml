@@ -38,12 +38,12 @@ _multiFileUpload:
 _ezplatform_blog_ajax:
     path: /ezplatform/blog/load/page/{page}
     defaults: { _controller: app.controller.blog:showBlogPostsAction }
-    methods:  [POST]
+    methods:  [GET]
     requirements:
         "page": "\d+"
 _ezplatform_bundles_list_ajax:
     path: /ezplatform/bundles/load/page/{page}
     defaults: { _controller: app.controller.bundle:getBundlesListAction }
-    methods: [POST]
+    methods: [GET]
     requirements:
         "page": "\d+"

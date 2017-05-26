@@ -27,7 +27,7 @@ $(document).ready(function(){
        $parent.append('<div class="button-load-more-progress"></div>').fadeIn();
 
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: url + '/' + page,
             dataType: 'json',
             success: function(data) {

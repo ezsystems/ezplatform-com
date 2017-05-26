@@ -9,70 +9,22 @@
         </div>
 
         <div class="container">
-            {% include 'parts/content_list.html.twig' with {
-                'items': posts,
-                'viewType': 'line',
-                'extraParams': {
-                    'page': 1
-                }
-            } %}
-
+            <div class="blog-posts-container">
+                {% include 'parts/content_list.html.twig' with {
+                    'items': posts,
+                    'viewType': 'line',
+                    'extraParams': {
+                        'page': 1
+                    }
+                } %}
+            </div>
             <div class="row">
-                <div class="blog-load-more col-md-6 col-md-offset-3">
+                <div class="button-load-more col-md-6 col-md-offset-3">
                     {% if posts.totalCount > posts.searchHits|length %}
-                        <button onclick="loadBlogPosts()">Load more</button>
+                        <button class="load-more" data-url="/ezplatform/blog/load/page" data-page="2" data-target=".blog-posts-container">Load more</button>
                     {% endif %}
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        {% autoescape 'js' %}
-            var page = 1,
-                loadMoreButton = $('.blog-load-more').html();
-
-            function loadBlogPosts() {
-                page += 1;
-
-                $('.blog-load-more').fadeOut('fast', function () {
-                    $(this).html('<div class="blog-load-progress"></div>')
-                        .fadeIn();
-                });
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/ezplatform/blog/load/page/' + page,
-                    dataType: 'json',
-                    success: function (data) {
-                        $(data.html).hide().insertAfter(
-                            $('.blog-post-line').last()
-                        ).fadeIn('slow', function () {
-                            $('html body').animate({
-                                scrollTop: $('.blog-post-line.page-' + page)
-                                    .first()
-                                    .offset()
-                                    .top
-                            }, 500);
-
-                            if (false === data.showLoadMoreButton) {
-                                loadMoreButton = '';
-                            }
-
-                            $('.blog-load-more').fadeOut('fast', function () {
-                                $(this).html(loadMoreButton).fadeIn();
-                            });
-                        });
-                    },
-                    error: function () {
-                        $('.blog-load-more').fadeOut('fast', function () {
-                            $(this).html('Oh no, something went terribly wrong :-(')
-                                .addClass('blog-load-error')
-                                .fadeIn();
-                        });
-                    }
-                });
-            }
-        {% endautoescape %}
-    </script>
 {% endblock %}
