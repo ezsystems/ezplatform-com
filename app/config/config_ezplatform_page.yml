@@ -23,6 +23,8 @@ parameters:
     bundles.cards_limit: 10
     # 'bundles' cache expiration time in seconds
     bundles.cache_expiration_time: 604800
+    # names of excluded bundle maintainers
+    bundles.excluded_maintainers: ['ezrobot']
 
 # additional PlatformUI configuration
 ez_platformui:

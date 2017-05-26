@@ -7,3 +7,4 @@ services:
             - '@stash.default_cache'
             - '@app.packagist_api_client'
             - '%bundles.cache_expiration_time%'
+            - '%bundles.excluded_maintainers%'

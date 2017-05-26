@@ -7,7 +7,7 @@
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
-*/
+ */
 
 namespace AppBundle\Service\Packagist;
 
@@ -34,15 +34,21 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
      */
     private $cacheExpirationTime;
 
+    /**
+     * @var array
+     */
+    private $excludedMaintainers;
+
     public function __construct(
         CacheService $cacheService,
         Client $packagistClient,
-        $cacheExpirationTime
-    )
-    {
+        $cacheExpirationTime,
+        $excludedMaintainers
+    ) {
         $this->cache = $cacheService;
         $this->packagistClient = $packagistClient;
         $this->cacheExpirationTime = $cacheExpirationTime;
+        $this->excludedMaintainers = $excludedMaintainers;
     }
 
     /**
@@ -61,8 +67,7 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
                 return $packageDetails;
             }
             return $item->get();
-        }
-        catch (CurlException $curlException) {
+        } catch (CurlException $curlException) {
             return [];
         }
     }
@@ -74,14 +79,13 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     private function callApi($packageName)
     {
         $externalData = $this->packagistClient->get($packageName);
-        $packageDetails['maintainers'] = $externalData->getMaintainers();
+        $packageDetails['maintainers'] = $this->excludeMaintainers($externalData->getMaintainers());
         $packageDetails['authorAvatarUrl'] = $this->getAuthorAvatarUrl($externalData->getRepository());
         $versions = $externalData->getVersions();
         if (is_array($versions) && !empty($versions)) {
             if (isset($versions['dev-master'])) {
                 $version = 'dev-master';
-            }
-            else {
+            } else {
                 $version = key($versions);
             }
             $packageDetails['updated'] = $versions[$version]->getTime();
@@ -91,7 +95,7 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     }
 
     /**
-     * @param $repositoryUrl
+     * @param string $repositoryUrl
      * @return string
      */
     private function getAuthorAvatarUrl($repositoryUrl)
@@ -99,5 +103,21 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
         $parsedUrl = parse_url($repositoryUrl);
         $parts = explode('/', $parsedUrl['path']);
         return self::GITHUB_AVATAR_BASE_URL . $parts[1];
+    }
+
+    /**
+     * Removes unwanted maintainers
+     *
+     * @param array $maintainers
+     * @return mixed
+     */
+    private function excludeMaintainers(array $maintainers)
+    {
+        foreach ($maintainers as $key => $value) {
+            if (in_array($value->getName(), $this->excludedMaintainers)) {
+                unset($maintainers[$key]);
+            }
+        }
+        return $maintainers;
     }
 }
