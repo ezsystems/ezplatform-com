@@ -64,6 +64,10 @@
     margin: 0 0 30px;
 }
 
+.blog-post-body figure.ezimage-field img {
+    max-width: 100%;
+}
+
 .blog-post-comments {
     margin-top: 25px;
 }
