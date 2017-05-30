@@ -198,6 +198,10 @@ a.btn.btn-outline:visited {
     margin-top: 12px;
 }
 
+section {
+    padding: 0 0 50px 0;
+}
+
 footer .logo {
     margin-bottom: 20px;
     width: 120px;
@@ -206,7 +210,6 @@ footer .logo {
 .footer-content {
     color: #e6e7e8;
     background-color: #4c4c4c;
-    margin-top: 50px;
     padding-top: 50px;
     padding-bottom: 50px;
 }
