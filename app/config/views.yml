@@ -21,6 +21,7 @@ ezpublish:
                                     excluded_content_types:
                                         - layout
                                         - article
+                                        - bundle_list
                                 assign_results_to: items
                         template: full\home.html.twig
                         match:
