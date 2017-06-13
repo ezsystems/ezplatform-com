@@ -26,6 +26,11 @@ parameters:
     # names of excluded bundle maintainers
     bundles.excluded_maintainers: ['ezrobot']
 
+    # default png compression level used in image_variations.yml
+    images.default_png_compression_level: 9
+    # default jpeg quality used in image_variations.xml
+    images.default_jpeg_quality: 90
+
 # additional PlatformUI configuration
 ez_platformui:
     system:

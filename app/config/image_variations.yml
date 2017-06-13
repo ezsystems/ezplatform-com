@@ -20,3 +20,15 @@ ezpublish:
                     reference: ~
                     filters:
                         - { name: geometry/scalewidthdownonly, params: [710] }
+liip_imagine:
+    driver: imagic
+    filter_sets:
+        blog_thumbnail: &default
+            png_compression_level: '%images.default_png_compression_level%'
+            jpeg_quality: '%images.default_jpeg_quality%'
+        blog_author:
+            *default
+        blog_post_author:
+            *default
+        blog_thumbnail:
+            *default
