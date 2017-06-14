@@ -19,7 +19,7 @@ class LatestReleasesQueryType implements QueryType
         $options = [
             'filter' => $criteria,
             'sortClauses' => [
-                new Query\SortClause\Field('release', 'release_date', Query::SORT_DESC),
+                new Query\SortClause\Field('release', 'release_version', Query::SORT_DESC),
             ],
         ];
 

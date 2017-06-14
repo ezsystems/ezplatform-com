@@ -66,14 +66,14 @@
                                     {% if betas is not empty %}
                                         <tr class="beta">
                                             <th scope="row">
-                                                <a href="{{ ez_field_value(betas|first, 'file') }}">beta</a>
+                                                <a href="{{ ez_field_value(betas|first, 'file') }}">{{ ez_render_field(betas|first, 'release_version') }}</a>
                                             </th>
                                             <td class="file">
                                                 <a href="{{ ez_field_value(betas|first, 'file') }}">Download {{ ez_render_field(betas|first, 'release_version') }}</a>
                                             </td>
-                                            <td>
+                                            <td class="date">
                                                 <a href="{{ ez_field_value(betas|first, 'file') }}">
-                                                    <img src="{{ asset('assets/images/download-arrow.svg') }}" alt="Download" class="download">
+                                                    <span>{{ ez_field_value(betas|first, 'release_date')|date('d M Y') }}</span>
                                                 </a>
                                             </td>
                                         </tr>
@@ -81,7 +81,7 @@
 
                                     {% for release in releases %}
                                         <tr class="releases">
-                                            <th scope="row">
+                                            <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>
                                                 <a href="{{ ez_field_value(release, 'file') }}">{{ ez_render_field(release, 'release_version') }}</a>
                                             </th>
                                             <td class="file">
@@ -91,7 +91,7 @@
                                             </td>
                                             <td class="date">
                                                 <a href="{{ ez_field_value(release, 'file') }}">
-                                                    {{ ez_field_value(release, 'release_date')|date('d M Y') }}
+                                                    <span>{{ ez_field_value(release, 'release_date')|date('d M Y') }}</span>
                                                 </a>
                                             </td>
                                         </tr>

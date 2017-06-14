@@ -237,7 +237,7 @@ section#download .download-table {
 }
 
 section#download .download-table thead th {
-    background: #f15a22;
+    background: #806459;
     border: none;
     color: #fff;
     font-size: 16px;
@@ -271,22 +271,28 @@ section#download .download-table tr.beta th a {
 section#download .download-table tr.beta td,
 section#download .download-table tr.beta th {
     height: 80px;
-    background: #f7941d;
+    background: #e06436;
     color: #fff;
     padding: 0;
     margin: 0;
     border-top: none;
     text-align: center;
-    text-transform: uppercase;
 }
 
 section#download .download-table tr.beta td.file {
-    font-size: 19px;
     font-weight: 500;
+    font-size: 16px;
 }
 
 section#download .download-table tr.beta img.download {
     width: 35px;
+}
+
+section#download .download-table tr.beta th a span {
+    padding: 5px 10px;
+    border: 1px solid #fff;
+    border-radius: 2px;
+    color: #fff;
 }
 
 section#download .download-table tr.releases {
@@ -301,7 +307,7 @@ section#download .download-table.table-striped>tbody>tr:nth-of-type(odd) {
 section#download .download-table tr.releases td a,
 section#download .download-table tr.releases th a {
     display: block;
-    line-height: 70px;
+    line-height: 80px;
     color: #63605d;
     text-decoration: none;
 }
@@ -314,11 +320,15 @@ section#download .download-table tr.releases th {
     text-align: center;
 }
 
+section#download .download-table tr.releases td.file a {
+    font-size: 16px;
+}
+
 section#download .download-table tr.releases:hover,
 section#download .download-table tr.releases:hover a,
 section#download .download-table.table-striped>tbody>tr:nth-of-type(odd):hover,
 section#download .download-table.table-striped>tbody>tr:nth-of-type(odd):hover a {
-    background: #8b817e;
+    background: #9d918d;
     color: #fff;
 }
 
@@ -326,6 +336,43 @@ section#download .download-table tr.releases th {
     font-weight: 300;
     font-size: 15px;
     color: #63605d;
+}
+
+section#download .download-table tr.releases th a span {
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    background: #e6873d;
+    font-weight: 500;
+    color: #fff;
+}
+
+section#download .download-table tr.releases th.lts a span {
+    background: #4197c4;
+}
+
+section#download .download-table tr.releases:hover th a span {
+    border: 1px solid #fff;
+    background: transparent;
+}
+
+section#download .download-table th:hover td.date a,
+section#download .download-table tr:hover td.date a {
+    line-height: normal;
+}
+
+section#download .download-table th:hover td.date a span,
+section#download .download-table tr:hover td.date a span {
+    display: none;
+}
+
+section#download .download-table th:hover td.date a:after,
+section#download .download-table tr:hover td.date a:after {
+    font-family: FontAwesome;
+    font-size: 36px;
+    font-weight: 100;
+    content: "\f01a";
+    line-height: 80px;
 }
 
 section#download .download-table tr.releases.ezpublish:hover,
