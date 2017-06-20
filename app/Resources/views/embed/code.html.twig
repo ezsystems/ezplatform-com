@@ -2,10 +2,9 @@
     {% set languageOptions = ez_field_options('code', 'language') %}
     {% set language = 'none' %}
     {% set embedLanguage = ez_field_value(content, 'language') %}
-    {% if languageOptions[embedLanguage] is defined %}
-        {% set language = languageOptions[embedLanguage] %}
+    {% if embedLanguage.selection is not empty and languageOptions[embedLanguage.selection[0]] is defined %}
+        {% set language = languageOptions[embedLanguage.selection[0]] %}
     {% endif %}
-
     {% spaceless %}
         <div class="embed-code">
             <pre>
