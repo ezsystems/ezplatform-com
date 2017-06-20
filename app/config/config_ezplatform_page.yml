@@ -25,6 +25,10 @@ parameters:
     bundles.cache_expiration_time: 604800
     # names of excluded bundle maintainers
     bundles.excluded_maintainers: ['ezrobot']
+    # overwrites default tag view page template
+    eztags.default.tag_view.pagelayout: 'pagelayout.html.twig'
+    # overwrites default tag related content limit
+    eztags.default.tag_view.related_content_list.limit: 10
 
     # default png compression level used in image_variations.yml
     images.default_png_compression_level: 9
@@ -78,6 +82,7 @@ assetic:
                 - 'assets/css/responsive.css'
                 - 'assets/css/bundles_list.css'
                 - 'assets/css/bundle.css'
+                - 'assets/css/tags.css'
         js_prism:
             inputs:
                 - 'assets/js/prism.js'

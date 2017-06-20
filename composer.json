@@ -43,7 +43,8 @@
         "ezsystems/content-on-the-fly-prototype": "~0.1.7",
         "willdurand/js-translation-bundle": "^2.6.4",
         "ezsystems/comments-bundle": "~6.0",
-        "knplabs/packagist-api": "~1.3"
+        "knplabs/packagist-api": "~1.3",
+        "netgen/tagsbundle": "^3.0"
     },
     "require-dev": {
         "ezsystems/ezplatform-i18n": "^1.0",

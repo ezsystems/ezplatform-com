@@ -47,3 +47,12 @@ _ezplatform_bundles_list_ajax:
     methods: [GET]
     requirements:
         "page": "\d+"
+_ezplatform_tag_related_list_ajax:
+    path: /ezplatform/tag/{tagId}/related/page/{page}
+    defaults: { _controller: app.controller.tag:getTagRelatedContent }
+    methods: [GET]
+    requirements:
+        "tagId": "\d+"
+        "page": "\d+"
+_eztagsRoutes:
+    resource: "@NetgenTagsBundle/Resources/config/routing.yml"

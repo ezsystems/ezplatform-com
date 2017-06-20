@@ -49,6 +49,10 @@
                 {{ ez_render_field(content, 'body') }}
             </div>
 
+            <div class="blog-post-tags">
+                {{ ez_render_field(content, 'tags') }}
+            </div>
+
             <div class="blog-post-leave-comments">
                 {% if location.isDraft %}
                     Comments are disabled in the preview mode

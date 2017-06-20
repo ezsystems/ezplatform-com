@@ -1,0 +1,42 @@
+{% extends ezpublish.configResolver.parameter( 'tag_view.pagelayout', 'eztags' ) %}
+
+{% set tag_keyword = netgen_tags_tag_keyword( tag ) %}
+
+{% block page_head %}
+    {% set title = tag_keyword %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <section class="tag">
+        <div class="container">
+            <div class="attribute-header">
+                <h1>Tags / <span class="active">{{ tag_keyword }}</span></h1>
+            </div>
+        </div>
+        {% if related_content|length > 0 %}
+            <div class="container">
+                <div class="tags-related-content-container">
+                    {% for related_content_item in related_content %}
+                        {{ render(
+                            controller(
+                                "ez_content:viewAction", {
+                                    "contentId": related_content_item.id,
+                                    "locationId": related_content_item.mainLocationId,
+                                    "viewType": "line"
+                                }
+                            )
+                        ) }}
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    <div class="button-load-more col-md-6 col-md-offset-3">
+                        {% if related_content.haveToPaginate() %}
+                            <button class="load-more" data-url="/ezplatform/tag/{{ tag.id }}/related/page" data-page="2" data-target=".tags-related-content-container">Load more</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

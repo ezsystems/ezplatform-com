@@ -24,3 +24,9 @@ services:
             - '@app.packagist_service_provider'
             - '%bundles.location_id%'
             - '%bundles.cards_limit%'
+    app.controller.tag:
+        class: AppBundle\Controller\TagController
+        arguments:
+            - '@templating'
+            - '@eztags.api.service.tags'
+            - '%eztags.default.tag_view.related_content_list.limit%'

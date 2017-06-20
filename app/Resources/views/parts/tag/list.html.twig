@@ -1,0 +1,8 @@
+{% if items|length %}
+    {% for item in items %}
+        {{ render(controller('ez_content:viewAction', {
+            'locationId': item.mainLocationId,
+            'viewType': viewType
+        })) }}
+    {% endfor %}
+{% endif %}

@@ -2470,6 +2470,90 @@
             "time": "2017-03-02 20:18:55"
         },
         {
+            "name": "lolautruche/ez-core-extra-bundle",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lolautruche/EzCoreExtraBundle.git",
+                "reference": "40e2c826560f485670fa931dcd89d2aee8b52e05"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lolautruche/EzCoreExtraBundle/zipball/40e2c826560f485670fa931dcd89d2aee8b52e05",
+                "reference": "40e2c826560f485670fa931dcd89d2aee8b52e05",
+                "shasum": ""
+            },
+            "require": {
+                "ezsystems/ezpublish-kernel": "^6.0.0|^5.4.0|>=2014.11.0",
+                "symfony/symfony": "^2.7.20|^2.8.13|^3.1.6",
+                "twig/twig": "^1.27|^2.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6.3",
+                "phpunit/phpunit": "^5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lolautruche\\EzCoreExtraBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jerome Vieilledent",
+                    "email": "lolautruche@gmail.com"
+                }
+            ],
+            "description": "Extra sugar for building eZ Platform websites",
+            "time": "2017-05-05 22:44:49"
+        },
+        {
+            "name": "lolautruche/ez-core-extra-bundle",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lolautruche/EzCoreExtraBundle.git",
+                "reference": "40e2c826560f485670fa931dcd89d2aee8b52e05"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lolautruche/EzCoreExtraBundle/zipball/40e2c826560f485670fa931dcd89d2aee8b52e05",
+                "reference": "40e2c826560f485670fa931dcd89d2aee8b52e05",
+                "shasum": ""
+            },
+            "require": {
+                "ezsystems/ezpublish-kernel": "^6.0.0|^5.4.0|>=2014.11.0",
+                "symfony/symfony": "^2.7.20|^2.8.13|^3.1.6",
+                "twig/twig": "^1.27|^2.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6.3",
+                "phpunit/phpunit": "^5.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Lolautruche\\EzCoreExtraBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jerome Vieilledent",
+                    "email": "lolautruche@gmail.com"
+                }
+            ],
+            "description": "Extra sugar for building eZ Platform websites",
+            "time": "2017-05-05 22:44:49"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.22.1",
             "source": {
@@ -2603,6 +2687,124 @@
                 "crossdomain"
             ],
             "time": "2017-01-22 21:34:09"
+        },
+        {
+            "name": "netgen/tagsbundle",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netgen/TagsBundle.git",
+                "reference": "aac9eb252694b50b1b9f1f7069a15da477619103"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netgen/TagsBundle/zipball/aac9eb252694b50b1b9f1f7069a15da477619103",
+                "reference": "aac9eb252694b50b1b9f1f7069a15da477619103",
+                "shasum": ""
+            },
+            "require": {
+                "ezsystems/ezplatform-solr-search-engine": "^1.1.3",
+                "ezsystems/ezpublish-kernel": "^6.5.2",
+                "ezsystems/platform-ui-bundle": "^1.5",
+                "ezsystems/repository-forms": "^1.4",
+                "lolautruche/ez-core-extra-bundle": "^1.0",
+                "php": "^5.6|^7.0"
+            },
+            "conflict": {
+                "ezsystems/ezplatform-solr-search-engine": "1.2.0",
+                "ezsystems/eztags-ls": "<2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "suggest": {
+                "ezsystems/eztags-ls": "For editing eZ Tags content object and content class attributes in eZ Publish Legacy"
+            },
+            "type": "ezplatform-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Netgen\\TagsBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Netgen",
+                    "homepage": "http://www.netgenlabs.com"
+                }
+            ],
+            "description": "Netgen Tags Bundle is an eZ Platform / eZ Publish bundle for taxonomy management and easier classification of content, providing more functionality for tagging content than ezkeyword field type included in eZ Publish kernel.",
+            "time": "2017-05-09 13:55:22"
+        },
+        {
+            "name": "netgen/tagsbundle",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netgen/TagsBundle.git",
+                "reference": "aac9eb252694b50b1b9f1f7069a15da477619103"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netgen/TagsBundle/zipball/aac9eb252694b50b1b9f1f7069a15da477619103",
+                "reference": "aac9eb252694b50b1b9f1f7069a15da477619103",
+                "shasum": ""
+            },
+            "require": {
+                "ezsystems/ezplatform-solr-search-engine": "^1.1.3",
+                "ezsystems/ezpublish-kernel": "^6.5.2",
+                "ezsystems/platform-ui-bundle": "^1.5",
+                "ezsystems/repository-forms": "^1.4",
+                "lolautruche/ez-core-extra-bundle": "^1.0",
+                "php": "^5.6|^7.0"
+            },
+            "conflict": {
+                "ezsystems/ezplatform-solr-search-engine": "1.2.0",
+                "ezsystems/eztags-ls": "<2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "suggest": {
+                "ezsystems/eztags-ls": "For editing eZ Tags content object and content class attributes in eZ Publish Legacy"
+            },
+            "type": "ezplatform-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Netgen\\TagsBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Netgen",
+                    "homepage": "http://www.netgenlabs.com"
+                }
+            ],
+            "description": "Netgen Tags Bundle is an eZ Platform / eZ Publish bundle for taxonomy management and easier classification of content, providing more functionality for tagging content than ezkeyword field type included in eZ Publish kernel.",
+            "time": "2017-05-09 13:55:22"
         },
         {
             "name": "nikic/php-parser",
