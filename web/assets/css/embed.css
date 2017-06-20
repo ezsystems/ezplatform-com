@@ -37,14 +37,19 @@
 
 .embed-image {
     margin: 0 0 30px 0;
-    background: #4c4c4c;
     display: inline-block;
     padding: 0;
 }
 
 .embed-image .embed-image-caption {
     margin-top: 5px;
-    font-size: 12px;
-    color: #ccc;
-    padding: 10px;
+    font-size: 13px;
+    color: #666;
+    padding: 10px 0;
+    font-style: italic;
+}
+
+.embed-image .embed-image-caption p {
+    font-size: 13px;
+    margin: 0;
 }
