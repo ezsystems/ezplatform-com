@@ -17,10 +17,7 @@ class LatestReleasesQueryType implements QueryType
         ]);
 
         $options = [
-            'filter' => $criteria,
-            'sortClauses' => [
-                new Query\SortClause\Field('release', 'release_version', Query::SORT_DESC),
-            ],
+            'filter' => $criteria
         ];
 
         return new LocationQuery($options);

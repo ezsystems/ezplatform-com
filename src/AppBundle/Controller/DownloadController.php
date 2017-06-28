@@ -70,10 +70,13 @@ class DownloadController
         $searchResults = $this->searchService->findContent($query);
 
         $results = [];
+
         foreach ($searchResults->searchHits as $hit) {
-            $results[] = $hit->valueObject;
+            $results[$hit->valueObject->getFieldValue('release_version')->__toString()] = $hit->valueObject;
         }
 
+        uksort($results, 'version_compare');
+        $results = array_reverse($results);
         return $results;
     }
 }
