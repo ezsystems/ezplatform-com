@@ -23,22 +23,26 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
      * @var \Tedivm\StashBundle\Service\CacheService
      */
     private $cache;
-
     /**
      * @var \Packagist\Api\Client
      */
     private $packagistClient;
-
     /**
      * @var int
      */
     private $cacheExpirationTime;
-
     /**
      * @var array
      */
     private $excludedMaintainers;
 
+    /**
+     * PackagistServiceProvider constructor.
+     * @param CacheService $cacheService
+     * @param Client $packagistClient
+     * @param $cacheExpirationTime
+     * @param $excludedMaintainers
+     */
     public function __construct(
         CacheService $cacheService,
         Client $packagistClient,
@@ -52,15 +56,16 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     }
 
     /**
-     * @param $packageName
+     * @param string $packageName
+     * @param bool $force
      * @return array
      */
-    public function getPackageDetails($packageName)
+    public function getPackageDetails($packageName, $force = false)
     {
         try {
             $packageName = trim($packageName);
             $item = $this->cache->getItem($packageName);
-            if ($item->isMiss()) {
+            if ($item->isMiss() || $force) {
                 $packageDetails = $this->callApi($packageName);
                 $item->expiresAfter($this->cacheExpirationTime);
                 $this->cache->save($item->set($packageDetails));
@@ -81,6 +86,10 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
         $externalData = $this->packagistClient->get($packageName);
         $packageDetails['maintainers'] = $this->excludeMaintainers($externalData->getMaintainers());
         $packageDetails['authorAvatarUrl'] = $this->getAuthorAvatarUrl($externalData->getRepository());
+        $packageDetails['description'] = $externalData->getDescription();
+        $packageDetails['downloads'] = $externalData->getDownloads()->getTotal();
+        $packageDetails['forks'] = $externalData->getGithubForks();
+        $packageDetails['stars'] = $externalData->getGithubStars();
         $versions = $externalData->getVersions();
         if (is_array($versions) && !empty($versions)) {
             if (isset($versions['dev-master'])) {
@@ -88,9 +97,16 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
             } else {
                 $version = key($versions);
             }
-            $packageDetails['updated'] = $versions[$version]->getTime();
+            $packageDetails['updated'] = \DateTime::createFromFormat(\DateTime::ISO8601, $versions[$version]->getTime());
             $packageDetails['author'] = $versions[$version]->getAuthors();
         }
+        $packageDetails['checksum'] = $this->calculateChecksum(array(
+            'updated' => (int) $packageDetails['updated']->format('U'),
+            'description' => $packageDetails['description'],
+            'downloads' => $packageDetails['downloads'],
+            'stars' => $packageDetails['stars'],
+            'forks' => $packageDetails['forks'],
+        ));
         return $packageDetails;
     }
 
@@ -119,5 +135,17 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
             }
         }
         return $maintainers;
+    }
+
+    /**
+     * @param array $fields
+     * @return string
+     */
+    private function calculateChecksum(array $fields = array()) {
+        $string = '';
+        foreach ($fields as $field) {
+            $string += $field;
+        }
+        return md5($string);
     }
 }

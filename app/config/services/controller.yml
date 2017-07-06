@@ -6,7 +6,6 @@ services:
             - '@app.query_type.latest_releases'
             - '%release_container_location_id%'
             - '%beta_container_location_id%'
-
     app.controller.blog:
         class: AppBundle\Controller\BlogController
         arguments:
@@ -22,6 +21,8 @@ services:
             - '@ezpublish.api.service.search'
             - '@app.query_type.bundles'
             - '@app.packagist_service_provider'
+            - '@form.factory'
+            - '@router.default'
             - '%bundles.location_id%'
             - '%bundles.cards_limit%'
     app.controller.tag:

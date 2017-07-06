@@ -36,17 +36,40 @@ _multiFileUpload:
     prefix:   "%ezpublish_rest.path_prefix%"
 
 _ezplatform_blog_ajax:
-    path: /ezplatform/blog/load/page/{page}
+    path: /ezplatform/blog/load/page/{page}/{order}
     defaults: { _controller: app.controller.blog:showBlogPostsAction }
     methods:  [GET]
     requirements:
         "page": "\d+"
+
 _ezplatform_bundles_list_ajax:
-    path: /ezplatform/bundles/load/page/{page}
-    defaults: { _controller: app.controller.bundle:getBundlesListAction }
+    path: /ezplatform/bundles/load/page/{page}/{order}
+    defaults: { _controller: app.controller.bundle:getBundlesListAction, page: 1, order: 'default' }
     methods: [GET]
     requirements:
         "page": "\d+"
+        "order": "default|latestUpdate|stars|downloads"
+
+_ezplatform_bundles_search:
+    path: /Bundles/search/
+    defaults: { _controller: app.controller.bundle:searchBundlesAction }
+    methods: [POST]
+
+_ezplatform_bundles_search_order_list:
+    path: /Bundles/search/{searchText}/{order}
+    defaults: { _controller: app.controller.bundle:getOrderedSearchBundlesListAction, order: 'default' }
+    methods: [GET]
+    requirements:
+        "order": "default|latestUpdate|stars|downloads"
+
+_ezplatform_bundles_search_ajax:
+    path: /ezplatform/bundles/search/{searchText}/{page}/{order}
+    defaults: { _controller: app.controller.bundle:getOrderedSearchBundlesAction, page: 1, order: 'default'}
+    methods: [GET]
+    requirements:
+        "page": "\d+"
+        "order": "default|latestUpdate|stars|downloads"
+
 _ezplatform_tag_related_list_ajax:
     path: /ezplatform/tag/{tagId}/related/page/{page}
     defaults: { _controller: app.controller.tag:getTagRelatedContent }
@@ -54,5 +77,6 @@ _ezplatform_tag_related_list_ajax:
     requirements:
         "tagId": "\d+"
         "page": "\d+"
+
 _eztagsRoutes:
     resource: "@NetgenTagsBundle/Resources/config/routing.yml"

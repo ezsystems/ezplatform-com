@@ -6,14 +6,46 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
-                        {{ ez_render_field(content, 'description') }}
+                        <div class="description">{{ ez_render_field(content, 'description') }}</div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="bundles-list-search">
+            <div class="container">
+                <div class="col-xs-12">
+                    {{ form_start(searchForm) }}
+                        <div class="form-group">
+                            {{ form_widget(searchForm.search, { 'id': 'bundles-list-search-query'} )}}
+                            <div class="input-group-addon">
+                                <button type="submit" class="btn bundles-list-search-button">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    {{ form_end(searchForm) }}
                 </div>
             </div>
         </div>
         <div class="bundles-list-content">
             <div class="container">
                 <div class="col-xs-12 bundles-list-container">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-9">
+                            {% if search is defined and search is not empty %}
+                                <h2>Search / Keyword: {{ search }}</h2>
+                            {% else %}
+                                <h2>All Bundles</h2>
+                            {% endif %}
+                        </div>
+                        <div class="col-xs-12 col-md-3 sort-container">
+                            {{ form_start(sortingForm) }}
+                                <div class="form-group {% if not sortingForm.order.vars.valid %}has-error{% endif %}">
+                                    {{  form_row(sortingForm.order) }}
+                                </div>
+                            {{ form_end(sortingForm) }}
+                        </div>
+                    </div>
                 {% include 'parts/bundle_list/list.html.twig' with {
                     'items': items,
                     'viewType': 'line',
@@ -24,7 +56,9 @@
                 </div>
                 <div class="row">
                     <div class="button-load-more col-xs-12 col-md-6 col-md-offset-3">
-                        {% if extraParams.totalCount > items|length %}
+                        {% if search is defined and search is not empty and extraParams.totalCount > items|length %}
+                            <button class="load-more" data-url="/ezplatform/bundles/search" data-page="2" data-target=".bundles-list-container" data-search-text="{{ search }}">Load more</button>
+                        {% elseif extraParams.totalCount > items|length %}
                             <button class="load-more" data-url="/ezplatform/bundles/load/page" data-page="2" data-target=".bundles-list-container">Load more</button>
                         {% endif %}
                     </div>

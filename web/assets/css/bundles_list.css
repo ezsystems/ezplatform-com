@@ -1,18 +1,110 @@
 .bundles-list {
     overflow: hidden;
+    background: #f7f7f7;
 }
 
 .bundles-list-header {
-    border-top: 1px solid #444;
+    height: 210px;
+    background: #f15a22;
+    color: #fff;
+    text-align: center;
+    padding: 35px 0 0 0;
+    margin: 0 0 20px 0;
 }
 
-.bundles-list-header p {
-    padding: 50px 0 0 0;
-    font-size: 19px;
+.bundles-list-header h1 {
+    font-size: 45px;
+    font-weight: 600;
 }
 
-.bundles-list-content .bundles-list-container {
-    border-top: 1px solid #979797;
-    margin: 40px auto 0 auto;
-    padding: 30px 0 0 0;
+.bundles-list-header .description {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.bundles-list-search {
+    padding: 50px 0 40px 0;
+}
+
+.bundles-list-search .form-group {
+    margin: 0;
+}
+
+.bundles-list-search input#bundles-list-search-query {
+    height: 50px;
+    font-size: 21px;
+    font-weight: 300;
+    color: #888;
+    width: 90%;
+    float: left;
+    padding: 0 20px;
+    border: 1px solid #d3d3d3;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.bundles-list-search .input-group-addon {
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+    float: left;
+    width: 10%;
+}
+
+.bundles-list-search button.bundles-list-search-button {
+    background: #f15a22;
+    color: #fff;
+    padding: 9px 45px 9px 45px;
+    border-radius: 0 5px 5px 0;
+}
+
+.bundles-list-search button.bundles-list-search-button:hover {
+    background: #f44e10;
+}
+
+.bundles-list-search button.bundles-list-add-bundle {
+    background: #2a9dc7;
+    color: #fff;
+    padding: 13px 25px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.bundles-list-search button.bundles-list-add-bundle:hover {
+    background: #178cb6;
+}
+
+.bundles-list-container h2 {
+    font-size: 21px;
+}
+
+.bundles-list-container .sort-container {
+    padding: 10px 15px 0 15px;
+}
+
+@media (max-width: 992px) {
+    .bundles-list-search input#bundles-list-search-query {
+        width: 79%;
+    }
+
+    .bundles-list-search .input-group-addon {
+        width: 21%;
+        box-sizing: border-box;
+    }
+
+    .bundles-list-search button.bundles-list-search-button {
+        padding: 9px 0;
+        width: 100%;
+    }
+
+    .bundles-list-container h2 {
+        font-size: 21px;
+        color: #fff;
+        background: #2a9dc7;
+        height: 40px;
+        line-height: 41px;
+        margin: 0;
+        padding: 0 17px;
+    }
 }

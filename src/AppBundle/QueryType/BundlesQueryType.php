@@ -31,9 +31,30 @@ class BundlesQueryType implements QueryType
             new Query\Criterion\Visibility(Query\Criterion\Visibility::VISIBLE)
         ];
 
+        if (isset($parameters['search']) && !empty($parameters['search'])) {
+            $options['query']  = new Query\Criterion\FullText($parameters['search'], [
+                'customFields' => [
+                    'bundle_id',
+                    'name',
+                    'description',
+                    'packagist_url'
+                ]
+            ]);
+        }
+
         $options['filter'] = new Query\Criterion\LogicalAnd($criteria);
 
-        $options['sortClauses'] = [new Query\SortClause\DateModified(Query::SORT_DESC)];
+        if (isset($parameters['order'])) {
+            if ($parameters['order'] === 'latestUpdate') {
+                $options['sortClauses'] = [new Query\SortClause\Field('bundle', 'updated', Query::SORT_DESC)];
+            } elseif ($parameters['order'] === 'stars') {
+                $options['sortClauses'] = [new Query\SortClause\Field('bundle', 'stars', Query::SORT_DESC)];
+            } elseif ($parameters['order'] === 'downloads') {
+                $options['sortClauses'] = [new Query\SortClause\Field('bundle', 'downloads', Query::SORT_DESC)];
+            } else {
+                $options['sortClauses'] = [new Query\SortClause\DateModified(Query::SORT_DESC)];
+            }
+        }
 
         if (isset($parameters['limit'])) {
             $options['limit'] = $parameters['limit'];
@@ -57,6 +78,7 @@ class BundlesQueryType implements QueryType
             'parent_location_id',
             'limit',
             'offset',
+            'order',
         ];
     }
 

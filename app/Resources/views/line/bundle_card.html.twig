@@ -1,47 +1,54 @@
-<div class="bundle-card-line{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
-    <div class="bundle-card-line-data">
-        <div class="col-sm-8 col-md-9 col-lg-10 bundle-card-line-content">
-            <h2>
-                <a href="https://packagist.org/packages/{{ ez_field_value(content, 'bundle_id') }}" title="See on Packagist.org">{{ ez_render_field(content, 'bundle_id') }}</a>
-            </h2>
-            <div class="bundle-card-line-description">
-                {{ ez_render_field(content, 'description') }}
+<div class="bundle-card-line-container{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
+    <div class="bundle-card-line">
+        <div class="bundle-card-line-data">
+            <div class="bundle-card-line-information">
+                <h2>
+                    {{ ez_render_field(content, 'packagist_url') }}
+                </h2>
+                <div class="bundle-card-line-description">
+                    {{ ez_render_field(content, 'description') }}
+                </div>
             </div>
-        </div>
-        <div class="col-sm-4 col-md-3 col-lg-2 bundle-card-line-author">
-            <div class="bundle-card-line-author-container">
-                {% if packageDetails.author[0] is defined %}
-                    <div class="bundle-card-line-author-username">{{ packageDetails.author[0].name }}</div>
-                {% endif %}
-                {% if packageDetails.authorAvatarUrl is defined and packageDetails.author[0].name is defined %}
-                    <div class="bundle-card-line-author-photo">
-                        <img src="{{ packageDetails.authorAvatarUrl }}?s=100" alt="{{ packageDetails.author[0].name }}" />
-                    </div>
-                {% endif %}
-                {% if packageDetails.updated is defined %}
-                    <div class="bundle-card-line-last-update">Updated: <span>{{ packageDetails.updated|date("d / m / Y") }}</span></div>
-                {% endif %}
+            <div class="bundle-card-line-counters">
+                <ul>
+                    <li class="downloads"><i class="fa fa-cloud-download" aria-hidden="true"></i> {{ ez_field_value(content, 'downloads') }}</li>
+                    <li class="stars"><i class="fa fa-star" aria-hidden="true"></i> {{ ez_field_value(content, 'stars') }}</li>
+                    <li class="forks"><i class="fa fa-code-fork" aria-hidden="true"></i> {{ ez_field_value(content, 'forks') }}</li>
+                    <li class="updated"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ ez_field_value(content, 'updated')|date("d/m/Y") }}</li>
+                </ul>
             </div>
-        </div>
-    </div>
-    {% if packageDetails.maintainers is defined %}
-        <div class="hidden-xs col-sm-12 bundle-card-line-contributors">
-            <div class="bundle-card-line-contributors-container">
-                <span>By:</span>
-                    {% for maintainer in packageDetails.maintainers|slice(0, 4) %}
-                        <div class="bundle-card-line-contributor">
-                            <div class="bundle-card-line-contributor-photo">
+            <div class="bundle-card-line-authors">
+                <div class="bundle-card-line-owner">
+                    {% if packageDetails.authorAvatarUrl is defined and packageDetails.author[0] is defined and packageDetails.author[0].name is defined %}
+                        <span>Owner:</span>
+                            <div class="bundle-card-line-owner-photo">
+                                <img src="{{ packageDetails.authorAvatarUrl }}?s=100" alt="{{ packageDetails.author[0].name }}" />
+                            </div>
+                            <div class="bundle-card-line-owner-name">{{ packageDetails.author[0].name|truncate(20, true) }}</div>
+                    {% endif %}
+                </div>
+                {% if packageDetails.maintainers is defined %}
+                <div class="bundle-card-line-maintainers">
+                    <span>Maintainers:</span>
+                    {% for maintainer in packageDetails.maintainers|slice(0, 3) %}
+                        <div class="bundle-card-line-maintainer">
+                            <div class="bundle-card-line-maintainer-photo">
                                 <img src="{{ maintainer.avatarUrl }}&amp;s=40" />
                             </div>
-                            <div class="bundle-card-line-contributor-username">{{ maintainer.name }}</div>
+                            <div class="bundle-card-line-maintainer-username">{{ maintainer.name }}</div>
                         </div>
                     {% endfor %}
-            </div>
-            {% if packageDetails.maintainers|length > 4 %}
-                <div class="bundle-card-line-contributors-more">
-                    <a href="https://packagist.org/packages/{{ ez_field_value(content, 'bundle_id') }}" title="See on Packagist.org">+{{ packageDetails.maintainers|length - 4 }} more</a>
+                    {% if packageDetails.maintainers|length > 3 %}
+                        <div class="bundle-card-line-contributors-more">
+                            <a href="{{ ez_field_value(content, 'packagist_url') }}" title="See on Packagist.org">+{{ packageDetails.maintainers|length - 3 }} more</a>
+                        </div>
+                    {% endif %}
                 </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
+        <div class="bundle-card-line-href">
+            <a href="{{ ez_field_value(content, 'packagist_url') }}" title="See on Packagist.org"><i class="fa fa-angle-right fa-3" aria-hidden="true"></i></a>
+        </div>
+    </div>
 </div>
