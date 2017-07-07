@@ -102,6 +102,8 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
         $contentUpdateStruct->setField('forks', $package['forks']);
         $contentUpdateStruct->setField('checksum', $package['checksum']);
 
+        $escapedDescription = htmlspecialchars($package['description'], ENT_XML1);
+
         $xmlText = <<< EOX
 <?xml version='1.0' encoding='utf-8'?>
 <section 
@@ -110,7 +112,7 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
     xmlns:ezxhtml="http://ez.no/xmlns/ezpublish/docbook/xhtml" 
     xmlns:ezcustom="http://ez.no/xmlns/ezpublish/docbook/custom" 
     version="5.0-variant ezpublish-1.0">
-<para>{$package['description']}</para>
+<para>{$escapedDescription}</para>
 </section>
 EOX;
         $contentUpdateStruct->setField('description', $xmlText);
