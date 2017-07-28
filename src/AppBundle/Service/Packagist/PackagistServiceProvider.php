@@ -144,7 +144,7 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     private function calculateChecksum(array $fields = array()) {
         $string = '';
         foreach ($fields as $field) {
-            $string += $field;
+            $string .= $field;
         }
         return md5($string);
     }
