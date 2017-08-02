@@ -141,7 +141,7 @@ class BundleController
         $searchResults = $searchResults = $this->getLocations($offset, $order);
         $bundles = $this->getList($searchResults);
 
-        $renderedContent = $this->templating->render('parts/bundle_list/list.html.twig', [
+        $renderedContent = $this->templating->render('@ezdesign/parts/bundle_list/list.html.twig', [
             'items' => $bundles,
             'viewType' => 'line',
             'extraParams' => [
@@ -205,7 +205,7 @@ class BundleController
         $content = $contentSearchResult->searchHits[0]->valueObject;
         $bundles = $this->getList($searchResults);
 
-        return $this->templating->renderResponse('full/bundle_list.html.twig', [
+        return $this->templating->renderResponse('@ezdesign/full/bundle_list.html.twig', [
             'items' => $bundles,
             'content' => $content,
             'viewType' => 'full',
