@@ -47,7 +47,7 @@ class TagController
      * @param int $page
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getTagRelatedContent($tagId, $page)
+    public function getTagRelatedContentAction($tagId, $page)
     {
         $offset = $page * $this->relatedContentLimit - $this->relatedContentLimit;
         try {

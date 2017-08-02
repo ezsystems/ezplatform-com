@@ -32,7 +32,7 @@ class BundlesQueryType implements QueryType
         ];
 
         if (isset($parameters['search']) && !empty($parameters['search'])) {
-            $options['query']  = new Query\Criterion\FullText($parameters['search'], [
+            $options['query'] = new Query\Criterion\FullText($parameters['search'], [
                 'customFields' => [
                     'bundle_id',
                     'name',
@@ -92,3 +92,4 @@ class BundlesQueryType implements QueryType
         return 'AppBundle:Bundles';
     }
 }
+

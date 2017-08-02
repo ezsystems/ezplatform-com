@@ -71,12 +71,13 @@ _ezplatform_bundles_search_ajax:
         "order": "default|latestUpdate|stars|downloads"
 
 _ezplatform_tag_related_list_ajax:
-    path: /ezplatform/tag/{tagId}/related/page/{page}
-    defaults: { _controller: app.controller.tag:getTagRelatedContent }
+    path: /ezplatform/tag/{tagId}/related/page/{page}/{order}
+    defaults: { _controller: app.controller.tag:getTagRelatedContentAction }
     methods: [GET]
     requirements:
         "tagId": "\d+"
         "page": "\d+"
+        "order": "default"
 
 _eztagsRoutes:
     resource: "@NetgenTagsBundle/Resources/config/routing.yml"

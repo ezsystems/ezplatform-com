@@ -9,6 +9,7 @@ use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Query;
+use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,11 +92,11 @@ class BundleController
     /**
      * Renders full view `bundle_list` with first page elements.
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showBundlesListAction(Request $request)
     {
-
         $sortingForm = $this->formFactory->create(OrderType::class);
         $searchForm = $this->formFactory->create(SearchType::class);
 
@@ -105,7 +106,6 @@ class BundleController
         if ($sortingForm->isSubmitted() && $sortingForm->isValid()) {
             $order = $sortingForm->get('order')->getData();
         }
-
 
         $searchResults = $this->getLocations(0, $order);
         $query = new Query();
@@ -133,7 +133,7 @@ class BundleController
      *
      * @param int $page
      * @param string|null $order
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getBundlesListAction($page, $order = null)
     {
@@ -161,8 +161,8 @@ class BundleController
     /**
      * Validates search query.
      *
-     * @param Request $request
-     * @return RedirectResponse
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function searchBundlesAction(Request $request)
     {
@@ -225,7 +225,7 @@ class BundleController
      * @param string $searchText
      * @param int $page
      * @param string|null $order
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getOrderedSearchBundlesAction($searchText, $page = 1, $order = null)
     {
@@ -275,10 +275,10 @@ class BundleController
     /**
      * Returns list of bundles with package details for given $searchResult set.
      *
-     * @param $searchResults
+     * @param \eZ\Publish\API\Repository\Values\Content\Search\SearchResult $searchResults
      * @return array
      */
-    private function getList($searchResults)
+    private function getList(SearchResult $searchResults)
     {
         $bundles = [];
         foreach ($searchResults->searchHits as $searchHit) {
