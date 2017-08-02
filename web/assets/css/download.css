@@ -79,7 +79,7 @@ section#download .window span {
 }
 
 section#download .window {
-    width: 44vw;
+    width: 90%;
     height: auto;
     margin: auto;
     margin-top: 3.5vh;
@@ -90,6 +90,8 @@ section#download .window {
     box-shadow: none;
     font-family: HelveticaNeue, 'Helvetica Neue', 'Lucida Grande', Arial, sans-serif;
     max-width: 750px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 section#download .window .orange {
