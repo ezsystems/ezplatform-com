@@ -31,7 +31,7 @@
         {% endblock %}
 
         {% block head_tracking %}
-            {% include 'layout/tracking_head.html.twig' %}
+            {% include '@ezdesign/layout/tracking_head.html.twig' only %}
         {% endblock %}
 
         {% block canonical %}
@@ -43,7 +43,7 @@
         {% endblock %}
 
             {% block header %}
-                {% include 'layout/header.html.twig' %}
+                {% include '@ezdesign/layout/header.html.twig' only %}
             {% endblock %}
 
             {% block content %}
@@ -51,10 +51,10 @@
 
             {% block footer %}
                 {{ render(controller('AppBundle:Layout:showPart', {
-                      'template': 'layout/footer.html.twig'
+                      'template': '@ezdesign/layout/footer.html.twig'
                 })) }}
             {% endblock %}
-            {% include 'layout/scripts.html.twig' %}
+            {% include '@ezdesign/layout/scripts.html.twig' only %}
         </main>
     </body>
 </html>

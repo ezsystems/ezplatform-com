@@ -1,9 +1,9 @@
 ezpublish:
     system:
         default:
-            pagelayout: pagelayout.html.twig
+            pagelayout: "@ezdesign/pagelayout.html.twig"
             user:
-                layout: pagelayout.html.twig
+                layout: "@ezdesign/pagelayout.html.twig"
 
             content_view:
                 full:
@@ -23,7 +23,7 @@ ezpublish:
                                         - article
                                         - bundle_list
                                 assign_results_to: items
-                        template: full\home.html.twig
+                        template: "@ezdesign/full/home.html.twig"
                         match:
                             Id\Location: 2
                     blog:
@@ -38,66 +38,66 @@ ezpublish:
                                     sorting_field: publication_date
                                     sorting_order: desc
                                 assign_results_to: posts
-                        template: full\blog.html.twig
+                        template: "@ezdesign/full/blog.html.twig"
                         match:
                             Identifier\ContentType: blog
                     blog_post:
-                        template: full\blog_post.html.twig
+                        template: "@ezdesign/full/blog_post.html.twig"
                         match:
                             Identifier\ContentType: blog_post
                     article:
-                        template: full\article.html.twig
+                        template: "@ezdesign/full/article.html.twig"
                         match:
                             Identifier\ContentType: article
                     bundle_list:
                         controller: app.controller.bundle:showBundlesListAction
-                        template: full/bundle_list.html.twig
+                        template: "@ezdesign/full/bundle_list.html.twig"
                         match:
                             Identifier\ContentType: bundle_list
 
                 line:
                     blog_post:
-                        template: line\blog_post.html.twig
+                        template: "@ezdesign/line/blog_post.html.twig"
                         match:
                             Identifier\ContentType: blog_post
                     bundle:
-                        template: line\bundle_card.html.twig
+                        template: "@ezdesign/line/bundle_card.html.twig"
                         match:
                             Identifier\ContentType: bundle
 
                 row:
                     banner_slider:
-                        template: row\banner_slider.html.twig
+                        template: "@ezdesign/row/banner_slider.html.twig"
                         match:
                             Identifier\ContentType: banner_slider
                     download_section:
-                        template: row\download_section.html.twig
+                        template: "@ezdesign/row/download_section.html.twig"
                         controller: app.controller.download:showAction
                         match:
                             Identifier\ContentType: download_section
 
                 blog:
                     author:
-                        template: parts\blog\author.html.twig
+                        template: "@ezdesign/parts/blog/author.html.twig"
                         match:
                             Identifier\ContentType: author
 
                 blog_post:
                     author:
-                        template: parts\blog_post\author.html.twig
+                        template: "@ezdesign/parts/blog_post/author.html.twig"
                         match:
                             Identifier\ContentType: author
 
                 embed:
                     code:
-                        template: embed\code.html.twig
+                        template: "@ezdesign/embed/code.html.twig"
                         match:
                             Identifier\ContentType: code
                     youtube:
-                        template: embed\youtube.html.twig
+                        template: "@ezdesign/embed/youtube.html.twig"
                         match:
                           Identifier\ContentType: youtube
                     image:
-                        template: embed\image.html.twig
+                        template: "@ezdesign/embed/image.html.twig"
                         match:
                             Identifier\ContentType: image

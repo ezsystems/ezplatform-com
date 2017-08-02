@@ -1,6 +1,6 @@
 <figure class="cd-image-container">
     {{ ez_render_field(content, 'right_image', {
-        'template': 'fields/slider_image.html.twig',
+        'template': '@ezdesign/fields/slider_image.html.twig',
         'parameters': {
             'class': 'img-responsive'
         }
@@ -8,7 +8,7 @@
 
     <div class="cd-resize-img">
         {{ ez_render_field(content, 'left_image', {
-            'template': 'fields/slider_image.html.twig'
+            'template': '@ezdesign/fields/slider_image.html.twig'
         }) }}
     </div>
 

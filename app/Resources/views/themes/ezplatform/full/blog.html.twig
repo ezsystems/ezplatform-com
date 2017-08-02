@@ -1,4 +1,4 @@
-{% extends 'pagelayout.html.twig' %}
+{% extends '@ezdesign/pagelayout.html.twig' %}
 
 {% block content %}
     <section class="blog">
@@ -10,13 +10,13 @@
 
         <div class="container">
             <div class="blog-posts-container">
-                {% include 'parts/content_list.html.twig' with {
+                {% include '@ezdesign/parts/content_list.html.twig' with {
                     'items': posts,
                     'viewType': 'line',
                     'extraParams': {
                         'page': 1
                     }
-                } %}
+                } only %}
             </div>
             <div class="row">
                 <div class="button-load-more col-md-6 col-md-offset-3">

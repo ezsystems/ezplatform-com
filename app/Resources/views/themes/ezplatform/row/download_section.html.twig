@@ -8,7 +8,7 @@
                     {% if not ez_is_field_empty(content, 'composer_description') %}
                         <li class="nav active">
                             <a href="#composer-option" data-toggle="tab">
-                                <img src="{{ asset('assets/images/composer.svg') }}" alt="Download" class="download">
+                                <img src="{{ asset('images/composer.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">Composer</div>
                             </a>
                         </li>
@@ -17,7 +17,7 @@
                     {% if not ez_is_field_empty(content, 'download_description') %}
                         <li class="nav">
                             <a href="#download-option" data-toggle="tab">
-                                <img src="{{ asset('assets/images/download.svg') }}" alt="Download" class="download">
+                                <img src="{{ asset('images/download.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">Download</div>
                             </a>
                         </li>
@@ -25,7 +25,7 @@
                     {% if not ez_is_field_empty(content, 'platform_sh_description') %}
                         <li class="nav">
                             <a href="#platform-sh-option" data-toggle="tab">
-                                <img src="{{ asset('assets/images/platform-sh-logo.svg') }}" alt="Download" class="download">
+                                <img src="{{ asset('images/platform-sh-logo.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">platform.sh</div>
                             </a>
                         </li>
@@ -41,7 +41,7 @@
                                     {{ ez_render_field(content, 'composer_description') }}
                                 </div>
                             </div>
-                            {% include "composer/install.html.twig" only %}
+                            {% include "@ezdesign/composer/install.html.twig" only %}
                         </div>
                     {% endif %}
 
@@ -117,7 +117,7 @@
                             </div>
 
                             <div class="launch text-center">
-                                <img src="{{ asset('assets/images/rocket.svg') }}" alt="rocket" class="rocket">
+                                <img src="{{ asset('images/rocket.svg', 'ezdesign') }}" alt="rocket" class="rocket">
                                 <a href="//accounts.platform.sh/platform/trial/ezplatform/setup?branch=demo" class="btn btn-primary">Deploy on platform.sh</a>
                             </div>
                         </div>

@@ -66,7 +66,7 @@ class BlogController
         ]);
         $searchResults = $this->searchService->findLocations($query);
 
-        $renderedContent = $this->templating->render('parts/content_list.html.twig', [
+        $renderedContent = $this->templating->render('@ezdesign/parts/content_list.html.twig', [
             'items' => $searchResults,
             'viewType' => 'line',
             'extraParams' => [
