@@ -84,6 +84,7 @@ class AppInstaller extends DbBasedInstaller implements Installer
         $fs = new Filesystem();
         $fs->mkdir($this->tmpFolder . DIRECTORY_SEPARATOR . 'ezplatform_page_storage');
         $process = new Process(sprintf('tar -xjf %1$sezplatform_page_storage.tar.bz2 -C %1$sezplatform_page_storage', $this->tmpFolder . DIRECTORY_SEPARATOR));
+        $process->setTimeout(0);
         $process->run();
         $progress->advance();
 
