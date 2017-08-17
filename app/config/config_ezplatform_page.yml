@@ -29,6 +29,10 @@ parameters:
     eztags.default.tag_view.pagelayout: 'pagelayout.html.twig'
     # overwrites default tag related content limit
     eztags.default.tag_view.related_content_list.limit: 10
+    # community metrics location ID
+    community_metrics.location_id: 218
+    # community metrics decoded iframe URL
+    community_metrics.iframe_url: 'https://communitymetrics.ez.no/app/kibana#/dashboard/e8dca940-7d3a-11e7-a3ec-639c36c57655?embed=true&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-1y,mode:quick,to:now))'
 
     # default png compression level used in image_variations.yml
     images.default_png_compression_level: 9
@@ -62,6 +66,7 @@ twig:
     globals:
         blogLocationId: '%blog.location_id%'
         bundlesListLocationId: '%bundles.location_id%'
+        communityMetricsIframeUrl: '%community_metrics.iframe_url%'
 
 # additional Assetic configuration
 assetic:
@@ -83,6 +88,7 @@ assetic:
                 - 'assets/css/bundles_list.css'
                 - 'assets/css/bundle.css'
                 - 'assets/css/tags.css'
+                - 'assets/css/iframe.css'
         js_prism:
             inputs:
                 - 'assets/js/prism.js'

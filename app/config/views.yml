@@ -45,6 +45,10 @@ ezpublish:
                         template: "@ezdesign/full/blog_post.html.twig"
                         match:
                             Identifier\ContentType: blog_post
+                    community_metrics:
+                        template: "@ezdesign/full/community_metrics.html.twig"
+                        match:
+                            Id\Location: '%community_metrics.location_id%'
                     article:
                         template: "@ezdesign/full/article.html.twig"
                         match:
