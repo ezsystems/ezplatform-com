@@ -1,0 +1,11 @@
+section#main {
+    padding-bottom: 0;
+}
+
+img#site-logo {
+    display: none;
+}
+
+body.docked img#site-logo {
+    display: inline;
+}
