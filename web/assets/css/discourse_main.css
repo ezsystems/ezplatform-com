@@ -9,3 +9,20 @@ img#site-logo {
 body.docked img#site-logo {
     display: inline;
 }
+
+ol.category-breadcrumb li a {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+button.btn-social.oauth2_basic {
+    background-color: #f15a22;
+}
+
+button.btn-social.oauth2_basic:before {
+    content: url('https://ezplatform.com/assets/images/brandmark.svg');
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    vertical-align:bottom;
+}
