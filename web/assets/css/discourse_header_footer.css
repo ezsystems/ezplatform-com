@@ -73,7 +73,7 @@ footer .container {
 }
 
 /* FOOTER */
-footer a:visited {
+footer .footer-content a:visited {
     color: #fff;
 }
 
