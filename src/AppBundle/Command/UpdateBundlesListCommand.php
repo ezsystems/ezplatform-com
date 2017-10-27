@@ -85,6 +85,7 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
         $query = new Query();
         $criterion = new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('bundles.location_id'));
         $query->filter = $criterion;
+        $query->limit = 1000;
         return $query;
     }
 
