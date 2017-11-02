@@ -38,7 +38,7 @@
             <p># If you do not have a MySQL server ready, you can create one quickly using Docker.</p>
             <p># Note that we are using here the TCP Port <em class="green">{{ dbport }}</em> of the host and
                 <em class="green">ezplatform</em> as root's password for the MariaDB server container.</p>
-            {{ Helper.command('docker run -p ' ~dbport ~ ':3306 --name ezdbcontainer -e MYSQL_ROOT_PASSWORD=' ~ dbpassword ~ ' mariadb:10.0') }}
+            {{ Helper.command('docker run -p ' ~dbport ~ ':3306 --name ezdbcontainer -e MYSQL_ROOT_PASSWORD=' ~ dbpassword ~ ' mariadb:10.1') }}
         </div>
 
         <div class="help">

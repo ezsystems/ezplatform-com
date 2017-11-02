@@ -230,6 +230,10 @@ section#download #composer-option .content {
     font-family: monospace;
 }
 
+section#download #ezlaunchpad-option .content {
+    font-family: monospace;
+}
+
 section#download .window h3 {
     margin-top: 0;
 }

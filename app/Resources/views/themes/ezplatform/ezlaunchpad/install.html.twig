@@ -1,0 +1,53 @@
+{% macro command(command) %}
+    <div class="orange">
+        <p>&#36; {{ command }}</p>
+    </div>
+{% endmacro %}
+
+{% import _self as Helper %}
+
+<div class="window">
+    <div class="titlebar">
+        <div class="buttons">
+            <div class="close">
+                <a class="closebutton" href="#"><span><strong>x</strong></span></a>
+            </div>
+            <div class="minimize">
+                <a class="minimizebutton" href="#"><span><strong>&ndash;</strong></span></a>
+            </div>
+            <div class="zoom">
+                <a class="zoombutton" href="#"><span><strong>+</strong></span></a>
+            </div>
+        </div>
+        ezplatform@eZ-Systems: ~/www
+    </div>
+
+    <div class="content">
+        <div class="help">
+            <p># Install eZ Launchpad.</p>
+            <div class="orange">
+                {{ Helper.command('curl -LSs https://ezsystems.github.io/launchpad/install_curl.bash | bash') }}
+            </div>
+        </div>
+
+        <div class="help">
+            <p># Initialize a new project from scratch, follow the wizard and answer the questions.</p>
+            {{ Helper.command('~/ez init') }}
+        </div>
+
+        <div class="help">
+            <p># Display details on your Docker Stack.</p>
+            <p># Output example with prefix port <strong class="green">42</strong> and <strong class="green">varnish</strong>.</p>
+            {{ Helper.command('~/ez ps') }}
+            <p><em>
+                Project Web Access<br />
+                ------------------<br />
+                Nginx - Front-end (Development Mode): 	<a class="green" href="http://localhost:42080">http://localhost:42080</a><br />
+                Nginx - Back-end (Development Mode): 	<a class="green" href="http://localhost:42080/ez" target="_blank">http://localhost:42080/ez</a><br />
+                Varnish - Front-end (Production Mode): 	<a class="green" href="http://localhost:42082" target="_blank">http://localhost:42082</a><br />
+                Varnish - Back-end (Production Mode): 	<a class="green" href="http://localhost:42082/ez" target="_blank">http://localhost:42082/ez</a><br />
+            </em></p>
+            <p># Admin UI Login: <strong class="green">admin</strong>, password: <strong class="green">publish</strong>.</p>
+        </div>
+    </div>
+</div>

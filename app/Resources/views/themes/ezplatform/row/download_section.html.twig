@@ -13,20 +13,25 @@
                             </a>
                         </li>
                     {% endif %}
-
-                    {% if not ez_is_field_empty(content, 'download_description') %}
-                        <li class="nav">
-                            <a href="#download-option" data-toggle="tab">
-                                <img src="{{ asset('images/download.svg', 'ezdesign') }}" alt="Download" class="download">
-                                <div class="label">Download</div>
-                            </a>
-                        </li>
-                    {% endif %}
+                    <li class="nav">
+                        <a href="#ezlaunchpad-option" data-toggle="tab">
+                            <img src="{{ asset('images/ez-launchpad.svg', 'ezdesign') }}" alt="eZ Launchpad" class="download">
+                            <div class="label">eZ Launchpad</div>
+                        </a>
+                    </li>
                     {% if not ez_is_field_empty(content, 'platform_sh_description') %}
                         <li class="nav">
                             <a href="#platform-sh-option" data-toggle="tab">
                                 <img src="{{ asset('images/platform-sh-logo.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">platform.sh</div>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if not ez_is_field_empty(content, 'download_description') %}
+                        <li class="nav">
+                            <a href="#download-option" data-toggle="tab">
+                                <img src="{{ asset('images/download.svg', 'ezdesign') }}" alt="Download" class="download">
+                                <div class="label">Download</div>
                             </a>
                         </li>
                     {% endif %}
@@ -63,45 +68,45 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {% if betas is not empty %}
-                                        <tr class="beta">
-                                            <th scope="row">
-                                                <a href="{{ ez_field_value(betas|first, 'file') }}">{{ ez_render_field(betas|first, 'release_version') }}</a>
-                                            </th>
-                                            <td class="file">
-                                                <a href="{{ ez_field_value(betas|first, 'file') }}">Download {{ ez_render_field(betas|first, 'release_version') }}</a>
-                                            </td>
-                                            <td class="date">
-                                                <a href="{{ ez_field_value(betas|first, 'file') }}">
-                                                    <span>{{ ez_field_value(betas|first, 'release_date')|date('d M Y') }}</span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-
-                                    {% for release in releases %}
-                                        <tr class="releases">
-                                            <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>
-                                                <a href="{{ ez_field_value(release, 'file') }}">{{ ez_render_field(release, 'release_version') }}</a>
-                                            </th>
-                                            <td class="file">
-                                                <a href="{{ ez_field_value(release, 'file') }}">
-                                                    {{ ez_field_value(release, 'file').fileName }}
-                                                </a>
-                                            </td>
-                                            <td class="date">
-                                                <a href="{{ ez_field_value(release, 'file') }}">
-                                                    <span>{{ ez_field_value(release, 'release_date')|date('d M Y') }}</span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-
-                                    <tr class="releases ezpublish">
-                                        <th colspan="3">
-                                            Looking for <a href="http://share.ez.no">eZ Publish / eZ Publish Platform</a> ?
+                                {% if betas is not empty %}
+                                    <tr class="beta">
+                                        <th scope="row">
+                                            <a href="{{ ez_field_value(betas|first, 'file') }}">{{ ez_render_field(betas|first, 'release_version') }}</a>
                                         </th>
+                                        <td class="file">
+                                            <a href="{{ ez_field_value(betas|first, 'file') }}">Download {{ ez_render_field(betas|first, 'release_version') }}</a>
+                                        </td>
+                                        <td class="date">
+                                            <a href="{{ ez_field_value(betas|first, 'file') }}">
+                                                <span>{{ ez_field_value(betas|first, 'release_date')|date('d M Y') }}</span>
+                                            </a>
+                                        </td>
                                     </tr>
+                                {% endif %}
+
+                                {% for release in releases %}
+                                    <tr class="releases">
+                                        <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>
+                                            <a href="{{ ez_field_value(release, 'file') }}">{{ ez_render_field(release, 'release_version') }}</a>
+                                        </th>
+                                        <td class="file">
+                                            <a href="{{ ez_field_value(release, 'file') }}">
+                                                {{ ez_field_value(release, 'file').fileName }}
+                                            </a>
+                                        </td>
+                                        <td class="date">
+                                            <a href="{{ ez_field_value(release, 'file') }}">
+                                                <span>{{ ez_field_value(release, 'release_date')|date('d M Y') }}</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                                <tr class="releases ezpublish">
+                                    <th colspan="3">
+                                        Looking for <a href="http://share.ez.no">eZ Publish / eZ Publish Platform</a> ?
+                                    </th>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -117,11 +122,31 @@
                             </div>
 
                             <div class="launch text-center">
-                                <img src="{{ asset('images/rocket.svg', 'ezdesign') }}" alt="rocket" class="rocket">
+                                <img src="{{ asset('images/platform-sh-rocket.svg', 'ezdesign') }}" alt="Platform.sh" class="rocket">
                                 <a href="//accounts.platform.sh/platform/trial/ezplatform/setup?branch=demo" class="btn btn-primary">Deploy on platform.sh</a>
                             </div>
                         </div>
                     {% endif %}
+
+                    <div role="tabpanel" class="tab-pane" id="ezlaunchpad-option">
+                        <div class="details">
+                            <h3>eZ Launchpad</h3>
+                            {% if content.fields['launchpad_description'] is defined and not ez_is_field_empty(content, 'launchpad_description') %}
+                                <div class="description text-center">
+                                    {{ ez_render_field(content, 'launchpad_description') }}
+                                </div>
+                            {% else %}
+                                <div class="description text-center">
+                                    <p>eZ Launchpad requires you to have PHP (5.6+ or 7+) and Docker installed.</p>
+                                    <p>You can find a full documentation here:
+                                        <a target="_blank" href="https://ezsystems.github.io/launchpad/">https://ezsystems.github.io/launchpad/</a>
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% include "@ezdesign/ezlaunchpad/install.html.twig" only %}
+                    </div>
+
                 </div>
             </div>
         </div>
