@@ -65,7 +65,7 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
         try {
             $packageName = trim($packageName);
             $item = $this->cache->getItem($packageName);
-            if ($item->isMiss() || $force) {
+            if ($force || $item->isMiss()) {
                 $packageDetails = $this->callApi($packageName);
                 $item->expiresAfter($this->cacheExpirationTime);
                 $this->cache->save($item->set($packageDetails));

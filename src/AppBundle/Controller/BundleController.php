@@ -100,7 +100,7 @@ class BundleController
         $sortingForm = $this->formFactory->create(OrderType::class);
         $searchForm = $this->formFactory->create(SearchType::class);
 
-        $order = null;
+        $order = 'default';
 
         $sortingForm->handleRequest($request);
         if ($sortingForm->isSubmitted() && $sortingForm->isValid()) {

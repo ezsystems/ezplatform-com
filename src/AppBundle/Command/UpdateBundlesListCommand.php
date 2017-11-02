@@ -10,9 +10,12 @@
 namespace AppBundle\Command;
 
 use eZ\Publish\API\Repository\ContentService;
+use eZ\Publish\API\Repository\Exceptions\PropertyNotFoundException;
 use eZ\Publish\API\Repository\Values\Content\Query;
+use eZ\Publish\API\Repository\Values\ValueObject;
 use eZ\Publish\Core\SignalSlot\Repository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,7 +30,8 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
         $this
             ->setName('app:update_bundles_list')
             ->setDescription('This command updates Bundle List with data gathered from Packagist.org')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, false);
+            ->addOption('force', 'f', InputOption::VALUE_NONE, false)
+            ->addOption('details', 'd', InputOption::VALUE_NONE, false);
     }
 
     /**
@@ -54,11 +58,20 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
         foreach ($results->searchHits as $searchHit) {
             $currentPackage = $searchHit->valueObject;
             $package = $packagistServiceProvider->getPackageDetails($currentPackage->getFieldValue('bundle_id'), $input->getOption('force'));
-            $output->write($currentPackage->getFieldValue('bundle_id'));
+            $output->write('<question>'.$currentPackage->getFieldValue('bundle_id').'</question>');
 
             if (($package['checksum'] !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
-                $contentUpdateStruct = $this->getContentUpdateStruct($contentService, $package);
+                if ( !empty($this->getDiff($currentPackage, $package)) && $input->getOption('details')) {
+                    $output->writeln(': <info>Updated</info>');
+                    $table = new Table($output);
+                    $table->setHeaders(['Field', 'Old value', 'New value']);
+                    $table->setRows($this->getDiff($currentPackage, $package));
+                    $table->render();
+                } else {
+                    $output->writeln(': <info>Force updated.</info>');
+                }
 
+                $contentUpdateStruct = $this->getContentUpdateStruct($contentService, $package);
                 $contentId = $searchHit->valueObject->versionInfo->contentInfo->id;
                 $repository->sudo(
                     function () use ($contentService, $contentId, $contentUpdateStruct) {
@@ -68,24 +81,23 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
                         $contentService->publishVersion($contentDraft->versionInfo);
                     }, $repository
                 );
-
-                $output->writeln(': Updated');
-            }
-            else {
-                $output->writeln(': Already up-to-date');
+            } else {
+                $output->writeln(': <comment>Already up-to-date</comment>');
             }
         }
-        $output->writeln("The bundles have been successfully updated.");
+        $output->writeln('<info>The bundles have been successfully updated.</info>');
     }
 
     /**
      * @return \eZ\Publish\API\Repository\Values\Content\Query
      */
-    private function getQuery() {
+    private function getQuery()
+    {
         $query = new Query();
         $criterion = new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('bundles.location_id'));
         $query->filter = $criterion;
         $query->limit = 1000;
+
         return $query;
     }
 
@@ -94,10 +106,11 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
      * @param array $package
      * @return \eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct
      */
-    private function getContentUpdateStruct(ContentService $contentService, $package) {
+    private function getContentUpdateStruct(ContentService $contentService, $package)
+    {
         $contentUpdateStruct = $contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = 'eng-GB';
-        $contentUpdateStruct->setField('updated', (int) $package['updated']->format('U'));
+        $contentUpdateStruct->setField('updated', (int)$package['updated']->format('U'));
         $contentUpdateStruct->setField('downloads', $package['downloads']);
         $contentUpdateStruct->setField('stars', $package['stars']);
         $contentUpdateStruct->setField('forks', $package['forks']);
@@ -119,5 +132,43 @@ EOX;
         $contentUpdateStruct->setField('description', $xmlText);
 
         return $contentUpdateStruct;
+    }
+
+    /**
+     * @param ValueObject $current
+     * @param $package
+     * @return array
+     */
+    private function getDiff(ValueObject $current, $package)
+    {
+        $diff = [];
+        foreach ($package as $key => $value) {
+            if ($key == 'description') {
+                continue;
+            }
+            if ($key == 'updated') {
+                if ($current->getFieldValue('updated')->date != $value->setTime(0, 0, 0)) {
+                    $diff[] = [
+                        'name' => 'updated',
+                        'old' => $current->getFieldValue('updated')->date != null ? $current->getFieldValue('updated')->date->format(\DateTime::ISO8601) : '',
+                        'new' => $value->format(\DateTime::ISO8601),
+                    ];
+                }
+                continue;
+            }
+            try {
+                if ($current->getFieldValue($key) != null && $current->getFieldValue($key)->__toString() != $value) {
+                    $diff[] = [
+                        'name' => $key,
+                        'old' => $current->getFieldValue($key)->__toString(),
+                        'new' => $value,
+                    ];
+                }
+            } catch (PropertyNotFoundException $notFoundException) {
+                continue;
+            }
+        }
+
+        return $diff;
     }
 }
