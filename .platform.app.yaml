@@ -44,13 +44,16 @@ mounts:
 hooks:
     build: |
         set -e
-        composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
         rm web/app_dev.php
         . ./.env
         if [ -z "$SYMFONY_ENV" ]; then
             export SYMFONY_ENV=prod
         fi
-        app/console --env=$SYMFONY_ENV assetic:dump
+        if [ "$SYMFONY_ENV" = "dev" ] ; then
+            composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
+        else
+            composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
+        fi
     deploy: |
         set -e
         . ./.env
