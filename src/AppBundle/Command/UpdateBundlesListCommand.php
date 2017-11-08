@@ -9,6 +9,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Service\Packagist\Package;
 use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\API\Repository\Exceptions\PropertyNotFoundException;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -60,7 +61,7 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
             $package = $packagistServiceProvider->getPackageDetails($currentPackage->getFieldValue('bundle_id'), $input->getOption('force'));
             $output->write('<question>'.$currentPackage->getFieldValue('bundle_id').'</question>');
 
-            if (($package['checksum'] !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
+            if (($package->checksum !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
                 if ( !empty($this->getDiff($currentPackage, $package)) && $input->getOption('details')) {
                     $output->writeln(': <info>Updated</info>');
                     $table = new Table($output);
@@ -68,10 +69,11 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
                     $table->setRows($this->getDiff($currentPackage, $package));
                     $table->render();
                 } else {
-                    $output->writeln(': <info>Force updated.</info>');
+                    $output->writeln(': <info>Updated.</info>');
                 }
 
                 $contentUpdateStruct = $this->getContentUpdateStruct($contentService, $package);
+
                 $contentId = $searchHit->valueObject->versionInfo->contentInfo->id;
                 $repository->sudo(
                     function () use ($contentService, $contentId, $contentUpdateStruct) {
@@ -103,20 +105,20 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
 
     /**
      * @param \eZ\Publish\API\Repository\ContentService $contentService
-     * @param array $package
+     * @param \AppBundle\Service\Packagist\Package $package
      * @return \eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct
      */
-    private function getContentUpdateStruct(ContentService $contentService, $package)
+    private function getContentUpdateStruct(ContentService $contentService, Package $package)
     {
         $contentUpdateStruct = $contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = 'eng-GB';
-        $contentUpdateStruct->setField('updated', (int)$package['updated']->format('U'));
-        $contentUpdateStruct->setField('downloads', $package['downloads']);
-        $contentUpdateStruct->setField('stars', $package['stars']);
-        $contentUpdateStruct->setField('forks', $package['forks']);
-        $contentUpdateStruct->setField('checksum', $package['checksum']);
+        $contentUpdateStruct->setField('updated', (int)$package->updateDate->format('U'));
+        $contentUpdateStruct->setField('downloads', $package->downloads);
+        $contentUpdateStruct->setField('stars', $package->stars);
+        $contentUpdateStruct->setField('forks', $package->forks);
+        $contentUpdateStruct->setField('checksum', $package->checksum);
 
-        $escapedDescription = htmlspecialchars($package['description'], ENT_XML1);
+        $escapedDescription = htmlspecialchars($package->description, ENT_XML1);
 
         $xmlText = <<< EOX
 <?xml version='1.0' encoding='utf-8'?>
@@ -135,19 +137,19 @@ EOX;
     }
 
     /**
-     * @param ValueObject $current
-     * @param $package
+     * @param \eZ\Publish\API\Repository\Values\ValueObject $current
+     * @param \AppBundle\Service\Packagist\Package $package
      * @return array
      */
-    private function getDiff(ValueObject $current, $package)
+    private function getDiff(ValueObject $current, Package $package)
     {
         $diff = [];
-        foreach ($package as $key => $value) {
+        foreach (get_object_vars($package) as $key => $value) {
             if ($key == 'description') {
                 continue;
             }
             if ($key == 'updated') {
-                if ($current->getFieldValue('updated')->date != $value->setTime(0, 0, 0)) {
+                if ($current->getFieldValue('updated')->date != $value) {
                     $diff[] = [
                         'name' => 'updated',
                         'old' => $current->getFieldValue('updated')->date != null ? $current->getFieldValue('updated')->date->format(\DateTime::ISO8601) : '',

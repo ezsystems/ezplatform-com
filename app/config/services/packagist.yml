@@ -1,10 +1,13 @@
 services:
     app.packagist_api_client:
         class: Packagist\Api\Client
+    app.packagist_api_mapper:
+        class: AppBundle\Service\Packagist\Mapper
+        arguments: ['%bundles.excluded_maintainers%']
     app.packagist_service_provider:
         class: AppBundle\Service\Packagist\PackagistServiceProvider
         arguments:
             - '@stash.default_cache'
             - '@app.packagist_api_client'
+            - '@app.packagist_api_mapper'
             - '%bundles.cache_expiration_time'
-            - '%bundles.excluded_maintainers%'
