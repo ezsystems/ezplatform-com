@@ -1,7 +1,7 @@
 header .container,
 footer .container {
+    font-family: "MavenPro", sans-serif;
     padding-right: 15px;
-    padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -13,7 +13,7 @@ footer .container {
 
 .navbar-brand, .navbar-nav li a {
     line-height: 23px;
-    height: 60px;
+    height: 45px;
 }
 
 .navbar-brand {
@@ -23,7 +23,7 @@ footer .container {
 }
 
 .navbar-nav {
-    margin: 7.5px -15px;
+    margin: 0 0;
 }
 
 .nav {
