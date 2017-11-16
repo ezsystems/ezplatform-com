@@ -7,7 +7,10 @@ ezpublish:
                     reference: ~
                     filters:
                         - { name: geometry/scalewidthdownonly, params: [800] }
-
+                blog_post_full_width_lightbox:
+                    reference: ~
+                    filters:
+                        - { name: geometry/scalewidthdownonly, params: [800] }
                 blog_author:
                     reference: ~
                     filters:
