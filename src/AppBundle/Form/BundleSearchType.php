@@ -10,41 +10,37 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class OrderType extends AbstractType
+class BundleSearchType extends AbstractType
 {
     /**
-     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('order', ChoiceType::class, array(
-                'placeholder' => 'Sort by',
-                'choices' => array(
-                    'latestUpdate' => 'Latest Update',
-                    'stars' => 'Popularity',
-                    'downloads' => 'Downloads'
-                ),
-                'label' => false,
-                'attr' => array(
-                    'class' => 'form-control'
-                )
-            ));
+            ->setAction('/Bundles/search/')
+            ->setMethod('POST')
+            ->add('search', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                    'placeholder' => 'Search Bundle...'
+                ]
+            ]);
     }
 
     /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
+     * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'attr' => array(
-                'id' => 'sort-order'
+                'id' => 'search'
             )
         ));
     }

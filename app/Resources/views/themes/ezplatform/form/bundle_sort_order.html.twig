@@ -1,0 +1,5 @@
+{{ form_start(sortOrderBundleForm) }}
+    <div class="form-group {% if not sortOrderBundleForm.order.vars.valid %}has-error{% endif %}">
+        {{  form_row(sortOrderBundleForm.order) }}
+    </div>
+{{ form_end(sortOrderBundleForm) }}

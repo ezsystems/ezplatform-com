@@ -19,6 +19,7 @@ services:
         arguments:
             - '@templating'
             - '@ezpublish.api.service.search'
+            - '@ezpublish.urlalias_router'
             - '@app.query_type.bundles'
             - '@app.packagist_service_provider'
             - '@form.factory'
