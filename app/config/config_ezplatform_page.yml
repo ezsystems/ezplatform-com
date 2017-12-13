@@ -26,7 +26,7 @@ parameters:
     # names of excluded bundle maintainers
     bundles.excluded_maintainers: ['ezrobot']
     # overwrites default tag view page template
-    eztags.default.tag_view.pagelayout: 'pagelayout.html.twig'
+    netgen_tags.default.tag_view.pagelayout: 'pagelayout.html.twig'
     # overwrites default tag related content limit
     eztags.default.tag_view.related_content_list.limit: 10
     # community metrics location ID

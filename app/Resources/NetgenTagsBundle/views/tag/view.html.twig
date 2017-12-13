@@ -1,4 +1,5 @@
-{% extends ezpublish.configResolver.parameter( 'tag_view.pagelayout', 'eztags' ) %}
+{% set pagelayoutTemplate = "@ezdesign/" ~ ezpublish.configResolver.parameter( 'tag_view.pagelayout', 'netgen_tags' ) %}
+{% extends pagelayoutTemplate %}
 
 {% set tag_keyword = netgen_tags_tag_keyword( tag ) %}
 
