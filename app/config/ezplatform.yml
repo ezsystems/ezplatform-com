@@ -13,9 +13,15 @@ ezpublish:
 
     # Siteaccess configuration, with one siteaccess per default
     siteaccess:
-        list: [site]
+        list: [site, admin]
         groups:
             site_group: [site]
+
+            # WARNING: Do not remove or rename this group.
+            # It's used to distinguish common siteaccesses from admin ones.
+            # In case of multisite with multiple admin panels, remember to add any additional admin siteaccess to this group.
+            admin_group: [admin]
+
         default_siteaccess: site
         match:
             URIElement: 1
@@ -23,8 +29,8 @@ ezpublish:
     # System settings, grouped by siteaccess and/or siteaccess group
     system:
         site_group:
-            # Pool to use for cache, needs to be different per repository (database).
-            cache_pool_name: '%cache_pool%'
+            # Cache pool service, needs to be different per repository (database) on multi repository install.
+            cache_service_name: '%cache_pool%'
             # These reflect the current installers, complete installation before you change them. For changing var_dir
             # it is recommended to install clean, then change setting before you start adding binary content, otherwise you'll
             # need to manually modify your database data to reflect this to avoid exceptions.
@@ -41,6 +47,16 @@ ezpublish:
             http_cache:
                 purge_servers: ['%purge_server%']
             design: main
+
+        # WARNING: Do not remove or rename this group.
+        admin_group:
+            cache_service_name: '%cache_pool%'
+            var_dir: var/site
+            languages: [eng-GB]
+            content:
+                default_ttl: '%httpcache_default_ttl%'
+            http_cache:
+                purge_servers: ['%purge_server%']
 
 ezdesign:
     design_list:
