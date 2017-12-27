@@ -7,7 +7,7 @@ services:
     app.packagist_service_provider:
         class: AppBundle\Service\Packagist\PackagistServiceProvider
         arguments:
-            - '@stash.default_cache'
+            - '@ezpublish.cache_pool'
             - '@app.packagist_api_client'
             - '@app.packagist_api_mapper'
             - '%bundles.cache_expiration_time'

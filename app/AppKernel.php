@@ -17,7 +17,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Tedivm\StashBundle\TedivmStashBundle(),
             // Dependencies
             new Hautelook\TemplatedUriBundle\HautelookTemplatedUriBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),

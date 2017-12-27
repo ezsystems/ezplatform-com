@@ -26,26 +26,14 @@ class BundleOrderType extends AbstractType
             ->add('order', ChoiceType::class, array(
                 'placeholder' => 'Sort by',
                 'choices' => array(
-                    'latestUpdate' => 'Latest Update',
-                    'stars' => 'Popularity',
-                    'downloads' => 'Downloads'
+                    'Latest Update' => 'latestUpdate',
+                    'Popularity' => 'stars',
+                    'Downloads' => 'downloads'
                 ),
                 'label' => false,
                 'attr' => array(
-                    'class' => 'form-control'
-                )
+                    'class' => 'form-control',
+                ),
             ));
-    }
-
-    /**
-     * @param \Symfony\Component\OptionsResolver\OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'attr' => array(
-                'id' => 'sort-order'
-            )
-        ));
     }
 }

@@ -35,7 +35,6 @@
         "doctrine/orm": "^2.5",
         "sensio/distribution-bundle": "^5.0.19",
         "incenteev/composer-parameter-handler": "~2.1",
-        "tedivm/stash-bundle": "~0.6",
         "ezsystems/ezpublish-kernel": "~7.0.0",
         "ezsystems/repository-forms": "~2.0.0",
         "ezsystems/ezplatform-solr-search-engine": "~1.5.1",

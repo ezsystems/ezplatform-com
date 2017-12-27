@@ -61,7 +61,7 @@ $(document).ready(function(){
         })
     });
 
-    $("#sort-order select").change(function() {
+    $('form[name="bundle_order"] select').change(function() {
         var searchText = $("#bundles-list-search-query").val();
         if (searchText) {
             var order  = $(this).val();

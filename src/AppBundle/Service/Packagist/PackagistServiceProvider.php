@@ -11,14 +11,14 @@
 
 namespace AppBundle\Service\Packagist;
 
-use Tedivm\StashBundle\Service\CacheService;
 use Packagist\Api\Client;
 use Guzzle\Http\Exception\CurlException;
+use Psr\Cache\CacheItemPoolInterface;
 
 class PackagistServiceProvider implements PackagistServiceProviderInterface
 {
     /**
-     * @var \Tedivm\StashBundle\Service\CacheService
+     * @var \Psr\Cache\CacheItemPoolInterface
      */
     private $cache;
 
@@ -39,13 +39,13 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
 
     /**
      * PackagistServiceProvider constructor.
-     * @param CacheService $cacheService
+     * @param CacheItemPoolInterface $cacheService
      * @param Client $packagistClient
      * @param Mapper $mapper
      * @param $cacheExpirationTime
      */
     public function __construct(
-        CacheService $cacheService,
+        CacheItemPoolInterface $cacheService,
         Client $packagistClient,
         Mapper $mapper,
         $cacheExpirationTime
@@ -60,15 +60,16 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
      * @param string $packageName
      * @param bool $force
      * @return Package
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getPackageDetails($packageName, $force = false)
     {
         try {
             $packageName = trim($packageName);
-            $item = $this->cache->getItem($packageName);
-            if ($force || $item->isMiss()) {
+            $item = $this->cache->getItem($this->removeReservedCharactersFromPackageName($packageName));
+            if ($force || !$item->isHit()) {
                 $packageDetails = $this->callApi($packageName);
-                $item->expiresAfter($this->cacheExpirationTime);
+                $item->expiresAfter((int) $this->cacheExpirationTime);
                 $this->cache->save($item->set($packageDetails));
 
                 return $packageDetails;
@@ -89,5 +90,10 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
         $packageDetails = $this->mapper->createPackageFromPackagistApiResult($this->packagistClient->get($packageName));
 
         return $packageDetails;
+    }
+
+    private function removeReservedCharactersFromPackageName($packageName)
+    {
+        return str_replace(['{', '}', '(', ')', '/', '\\', '@', ':'], '-', $packageName);
     }
 }

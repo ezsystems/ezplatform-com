@@ -32,16 +32,4 @@ class BundleSearchType extends AbstractType
                 ]
             ]);
     }
-
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'attr' => array(
-                'id' => 'search'
-            )
-        ));
-    }
 }
