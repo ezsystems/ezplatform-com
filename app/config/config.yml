@@ -86,7 +86,7 @@ twig:
 assetic:
     debug: '%kernel.debug%'
     use_controller: '%kernel.debug%'
-    bundles: [ EzPlatformAdminUiBundle ]
+    bundles: [ EzPlatformAdminUiBundle, NetgenTagsBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
