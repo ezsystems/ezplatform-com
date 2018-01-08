@@ -1,0 +1,7 @@
+services:
+    ezplatform.adminui.hotjar.js:
+            parent: EzSystems\EzPlatformAdminUi\Component\ScriptComponent
+            arguments:
+                $src: "/assets/js/hotjar.js"
+            tags:
+                - { name: ezplatform.admin_ui.component, group: 'script-head' }
