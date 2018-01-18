@@ -10,6 +10,9 @@
             "homepage": "https://github.com/ezsystems/ezplatform/contributors"
         }
     ],
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/kmadejski/packagist-api.git" }
+    ],
     "replace": {
         "ezsystems/ezpublish-community": "*"
     },
@@ -53,7 +56,7 @@
         "roave/security-advisories": "dev-master",
         "leafo/scssphp": "^0.7",
         "ezsystems/comments-bundle": "~6.0",
-        "knplabs/packagist-api": "dev-master",
+        "knplabs/packagist-api": "dev-fix_exception_when_source_is_null as master",
         "netgen/tagsbundle": "^3.0"
     },
     "require-dev": {
