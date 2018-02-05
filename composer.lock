@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "752bd07aa1b25127590fa1fe6710cba9",
+    "content-hash": "dd25609fad53d587e9bdfde6a9d1ab88",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -2411,16 +2411,16 @@
         },
         {
             "name": "knplabs/packagist-api",
-            "version": "dev-fix_exception_when_source_is_null",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kmadejski/packagist-api.git",
-                "reference": "7fce062b3ab15d9dfca4e1df318addeb751f3668"
+                "url": "https://github.com/KnpLabs/packagist-api.git",
+                "reference": "74dbe93eab7cb80feb8fb9f2294f962d8d37fc71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kmadejski/packagist-api/zipball/7fce062b3ab15d9dfca4e1df318addeb751f3668",
-                "reference": "7fce062b3ab15d9dfca4e1df318addeb751f3668",
+                "url": "https://api.github.com/repos/KnpLabs/packagist-api/zipball/74dbe93eab7cb80feb8fb9f2294f962d8d37fc71",
+                "reference": "74dbe93eab7cb80feb8fb9f2294f962d8d37fc71",
                 "shasum": ""
             },
             "require": {
@@ -2442,6 +2442,7 @@
                     "Packagist\\Api\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2458,10 +2459,7 @@
                 "composer",
                 "packagist"
             ],
-            "support": {
-                "source": "https://github.com/kmadejski/packagist-api/tree/fix_exception_when_source_is_null"
-            },
-            "time": "2018-01-18 14:56:44"
+            "time": "2018-01-19T08:15:53+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -7667,18 +7665,10 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "master",
-            "alias_normalized": "9999999-dev",
-            "version": "dev-fix_exception_when_source_is_null",
-            "package": "knplabs/packagist-api"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "roave/security-advisories": 20,
-        "knplabs/packagist-api": 20
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
