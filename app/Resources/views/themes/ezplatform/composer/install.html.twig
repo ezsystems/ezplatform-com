@@ -25,7 +25,7 @@
     <div class="content">
         {% set dbport = 3333 %}
         {% set dbpassword = 'ezplatform' %}
-        {% set panel_url = 'http://127.0.0.1:8000/ez' %}
+        {% set panel_url = 'http://127.0.0.1:8000/admin' %}
 
         <div class="help">
             <p># Install composer</p>
@@ -38,12 +38,12 @@
             <p># If you do not have a MySQL server ready, you can create one quickly using Docker.</p>
             <p># Note that we are using here the TCP Port <em class="green">{{ dbport }}</em> of the host and
                 <em class="green">ezplatform</em> as root's password for the MariaDB server container.</p>
-            {{ Helper.command('docker run -p ' ~dbport ~ ':3306 --name ezdbcontainer -e MYSQL_ROOT_PASSWORD=' ~ dbpassword ~ ' mariadb:10.1') }}
+            {{ Helper.command('docker run -p ' ~dbport ~ ':3306 --name ezdbcontainer -e MYSQL_ROOT_PASSWORD=' ~ dbpassword ~ ' mariadb:10.2') }}
         </div>
 
         <div class="help">
             <p># Install eZ Platform</p>
-            {{ Helper.command('php -d memory_limit=-1 composer.phar create-project --no-dev ezsystems/ezplatform') }}
+            {{ Helper.command('php -d memory_limit=-1 composer.phar create-project ezsystems/ezplatform') }}
         </div>
 
         <div class="help">
@@ -53,18 +53,18 @@
             <p># If so, just for testing you can ignore it using the option
                 <em class="green">--ignore-platform-reqs</em></p>
             <p># Note that you may also need to set up correctly your date.timezone configuration for your php.</p>
-            {{ Helper.command('php -d memory_limit=-1 composer.phar create-project --no-dev --ignore-platform-reqs ezsystems/ezplatform') }}
+            {{ Helper.command('php -d memory_limit=-1 composer.phar create-project --ignore-platform-reqs ezsystems/ezplatform') }}
         </div>
 
         <div class="help">
             <p># Create the database and import clean data</p>
-            {{ Helper.command('php app/console doctrine:database:create') }}
-            {{ Helper.command('php app/console ezplatform:install clean') }}
+            {{ Helper.command('php bin/console doctrine:database:create') }}
+            {{ Helper.command('php bin/console ezplatform:install clean') }}
         </div>
 
         <div class="help">
             <p># You are now going to run eZ Platform with the built-in php server.</p>
-            {{ Helper.command('SYMFONY_ENV=prod php app/console server:run') }}
+            {{ Helper.command('php bin/console server:run') }}
         </div>
 
         <div class="help">
