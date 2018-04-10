@@ -13,7 +13,12 @@ kernel.internal:
 
 kernel.rest:
     resource: '@EzPublishRestBundle/Resources/config/routing.yml'
-    prefix: /api/ezp/v2
+    prefix: '%ezpublish_rest.path_prefix%'
+
+kernel.rest.options:
+    resource: '@EzPublishRestBundle/Resources/config/routing.yml'
+    prefix: '%ezpublish_rest.path_prefix%'
+    type: rest_options
 
 ezplatform.admin_ui:
     resource: '@EzPlatformAdminUiBundle/Resources/config/routing.yml'
@@ -72,3 +77,11 @@ _ezplatform_tag_related_list_ajax:
 
 _eztagsRoutes:
     resource: '@NetgenTagsBundle/Resources/config/routing.yml'
+
+# Custom redirection from /ez to /admin, feel free to adjust to your needs or remove if you don't need it
+platform1_admin_route:
+    path: /ez
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /admin
+        permanent: true
