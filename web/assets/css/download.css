@@ -411,6 +411,7 @@ section#download .download-table tr.releases.ezpublish {
     border-bottom: 1px solid #ccc;
 }
 
+section#download #composer-option img.hero,
 section#download #platform-sh-option img.rocket {
     margin: 40px 0;
     max-height: 250px;

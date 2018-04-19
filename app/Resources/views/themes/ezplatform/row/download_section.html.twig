@@ -46,7 +46,10 @@
                                     {{ ez_render_field(content, 'composer_description') }}
                                 </div>
                             </div>
-                            {% include "@ezdesign/composer/install.html.twig" only %}
+                            <div class="launch text-center">
+                                <img src="{{ asset('images/pulley-hero.svg', 'ezdesign') }}" alt="Platform.sh" class="hero">
+                                <a href="//doc.ezplatform.com/en/latest/getting_started/install_using_composer/" class="btn btn-primary">Install with composer</a>
+                            </div>
                         </div>
                     {% endif %}
 
