@@ -71,4 +71,69 @@ $(document).ready(function(){
             this.form.submit();
         }
     });
+
+    // Google Analytics
+    var gaItem = function(selector, type, category, action, label) {
+        this.selector = selector;
+        this.type = type;
+        this.category = category;
+        this.action = action;
+        this.label_parent = label && label[0] || '';
+        this.label_selector = label && label[1] || '';
+    };
+
+    var gaEvents = [
+        new gaItem('a.btn.download', 'event', 'Main block', 'Go to download'),
+        new gaItem('.cd-handle', 'event', 'Main block', 'Slider'),
+        new gaItem('#download a[href="#composer-option"]', 'event', 'Downloads', 'Composer tab'),
+        new gaItem('#download #composer-option .description a', 'event', 'Downloads', 'Composer documentation'),
+        new gaItem('#download #composer-option .launch .btn', 'event', 'Downloads', 'Install with Composer'),
+        new gaItem('#download a[href="#ezlaunchpad-option"]', 'event', 'Downloads', 'eZ launchpad tab'),
+        new gaItem('#download #ezlaunchpad-option .description a', 'eZ launchpad documentation'),
+        new gaItem('#download #ezlaunchpad-option .window .content', 'event', 'Downloads', 'eZ launchpad documentation widget'),
+        new gaItem('#download a[href="#platform-sh-option"]', 'event', 'Downloads', 'platform.sh tab'),
+        new gaItem('#download #platform-sh-option .launch .btn', 'event', 'Downloads', 'platform.sh deploy'),
+        new gaItem('#download a[href="#download-option"]', 'event', 'Downloads', 'Download tab'),
+        new gaItem('#download #download-option .download-table tbody tr.releases', 'event', 'Downloads', 'Download code'),
+        new gaItem('#download #download-option .download-table tbody tr.releases', 'event', 'Downloads', 'Download', ['', 'th[scope="row"] span']),
+        new gaItem('#download #download-option .download-table tbody tr.ezpublish a', 'event', 'Downloads', 'Download eZ Publish'),
+        new gaItem('.bundles-list-content button.load-more', 'event', 'Bundles', 'Load More'),
+        new gaItem('.bundles-list-content .bundle-card-line-href a', 'event', 'Bundles', 'Bundle Click', ['.bundle-card-line', 'h2 .ezstring-field'])
+    ];
+
+    $(gaEvents).each(function (i, item) {
+        $(item.selector).on('click', function() {
+            var labelText;
+
+            if (item.label_selector.length === 0) {
+                ga('send', item.type, item.category, item.action);
+                return;
+            }
+
+            if (item.label_parent.length > 0) {
+                labelText = $(this).parents(item.label_parent).find(item.label_selector).html();
+            } else {
+                labelText = $(this).find(item.label_selector).html();
+            }
+            ga('send', item.type, item.category, item.action, labelText);
+        });
+    });
+
+    var form = document.getElementsByName('bundle_search')[0];
+    form && form.addEventListener('submit', function(event) {
+        var label;
+        event.preventDefault();
+        setTimeout(submitForm, 1000);
+        var formSubmitted = false;
+
+        function submitForm() {
+            if (!formSubmitted) {
+                formSubmitted = true;
+                form.submit();
+            }
+        }
+
+        label = $('#bundles-list-search-query').val();
+        ga('send', 'event', 'Bundles', 'Search', label, { hitCallback: submitForm });
+    });
 });
