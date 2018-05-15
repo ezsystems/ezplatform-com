@@ -4,7 +4,6 @@
 }
 
 .bundles-list-header {
-    height: 210px;
     background: #f15a22;
     color: #fff;
     text-align: center;
@@ -20,6 +19,13 @@
 .bundles-list-header .description {
     font-size: 23px;
     font-weight: 600;
+    padding-bottom: 40px;
+}
+
+.bundles-list-header .description a,
+.bundles-list-header .description a:hover {
+    color: #fff;
+    text-decoration: underline;
 }
 
 .bundles-list-search {
