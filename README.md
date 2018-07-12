@@ -7,11 +7,11 @@ eZPlatform.com - eZ Systems' Developer Hub for the Open Source PHP CMS eZ Platfo
 
 This repo contains the source files for the ezplatform.com website, built on eZ Platform and hosted by the eZ Systems team.
 
-New to eZ Platform? Read more here: https://doc.ez.no/display/DEVELOPER/
+New to eZ Platform? Read more here: https://doc.ezplatform.com/en/latest/
 
 ## Installation
 
-For more informations about ezplatform installation, please read the [dedicated documentation](https://github.com/ezsystems/ezplatform/blob/master/INSTALL.md).
+For more informations about ezplatform installation, please read the [dedicated documentation](https://github.com/ezsystems/ezplatform/blob/master/README.md).
  
 This application provides an installer to retrieve data directly from ezplatform.com backups.
 
