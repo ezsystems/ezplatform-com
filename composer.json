@@ -52,6 +52,9 @@
         "white-october/pagerfanta-bundle": "^1.2",
         "roave/security-advisories": "dev-master",
         "leafo/scssphp": "^0.7.6",
+        "ezsystems/comments-bundle": "~6.0",
+        "knplabs/packagist-api": "^1.5.1",
+        "netgen/tagsbundle": "^3.0",
         "symfony/thanks": "^1.0.7"
     },
     "require-dev": {
