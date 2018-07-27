@@ -58,6 +58,14 @@ ezpublish:
             http_cache:
                 purge_servers: ['%purge_server%']
 
+    url_alias:
+        slug_converter:
+            transformation: 'urlalias_lowercase'
+
 ezdesign:
     design_list:
         main: [ezplatform]
+
+ez_platform_standard_design:
+    # makes Kernel default templates (in EzPublishCoreBundle/Resources/views) part of standard Design
+    override_kernel_templates: false
