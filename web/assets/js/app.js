@@ -94,8 +94,8 @@ $(document).ready(function(){
         new gaItem('#download a[href="#platform-sh-option"]', 'event', 'Downloads', 'platform.sh tab'),
         new gaItem('#download #platform-sh-option .launch .btn', 'event', 'Downloads', 'platform.sh deploy'),
         new gaItem('#download a[href="#download-option"]', 'event', 'Downloads', 'Download tab'),
-        new gaItem('#download #download-option .download-table tbody tr.releases', 'event', 'Downloads', 'Download code'),
-        new gaItem('#download #download-option .download-table tbody tr.releases', 'event', 'Downloads', 'Download', ['', 'th[scope="row"] span']),
+        new gaItem('#download #download-option .download-table tbody tr', 'event', 'Downloads', 'Download code'),
+        new gaItem('#download #download-option .download-table tbody tr', 'event', 'Downloads', 'Download', ['', 'th[scope="row"] span']),
         new gaItem('#download #download-option .download-table tbody tr.ezpublish a', 'event', 'Downloads', 'Download eZ Publish'),
         new gaItem('.bundles-list-content button.load-more', 'event', 'Bundles', 'Load More'),
         new gaItem('.bundles-list-content .bundle-card-line-href a', 'event', 'Bundles', 'Bundle Click', ['.bundle-card-line', 'h2 .ezstring-field'])
