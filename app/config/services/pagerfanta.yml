@@ -1,0 +1,11 @@
+services:
+    app.pagerfanta.template.bundles_list:
+        class: AppBundle\View\Template\BundlesListTemplate
+
+    pagerfanta.view.bundles_list:
+        class: Pagerfanta\View\DefaultView
+        public: false
+        arguments:
+            - "@app.pagerfanta.template.bundles_list"
+        tags:
+            - { name: pagerfanta.view, alias: bundles_list }

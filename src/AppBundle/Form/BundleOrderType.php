@@ -6,13 +6,11 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class BundleOrderType extends AbstractType
 {
@@ -28,7 +26,7 @@ class BundleOrderType extends AbstractType
                 'choices' => array(
                     'Latest Update' => 'latestUpdate',
                     'Popularity' => 'stars',
-                    'Downloads' => 'downloads'
+                    'Downloads' => 'downloads',
                 ),
                 'label' => false,
                 'attr' => array(

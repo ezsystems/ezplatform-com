@@ -62,10 +62,8 @@ jQuery(document).ready(function(){
     });
 
     $("button.load-more").on('click', function() {
-       var url = $(this).data('url');
        var page = $(this).data('page');
        var order = $("#order_order").val();
-       var searchText = $(this).data('searchText');
 
        if (order === undefined || order === '') {
            order = 'default';
@@ -78,12 +76,8 @@ jQuery(document).ready(function(){
        $button.hide();
        $parent.append('<div class="button-load-more-progress"></div>').fadeIn();
 
-       if (searchText !== undefined && searchText !== '') {
-           url = url + '/' + searchText + '/' + page + '/' + order;
-       }
-       else {
-           url = url + '/' + page + '/' + order;
-       }
+       var url = $(this).data('url');
+       url = url + '/' + page + '/' + order;
 
         $.ajax({
             type: 'GET',
@@ -108,12 +102,13 @@ jQuery(document).ready(function(){
 
     $('form[name="bundle_order"] select').change(function() {
         var searchText = $("#bundles-list-search-query").val();
+        var page = parseInt($(".pagerfanta span.current").html());
+        var order  = $(this).val();
         if (searchText) {
-            var order  = $(this).val();
-            window.location.href = '/Bundles/search/' + searchText + '/' + order;
+            window.location.href = '/Bundles/search/' + searchText + '/' + page + '/' + order;
         }
         else {
-            this.form.submit();
+            window.location.href = '/Bundles/' + page + '/' + order;
         }
     });
 

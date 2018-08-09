@@ -8,16 +8,15 @@ use AppBundle\QueryType\BundlesQueryType;
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
-use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Query;
-use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
+use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BundleController
 {
@@ -101,69 +100,54 @@ class BundleController
     }
 
     /**
-     * Renders full view `bundle_list` with first page elements.
+     * Renders full view `bundle_list`.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param int $page
+     * @param string $order
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Twig\Error\Error
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      */
-    public function showBundlesListAction(Request $request)
+    public function showBundlesListAction(Request $request, $page = 1, $order = 'default', $searchText = '')
     {
         $orderForm = $this->formFactory->create(BundleOrderType::class);
-
-        $order = 'default';
-
         $orderForm->handleRequest($request);
         if ($orderForm->isSubmitted() && $orderForm->isValid()) {
             $order = $orderForm->get('order')->getData();
         }
 
-        $searchResults = $this->getLocations(0, $order);
+        $searchForm = $this->formFactory->create(BundleSearchType::class);
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted() || $searchForm->isValid()) {
+            $searchText = $searchForm->get('search')->getData();
+        }
+
+        // Get content of Bundles List page
         $query = new Query();
         $criterion = new Query\Criterion\LocationId($this->bundlesListLocationId);
         $query->filter = $criterion;
         $contentSearchResult = $this->searchService->findContent($query);
         $content = $contentSearchResult->searchHits[0]->valueObject;
-        $bundles = $this->getList($searchResults);
+
+        // Create pager
+        $adapter = new ContentSearchHitAdapter($this->getBundlesQuery(0, $order, $searchText), $this->searchService);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage($this->bundlesListCardsLimit);
+        $pagerfanta->setCurrentPage($page);
+
+        // Get list of bundles using already fetched data from pager
+        $bundles = $this->getList($adapter->getSlice(($page - 1) * $this->bundlesListCardsLimit, $this->bundlesListCardsLimit));
 
         return $this->templating->renderResponse('@ezdesign/full/bundle_list.html.twig', [
             'items' => $bundles,
             'content' => $content,
             'viewType' => 'full',
-            'extraParams' => [
-                'totalCount' => $searchResults->totalCount,
-                'page' => 1,
-            ],
             'order' => $order,
-        ]);
-    }
-
-    /**
-     * Renders `bundle_list` partial `list` view for given $page.
-     *
-     * @param int $page
-     * @param string|null $order
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getBundlesListAction($page, $order = null)
-    {
-        $offset = $page * $this->bundlesListCardsLimit - $this->bundlesListCardsLimit;
-        $searchResults = $searchResults = $this->getLocations($offset, $order);
-        $bundles = $this->getList($searchResults);
-
-        $renderedContent = $this->templating->render('@ezdesign/parts/bundle_list/list.html.twig', [
-            'items' => $bundles,
-            'viewType' => 'line',
-            'extraParams' => [
-                'totalCount' => $searchResults->totalCount,
-                'page' => $page,
-            ],
-        ]);
-
-        $showMoreButton = $searchResults->totalCount > ($offset + count($searchResults->searchHits)) ? true : false;
-
-        return new JsonResponse([
-            'html' => $renderedContent,
-            'showLoadMoreButton' => $showMoreButton,
+            'pager' => $pagerfanta,
+            'searchText' => $searchText,
         ]);
     }
 
@@ -171,6 +155,7 @@ class BundleController
      * Validates search query.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function searchBundlesAction(Request $request)
@@ -178,84 +163,25 @@ class BundleController
         $searchForm = $this->formFactory->create(BundleSearchType::class);
         $searchForm->handleRequest($request);
 
-        if ( !$searchForm->isSubmitted() || !$searchForm->isValid()) {
+        if (!$searchForm->isSubmitted() || !$searchForm->isValid()) {
             return new RedirectResponse($this->aliasRouter->generate('ez_urlalias',
                 ['locationId' => $this->bundlesListLocationId], UrlGeneratorInterface::ABSOLUTE_PATH));
         }
         $searchText = $searchForm->get('search')->getData();
 
-        return new RedirectResponse($this->router->generate('_ezplatform_bundles_search_order_list', [
-            'searchText' => $searchText,
+        return new RedirectResponse($this->router->generate('_ezplatform_bundles_search', [
+            'page' => 1,
             'order' => 'default',
+            'searchText' => $searchText,
         ]));
     }
 
     /**
-     * Renders full view `bundle_list` for the first page with bundles matched query
-     *
-     * @param string $searchText
-     * @param string|null $order
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function getOrderedSearchBundlesListAction($searchText, $order = null)
-    {
-        $searchResults = $searchResults = $this->getLocations(0, $order, $searchText);
-        $query = new Query();
-        $criterion = new Query\Criterion\LocationId($this->bundlesListLocationId);
-        $query->filter = $criterion;
-        $contentSearchResult = $this->searchService->findContent($query);
-        $content = $contentSearchResult->searchHits[0]->valueObject;
-        $bundles = $this->getList($searchResults);
-
-        return $this->templating->renderResponse('@ezdesign/full/bundle_list.html.twig', [
-            'items' => $bundles,
-            'content' => $content,
-            'viewType' => 'full',
-            'extraParams' => [
-                'totalCount' => $searchResults->totalCount,
-                'page' => 1,
-            ],
-            'search' => $searchText,
-            'order' => $order,
-        ]);
-    }
-
-    /**
-     * Renders `bundle_list` partial `list` view for given $searchText, $page and $order.
-     *
-     * @param string $searchText
-     * @param int $page
-     * @param string|null $order
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getOrderedSearchBundlesAction($searchText, $page = 1, $order = null)
-    {
-        $offset = $page * $this->bundlesListCardsLimit - $this->bundlesListCardsLimit;
-        $searchResults = $searchResults = $this->getLocations($offset, $order, $searchText);
-        $bundles = $this->getList($searchResults);
-
-        $renderedContent = $this->templating->render('@ezdesign/parts/bundle_list/list.html.twig', [
-            'items' => $bundles,
-            'viewType' => 'line',
-            'extraParams' => [
-                'totalCount' => $searchResults->totalCount,
-                'page' => $page,
-            ],
-            'search' => $searchText,
-            'order' => $order,
-        ]);
-
-        $showMoreButton = $searchResults->totalCount > ($offset + count($searchResults->searchHits)) ? true : false;
-
-        return new JsonResponse([
-            'html' => $renderedContent,
-            'showLoadMoreButton' => $showMoreButton,
-        ]);
-    }
-
-    /**
      * @param string $order
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Twig\Error\Error
      */
     public function renderSortOrderBundleForm($order)
     {
@@ -273,7 +199,10 @@ class BundleController
 
     /**
      * @param string $searchText
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Twig\Error\Error
      */
     public function renderSearchBundleForm($searchText)
     {
@@ -290,36 +219,34 @@ class BundleController
     }
 
     /**
-     * Prepares and runs search query.
-     *
      * @param int $offset
-     * @param string|null $order
+     * @param null $order
      * @param string $searchText
-     * @return \eZ\Publish\API\Repository\Values\Content\Search\SearchResult
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\LocationQuery
      */
-    private function getLocations($offset = 0, $order = null, $searchText = '')
+    private function getBundlesQuery($offset = 0, $order = null, $searchText = '')
     {
-        $query = $this->bundlesQueryType->getQuery([
+        return $this->bundlesQueryType->getQuery([
             'parent_location_id' => $this->bundlesListLocationId,
             'limit' => $this->bundlesListCardsLimit,
             'offset' => $offset,
             'order' => $order,
             'search' => $searchText,
         ]);
-
-        return $this->searchService->findLocations($query);
     }
 
     /**
      * Returns list of bundles with package details for given $searchResult set.
      *
-     * @param \eZ\Publish\API\Repository\Values\Content\Search\SearchResult $searchResults
+     * @param array $searchHits
+     *
      * @return array
      */
-    private function getList(SearchResult $searchResults)
+    private function getList(array $searchHits)
     {
         $bundles = [];
-        foreach ($searchResults->searchHits as $searchHit) {
+        foreach ($searchHits as $searchHit) {
             $bundles[] = [
                 'bundle' => $searchHit,
                 'packageDetails' => $this->packagistServiceProvider->getPackageDetails($searchHit->valueObject->contentInfo->name),

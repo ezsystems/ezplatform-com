@@ -15,7 +15,6 @@
             <div class="container">
                 <div class="form-row align-items-center">
                     <div class="col-12">
-                        {% set searchText = search is defined ? search : '' %}
                         {{ render_esi(controller('app.controller.bundle:renderSearchBundleForm', {"searchText": searchText})) }}
                     </div>
                 </div>
@@ -49,12 +48,8 @@
                     }
                 } only %}
                 <div class="row">
-                    <div class="button-load-more col-xs-12 col-md-6 offset-3">
-                        {% if search is defined and search is not empty and extraParams.totalCount > items|length %}
-                            <button class="load-more" data-url="/ezplatform/bundles/search" data-page="2" data-target=".bundles-list-container" data-search-text="{{ search }}">Load more</button>
-                        {% elseif extraParams.totalCount > items|length %}
-                            <button class="load-more" data-url="/ezplatform/bundles/load/page" data-page="2" data-target=".bundles-list-container">Load more</button>
-                        {% endif %}
+                    <div class="button-load-more mx-auto pagerfanta">
+                        {{ pagerfanta(pager, 'bundles_list') }}
                     </div>
                 </div>
             </div>

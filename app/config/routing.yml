@@ -31,6 +31,7 @@ _ezplatformRepositoryFormsRoutes:
 fos.js_routing:
     resource: '@FOSJsRoutingBundle/Resources/config/routing/routing.xml'
 
+# BLOG
 _ezplatform_blog_ajax:
     path: /ezplatform/blog/load/page/{page}/{order}
     defaults: { _controller: app.controller.blog:showBlogPostsAction }
@@ -38,34 +39,28 @@ _ezplatform_blog_ajax:
     requirements:
         "page": '\d+'
 
-_ezplatform_bundles_list_ajax:
-    path: /ezplatform/bundles/load/page/{page}/{order}
-    defaults: { _controller: app.controller.bundle:getBundlesListAction, page: 1, order: 'default' }
+
+# BUNDLES LIST
+_ezplatform_bundles_list:
+    path: /Bundles/{page}/{order}/{searchText}
+    defaults: { _controller: app.controller.bundle:showBundlesListAction, page: 1, order: 'default', searchText: '' }
     methods: [GET]
     requirements:
-        "page": '\d+'
+        "order": 'default|latestUpdate|stars|downloads'
+
+_ezplatform_bundles_search_init:
+    path: /Bundles/search/
+    defaults: { _controller: app.controller.bundle:searchBundlesAction, page: 1, order: 'default' }
+    methods: [POST]
+    requirements:
         "order": 'default|latestUpdate|stars|downloads'
 
 _ezplatform_bundles_search:
-    path: /Bundles/search/
-    defaults: { _controller: app.controller.bundle:searchBundlesAction }
-    methods: [POST]
+    path: /Bundles/search/{searchText}/{page}/{order}
+    defaults: { _controller: app.controller.bundle:showBundlesListAction, page: 1, order: 'default', searchText: '' }
+    methods: [GET, POST]
 
-_ezplatform_bundles_search_order_list:
-    path: /Bundles/search/{searchText}/{order}
-    defaults: { _controller: app.controller.bundle:getOrderedSearchBundlesListAction, order: 'default' }
-    methods: [GET]
-    requirements:
-        "order": 'default|latestUpdate|stars|downloads'
-
-_ezplatform_bundles_search_ajax:
-    path: /ezplatform/bundles/search/{searchText}/{page}/{order}
-    defaults: { _controller: app.controller.bundle:getOrderedSearchBundlesAction, page: 1, order: 'default'}
-    methods: [GET]
-    requirements:
-        "page": '\d+'
-        "order": 'default|latestUpdate|stars|downloads'
-
+# TAGS
 _ezplatform_tag_related_list_ajax:
     path: /ezplatform/tag/{tagId}/related/page/{page}/{order}
     defaults: { _controller: app.controller.tag:getTagRelatedContentAction }
