@@ -5,7 +5,7 @@
         <div class="bundles-list-header">
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="description">{{ ez_render_field(content, 'description') }}</div>
                     </div>
                 </div>
@@ -13,28 +13,34 @@
         </div>
         <div class="bundles-list-search">
             <div class="container">
-                <div class="col-xs-12">
-                    {% set searchText = search is defined ? search : '' %}
-                    {{ render_esi(controller('app.controller.bundle:renderSearchBundleForm', {"searchText": searchText})) }}
+                <div class="form-row align-items-center">
+                    <div class="col-12">
+                        {% set searchText = search is defined ? search : '' %}
+                        {{ render_esi(controller('app.controller.bundle:renderSearchBundleForm', {"searchText": searchText})) }}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="bundles-list-content">
             <div class="container">
-                <div class="col-xs-12 bundles-list-container">
-                    <div class="row">
-                        <div class="col-xs-12 col-md-9 bundles-list-keyword">
-                            {% if search is defined and search is not empty %}
-                                <h2>Search / Keyword: {{ search }}</h2>
-                            {% else %}
-                                <h2>All Bundles</h2>
-                            {% endif %}
-                        </div>
-                        <div class="col-xs-12 col-md-3 sort-container">
-                            {% set sortingOrder = order is defined ? order : 'default' %}
-                            {{ render_esi(controller('app.controller.bundle:renderSortOrderBundleForm', {"order": sortingOrder})) }}
+                <div class="row">
+                    <div class="col-12 bundles-list-container">
+                        <div class="row align-items-center">
+                            <div class="col-xs-12 col-md-9 bundles-list-keyword">
+                                {% if search is defined and search is not empty %}
+                                    <h2>Search / Keyword: {{ search }}</h2>
+                                {% else %}
+                                    <h2>All Bundles</h2>
+                                {% endif %}
+                            </div>
+                            <div class="col-xs-12 col-md-3 sort-container">
+                                {% set sortingOrder = order is defined ? order : 'default' %}
+                                {{ render_esi(controller('app.controller.bundle:renderSortOrderBundleForm', {"order": sortingOrder})) }}
+                            </div>
                         </div>
                     </div>
+                </div>
+
                 {% include '@ezdesign/parts/bundle_list/list.html.twig' with {
                     'items': items,
                     'viewType': 'line',
@@ -42,9 +48,8 @@
                         'page': 1
                     }
                 } only %}
-                </div>
                 <div class="row">
-                    <div class="button-load-more col-xs-12 col-md-6 col-md-offset-3">
+                    <div class="button-load-more col-xs-12 col-md-6 offset-3">
                         {% if search is defined and search is not empty and extraParams.totalCount > items|length %}
                             <button class="load-more" data-url="/ezplatform/bundles/search" data-page="2" data-target=".bundles-list-container" data-search-text="{{ search }}">Load more</button>
                         {% elseif extraParams.totalCount > items|length %}

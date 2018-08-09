@@ -6,24 +6,6 @@
     {% endif %}
 {% endblock %}
 
-{% block head_scripts %}
-    {% javascripts
-        '@js_default'
-        '@js_prism'
-    %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
-
-{% block head_styles %}
-    {% stylesheets filter='cssrewrite'
-        '@css_default'
-        '@css_prism'
-    %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}">
-    {% endstylesheets %}
-{% endblock %}
-
 {% block content %}
     <section class="blog-post">
         <div class="blog-post-header">

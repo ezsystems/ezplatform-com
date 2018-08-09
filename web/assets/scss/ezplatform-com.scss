@@ -1,39 +1,39 @@
 @font-face {
     font-family: "MavenPro";
-    src: url("../fonts/MavenPro-Regular.eot"),
-    url("../fonts/MavenPro-Regular.ttf") format("truetype"),
-    url("../fonts/MavenPro-Regular.svg#MavenPro-Regular") format("svg"),
-    url("../fonts/MavenPro-Regular.woff") format("woff");
+    src: url("/assets/fonts/MavenPro-Regular.eot"),
+    url("/assets/fonts/MavenPro-Regular.ttf") format("truetype"),
+    url("/assets/fonts/MavenPro-Regular.svg#MavenPro-Regular") format("svg"),
+    url("/assets/fonts/MavenPro-Regular.woff") format("woff");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "MavenPro";
-    src: url("../fonts/MavenPro-Medium.eot"),
-    url("../fonts/MavenPro-Medium.ttf") format("truetype"),
-    url("../fonts/MavenPro-Medium.svg#MavenPro-Medium") format("svg"),
-    url("../fonts/MavenPro-Medium.woff") format("woff");
+    src: url("/assets/fonts/MavenPro-Medium.eot"),
+    url("/assets/fonts/MavenPro-Medium.ttf") format("truetype"),
+    url("/assets/fonts/MavenPro-Medium.svg#MavenPro-Medium") format("svg"),
+    url("/assets/fonts/MavenPro-Medium.woff") format("woff");
     font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
     font-family: "MavenPro";
-    src: url("../fonts/MavenPro-Bold.eot"),
-    url("../fonts/MavenPro-Bold.ttf") format("truetype"),
-    url("../fonts/MavenPro-Bold.svg#MavenProBold") format("svg"),
-    url("../fonts/MavenPro-Bold.woff") format("woff");
+    src: url("/assets/fonts/MavenPro-Bold.eot"),
+    url("/assets/fonts/MavenPro-Bold.ttf") format("truetype"),
+    url("/assets/fonts/MavenPro-Bold.svg#MavenProBold") format("svg"),
+    url("/assets/fonts/MavenPro-Bold.woff") format("woff");
     font-weight: 700;
     font-style: normal;
 }
 
 @font-face {
     font-family: "MavenPro";
-    src: url("../fonts/MavenPro-Black.eot"),
-    url("../fonts/MavenPro-Black.ttf") format("truetype"),
-    url("../fonts/MavenPro-Black.svg#MavenProBlack") format("svg"),
-    url("../fonts/MavenPro-Black.woff") format("woff");
+    src: url("/assets/fonts/MavenPro-Black.eot"),
+    url("/assets/fonts/MavenPro-Black.ttf") format("truetype"),
+    url("/assets/fonts/MavenPro-Black.svg#MavenProBlack") format("svg"),
+    url("/assets/fonts/MavenPro-Black.woff") format("woff");
     font-weight: 800;
     font-style: normal;
 }
@@ -290,4 +290,12 @@ footer .footer-social i.fa {
     font-size: 17px;
     color: #c34111;
     font-weight: 600;
+}
+
+.navbar {
+    padding: 0;
+}
+
+.navbar-brand {
+    padding-top: 15px;
 }

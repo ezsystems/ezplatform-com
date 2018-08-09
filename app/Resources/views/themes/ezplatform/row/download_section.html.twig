@@ -3,33 +3,33 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2 col-xs-12">
-                <ul class="nav nav-pills nav-justified">
+            <div class="col-md-8 offset-2 col-xs-12">
+                <ul class="nav nav-pills nav-justified" role="tablist">
                     {% if not ez_is_field_empty(content, 'composer_description') %}
-                        <li class="nav active">
-                            <a href="#composer-option" data-toggle="tab">
+                        <li class="nav-item">
+                            <a href="#composer-option" class="nav-link active show" data-toggle="tab" role="tab">
                                 <img src="{{ asset('images/composer.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">Composer</div>
                             </a>
                         </li>
                     {% endif %}
-                    <li class="nav">
-                        <a href="#ezlaunchpad-option" data-toggle="tab">
+                    <li class="nav-item">
+                        <a href="#ezlaunchpad-option" class="nav-link" data-toggle="tab" role="tab">
                             <img src="{{ asset('images/ez-launchpad.svg', 'ezdesign') }}" alt="eZ Launchpad" class="download">
                             <div class="label">eZ Launchpad</div>
                         </a>
                     </li>
                     {% if not ez_is_field_empty(content, 'platform_sh_description') %}
-                        <li class="nav">
-                            <a href="#platform-sh-option" data-toggle="tab">
+                        <li class="nav-item">
+                            <a href="#platform-sh-option" class="nav-link" data-toggle="tab" role="tab">
                                 <img src="{{ asset('images/platform-sh-logo.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">platform.sh</div>
                             </a>
                         </li>
                     {% endif %}
                     {% if not ez_is_field_empty(content, 'download_description') %}
-                        <li class="nav">
-                            <a href="#download-option" data-toggle="tab">
+                        <li class="nav-item">
+                            <a href="#download-option" class="nav-link" data-toggle="tab" role="tab">
                                 <img src="{{ asset('images/download.svg', 'ezdesign') }}" alt="Download" class="download">
                                 <div class="label">Download</div>
                             </a>
