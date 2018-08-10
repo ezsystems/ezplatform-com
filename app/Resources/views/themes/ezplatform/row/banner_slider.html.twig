@@ -16,3 +16,7 @@
     <h1 class="ez-platform-label">eZ Platform</h1>
     <a class="btn btn-primary download" href="#download">DOWNLOAD EZ PLATFORM</a>
 </figure>
+
+{% if not ez_is_field_empty( content, 'text' ) %}
+    <div class="banner-slider-text">{{ ez_render_field(content, 'text') }}</div>
+{% endif %}
