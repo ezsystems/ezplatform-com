@@ -118,8 +118,9 @@ runtime:
         - imagick
         - readline
         - redis
+        - newrelic
         #- apcu
-        #- name: 'blackfire'
-        #  configuration:
-        #      server_id: 'xxxx-xxx-xxx-xxx-xxxx'
-        #      server_token: 'xxxx'
+        - name: 'blackfire'
+          configuration:
+              server_id: 'e6da67e2-dadd-48f5-8305-003d178d9489'
+              server_token: '4c7b222188841d1d308221ab2df9a4ea7994cbfb71b71fb8ef58692488050463'
