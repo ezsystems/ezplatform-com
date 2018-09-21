@@ -1,0 +1,25 @@
+{% extends '@ezdesign/pagelayout.html.twig' %}
+
+{% block main %}
+    <main class="white-background">
+{% endblock %}
+
+{% block content %}
+    <div class="container article">
+        <h1>{{ ez_content_name(content) }}</h1>
+
+        {% if not ez_is_field_empty(content, 'intro') %}
+            <div class="article-intro">
+                {{ ez_render_field(content, 'intro') }}
+            </div>
+        {% endif %}
+
+        <div class="article-body">
+            {{ ez_render_field(content, 'body') }}
+        </div>
+
+    </div>
+    <div class="iframe-container">
+        <iframe src="{{ productFeedbackIframeUrl }}" allowfullscreen="" frameBorder="0"></iframe>
+    </div>
+{% endblock %}

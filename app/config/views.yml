@@ -49,6 +49,10 @@ ezpublish:
                         template: "@ezdesign/full/community_metrics.html.twig"
                         match:
                             Id\Location: '%community_metrics.location_id%'
+                    product_feedback:
+                        template: "@ezdesign/full/product_feedback.html.twig"
+                        match:
+                            Id\Location: '%product_feedback.location_id%'
                     article:
                         template: "@ezdesign/full/article.html.twig"
                         match:
