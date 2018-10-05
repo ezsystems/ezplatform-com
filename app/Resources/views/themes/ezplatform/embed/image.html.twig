@@ -18,8 +18,9 @@
             }
         }) }}
     {% endif %}
-    <div class="embed-image-caption">
-        {{ ez_render_field(content, 'caption') }}
-    </div>
+    {% if not ez_is_field_empty(content, 'caption') %}
+        <div class="embed-image-caption">
+            {{ ez_render_field(content, 'caption') }}
+        </div>
+    {% endif %}
 </div>
-
