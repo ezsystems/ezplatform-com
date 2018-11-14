@@ -112,6 +112,10 @@ jQuery(document).ready(function(){
         }
     });
 
+    $('#top-banner .ezrichtext-field .ezbutton').click(function() {
+        $('#download a[href="#composer-option"]').click();
+    });
+
     // Google Analytics
     var gaItem = function(selector, type, category, action, label) {
         this.selector = selector;

@@ -1,12 +1,13 @@
 section#download {
+    background-color: #f9fafa;
+
     h2 {
-        margin-top: 90px;
+        padding-top: 90px;
         margin-bottom: 70px;
         color: #f15a22;
         font-size: 45px;
         font-weight: 300;
         text-align: center;
-        text-transform: uppercase;
     }
 
     h3 {
@@ -20,6 +21,7 @@ section#download {
     li.nav-item,
     div.details {
         border: 3px solid #f7f5f2;
+        background: #fff;
     }
 
     li.nav-item img {
@@ -28,6 +30,7 @@ section#download {
 
     div.details {
         margin-top: 20px;
+        background: #fff;
     }
 
     div.details h3 {
@@ -50,13 +53,28 @@ section#download {
     .nav-pills > li > a.active:focus,
     .nav-pills > li > a.active:hover {
         color: #fff;
-        background: #f7f5f2;
+        background: #fc5a2d;
         border-radius: 0;
+
+        .label {
+            color: #fff;
+        }
     }
 
     .nav-justified > li {
         float: none;
         width: 25%;
+    }
+
+    @media (max-width: 768px) {
+        .nav {
+            display: block;
+        }
+
+        .nav-justified>li {
+            display: block;
+            width: 100%;
+        }
     }
 
     .nav-justified {
@@ -326,6 +344,7 @@ section#download {
     .download-table tr.releases {
         border-left: 1px solid #ccc;
         border-right: 1px solid #ccc;
+        background: #fff;
     }
 
     .download-table.table-striped > tbody > tr:nth-of-type(odd) {

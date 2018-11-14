@@ -1,0 +1,24 @@
+ezpublish:
+    system:
+        admin_group:
+            fieldtypes:
+                ezrichtext:
+                    custom_tags: [ezbutton]
+    ezrichtext:
+        custom_tags:
+            ezbutton:
+                template: '@ezdesign/fields/ezrichtext/custom_tags/ezbutton.html.twig'
+                icon: '/bundles/ezplatformadminui/img/ez-icons.svg#form'
+                attributes:
+                    url:
+                        type: 'string'
+                        required: true
+                    title:
+                        type: 'string'
+                        required: true
+                    target:
+                        type: 'string'
+                        required: false
+                    class:
+                        type: 'string'
+                        required: false

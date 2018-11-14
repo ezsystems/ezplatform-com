@@ -155,8 +155,8 @@ a.btn.btn-outline:visited {
 }
 
 .navbar {
-    border-bottom: 1px solid #d3d3d3;
     margin-bottom: 0;
+    background-color: #f9fafa;
 }
 
 .navbar-brand,
@@ -179,6 +179,11 @@ a.btn.btn-outline:visited {
 
 .navbar-toggle {
     margin-top: 12px;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 section {
@@ -324,4 +329,28 @@ footer .footer-social i.fa {
 .banner-slider-text a {
     color: #fff;
     text-decoration: underline;
+}
+
+section#top-banner {
+    .text-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+
+        h2.field-title {
+            font-weight: 900;
+            font-size: 50px;
+            padding-bottom: 25px;
+        }
+
+        .field-subtitle {
+            font-size: 23px;
+
+            .ezbutton {
+                font-size: 19px;
+                font-weight: 500;
+            }
+        }
+    }
 }

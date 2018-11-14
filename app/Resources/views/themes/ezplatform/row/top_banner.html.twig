@@ -1,0 +1,22 @@
+<section id="top-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-xs-12 text-container">
+                <h2 class="field-title">{{ ez_render_field(content, 'title') }}</h2>
+                <div class="field-subtitle">
+                    {{ ez_render_field(content, 'subtitle') }}
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-12">
+                <div class="field-image">
+                    {{ ez_render_field(content, 'image', {
+                        parameters: {
+                            alias: 'original',
+                            class: 'img-fluid'
+                        }
+                    }) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

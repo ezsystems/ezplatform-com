@@ -83,6 +83,10 @@ ezpublish:
                         controller: app.controller.download:showAction
                         match:
                             Identifier\ContentType: download_section
+                    top_banner:
+                        template: "@ezdesign/row/top_banner.html.twig"
+                        match:
+                            Identifier\ContentType: top_banner
 
                 blog:
                     author:

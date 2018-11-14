@@ -1,0 +1,7 @@
+# ezbutton
+ezrichtext.custom_tags.ezbutton.label: Button
+ezrichtext.custom_tags.ezbutton.description: ''
+ezrichtext.custom_tags.ezbutton.attributes.url.label: Url
+ezrichtext.custom_tags.ezbutton.attributes.title.label: Title
+ezrichtext.custom_tags.ezbutton.attributes.target.label: Target
+ezrichtext.custom_tags.ezbutton.attributes.class.label: 'Custom CSS class'
