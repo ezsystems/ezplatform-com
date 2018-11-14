@@ -1,24 +1,24 @@
 jQuery(document).ready(function(){
-    var $ = jQuery;
+    const $ = jQuery;
     // credits to http://codyhouse.co/gem/css-jquery-image-comparison-slider/
-    var drags = function (dragElement, resizeElement, container) {
+    const drags = function (dragElement, resizeElement, container) {
         dragElement.on('mousedown vmousedown', function (e) {
             dragElement.addClass('draggable');
             resizeElement.addClass('resizable');
-            var dragWidth = dragElement.outerWidth(),
+            const dragWidth = dragElement.outerWidth(),
                 xPosition = dragElement.offset().left + dragWidth - e.pageX,
                 containerOffset = container.offset().left,
                 containerWidth = container.outerWidth(),
                 minLeft = containerOffset + 10,
                 maxLeft = containerOffset + containerWidth - dragWidth - 10;
             dragElement.parents().on('mousemove vmousemove', function (e) {
-                var leftValue = e.pageX + xPosition - dragWidth;
+                let leftValue = e.pageX + xPosition - dragWidth;
                 if(leftValue < minLeft ) {
                     leftValue = minLeft;
                 } else if ( leftValue > maxLeft) {
                     leftValue = maxLeft;
                 }
-                var widthValue = (leftValue + dragWidth/2 - containerOffset)*100/containerWidth+'%';
+                const widthValue = (leftValue + dragWidth/2 - containerOffset)*100/containerWidth+'%';
                 $('.draggable').css('left', widthValue).on('mouseup vmouseup', function () {
                     $(this).removeClass('draggable');
                     resizeElement.removeClass('resizable');
@@ -44,7 +44,7 @@ jQuery(document).ready(function(){
         $('.cd-resize-img img').width($('.cd-image-container img').css('width'));
     });
 
-    var locationHash = document.location.hash;
+    const locationHash = document.location.hash;
 
     if (locationHash) {
         $('.nav-pills a[href="'+locationHash+'"]').tab('show');
@@ -62,21 +62,21 @@ jQuery(document).ready(function(){
     });
 
     $("button.load-more").on('click', function() {
-       var page = $(this).data('page');
-       var order = $("#order_order").val();
+       const page = $(this).data('page');
+       let order = $("#order_order").val();
 
        if (order === undefined || order === '') {
            order = 'default';
        }
 
-       var $container = $($(this).data('target'));
-       var $button = $(this);
-       var $parent = $(this).parent();
+       const $container = $($(this).data('target')),
+       $button = $(this),
+       $parent = $(this).parent();
 
        $button.hide();
        $parent.append('<div class="button-load-more-progress"></div>').fadeIn();
 
-       var url = $(this).data('url');
+       let url = $(this).data('url');
        url = url + '/' + page + '/' + order;
 
         $.ajax({
@@ -101,14 +101,19 @@ jQuery(document).ready(function(){
     });
 
     $('form[name="bundle_order"] select').change(function() {
-        var searchText = $("#bundles-list-search-query").val();
-        var page = parseInt($(".pagerfanta span.current").html());
-        var order  = $(this).val();
+        const searchText = $("#bundles-list-search-query").val(),
+        page = parseInt($(".pagerfanta span.current").html()),
+        order  = $(this).val(),
+        category = $('.bundles-filters li.active').data('query-param');
+
+        let orderQueryParam = $(this).val() ? `/${order}` : '',
+        categoryQueryParam = typeof category !== "undefined" ? `${category}/` : 'all/';
+
         if (searchText) {
-            window.location.href = '/Bundles/search/' + searchText + '/' + page + '/' + order;
+            window.location.href = `/Bundles/search/all/${searchText}/${page}${orderQueryParam}`;
         }
         else {
-            window.location.href = '/Bundles/' + page + '/' + order;
+            window.location.href = `/Bundles/${categoryQueryParam}${page}${orderQueryParam}`;
         }
     });
 
@@ -117,7 +122,7 @@ jQuery(document).ready(function(){
     });
 
     // Google Analytics
-    var gaItem = function(selector, type, category, action, label) {
+    const gaItem = function(selector, type, category, action, label) {
         this.selector = selector;
         this.type = type;
         this.category = category;
@@ -126,7 +131,7 @@ jQuery(document).ready(function(){
         this.label_selector = label && label[1] || '';
     };
 
-    var gaEvents = [
+    const gaEvents = [
         new gaItem('a.btn.download', 'event', 'Main block', 'Go to download'),
         new gaItem('.cd-handle', 'event', 'Main block', 'Slider'),
         new gaItem('#download a[href="#composer-option"]', 'event', 'Downloads', 'Composer tab'),
@@ -147,7 +152,7 @@ jQuery(document).ready(function(){
 
     $(gaEvents).each(function (i, item) {
         $(item.selector).on('click', function() {
-            var labelText;
+            let labelText;
 
             if (item.label_selector.length === 0) {
                 ga('send', item.type, item.category, item.action);
@@ -163,12 +168,12 @@ jQuery(document).ready(function(){
         });
     });
 
-    var form = document.getElementsByName('bundle_search')[0];
+    const form = document.getElementsByName('bundle_search')[0];
     form && form.addEventListener('submit', function(event) {
-        var label;
+        let label;
         event.preventDefault();
         setTimeout(submitForm, 1000);
-        var formSubmitted = false;
+        let formSubmitted = false;
 
         function submitForm() {
             if (!formSubmitted) {

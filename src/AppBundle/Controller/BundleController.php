@@ -11,6 +11,8 @@ use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
+use Netgen\TagsBundle\API\Repository\TagsService;
+use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,6 +22,10 @@ use Symfony\Component\Templating\EngineInterface;
 
 class BundleController
 {
+    private const DEFAULT_ORDER_CLAUSE = 'default';
+
+    private const DEFAULT_BUNDLES_CATEGORY = 'all';
+
     /**
      * @var \Symfony\Bundle\TwigBundle\TwigEngine
      */
@@ -56,6 +62,11 @@ class BundleController
     private $router;
 
     /**
+     * @var \Netgen\TagsBundle\API\Repository\TagsService;
+     */
+    private $tagsService;
+
+    /**
      * @var int
      */
     private $bundlesListLocationId;
@@ -66,6 +77,18 @@ class BundleController
     private $bundlesListCardsLimit;
 
     /**
+     * @var int
+     */
+
+    private $bundleCategoriesId;
+    /**
+     * @var array
+     */
+    private $relatedBundles;
+
+
+
+    /**
      * BundleController constructor.
      * @param EngineInterface $templating
      * @param SearchService $searchService
@@ -74,8 +97,10 @@ class BundleController
      * @param PackagistServiceProviderInterface $packagistServiceProvider
      * @param FormFactory $formFactory
      * @param DefaultRouter $router
+     * @param TagsService $tagsService
      * @param int $bundlesListLocationId
      * @param int $bundlesListCardsLimit
+     * @param int $bundleCategoriesId
      */
     public function __construct(
         EngineInterface $templating,
@@ -85,8 +110,10 @@ class BundleController
         PackagistServiceProviderInterface $packagistServiceProvider,
         FormFactory $formFactory,
         DefaultRouter $router,
-        $bundlesListLocationId,
-        $bundlesListCardsLimit
+        TagsService $tagsService,
+        int $bundlesListLocationId,
+        int $bundlesListCardsLimit,
+        int $bundleCategoriesId
     ) {
         $this->templating = $templating;
         $this->searchService = $searchService;
@@ -95,23 +122,29 @@ class BundleController
         $this->packagistServiceProvider = $packagistServiceProvider;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->tagsService = $tagsService;
         $this->bundlesListLocationId = $bundlesListLocationId;
         $this->bundlesListCardsLimit = $bundlesListCardsLimit;
+        $this->bundleCategoriesId = $bundleCategoriesId;
     }
 
     /**
      * Renders full view `bundle_list`.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param string $category
      * @param int $page
      * @param string $order
+     * @param string $searchText
      *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Twig\Error\Error
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    public function showBundlesListAction(Request $request, $page = 1, $order = 'default', $searchText = '')
+    public function showBundlesListAction(Request $request, string $category = self::DEFAULT_BUNDLES_CATEGORY, $page = 1, $order = self::DEFAULT_ORDER_CLAUSE, $searchText = '')
     {
         $orderForm = $this->formFactory->create(BundleOrderType::class);
         $orderForm->handleRequest($request);
@@ -125,15 +158,22 @@ class BundleController
             $searchText = $searchForm->get('search')->getData();
         }
 
+        if ($category && $category !== self::DEFAULT_BUNDLES_CATEGORY) {
+            $this->relatedBundles = $this->getRelatedBundles($category);
+        }
+
         // Get content of Bundles List page
         $query = new Query();
         $criterion = new Query\Criterion\LocationId($this->bundlesListLocationId);
+
         $query->filter = $criterion;
+
         $contentSearchResult = $this->searchService->findContent($query);
         $content = $contentSearchResult->searchHits[0]->valueObject;
 
         // Create pager
         $adapter = new ContentSearchHitAdapter($this->getBundlesQuery(0, $order, $searchText), $this->searchService);
+
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage($this->bundlesListCardsLimit);
         $pagerfanta->setCurrentPage($page);
@@ -148,6 +188,8 @@ class BundleController
             'order' => $order,
             'pager' => $pagerfanta,
             'searchText' => $searchText,
+            'bundlesCategories' => $this->getBundlesCategoriesList($this->bundleCategoriesId),
+            'selectedBundleCategory' => $category !== self::DEFAULT_BUNDLES_CATEGORY ? $category : ''
         ]);
     }
 
@@ -171,8 +213,9 @@ class BundleController
 
         return new RedirectResponse($this->router->generate('_ezplatform_bundles_search', [
             'page' => 1,
-            'order' => 'default',
+            'order' => self::DEFAULT_ORDER_CLAUSE,
             'searchText' => $searchText,
+            'category' => self::DEFAULT_BUNDLES_CATEGORY
         ]));
     }
 
@@ -219,6 +262,45 @@ class BundleController
     }
 
     /**
+     * Returns list with bundles categories
+     *
+     * @var int $categoryId
+     *
+     * @return \Netgen\TagsBundle\API\Repository\Values\Tags\Tag[]
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
+     */
+    private function getBundlesCategoriesList(int $categoryId): array
+    {
+        $tag = $this->tagsService->loadTag($categoryId);
+
+        return $this->tagsService->loadTagChildren($tag);
+    }
+
+    /**
+     * @param string $category
+     * @param string $language
+     *
+     * @return array
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
+     */
+    private function getRelatedBundles(string $category, string $language = ''): array
+    {
+        $tags = $this->tagsService->loadTagsByKeyword($category, $language);
+
+        $tag = array_filter($tags, function(Tag $tag) {
+            return $tag->parentTagId === $this->bundleCategoriesId;
+        });
+
+        $relatedContent = $this->tagsService->getRelatedContent(reset($tag));
+
+        return $relatedContent ? array_column($relatedContent, 'id') : [0];
+    }
+
+    /**
      * @param int $offset
      * @param null $order
      * @param string $searchText
@@ -233,6 +315,7 @@ class BundleController
             'offset' => $offset,
             'order' => $order,
             'search' => $searchText,
+            'contents_id' => $this->relatedBundles
         ]);
     }
 

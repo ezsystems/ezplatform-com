@@ -24,8 +24,10 @@ services:
             - '@app.packagist_service_provider'
             - '@form.factory'
             - '@router.default'
+            - '@eztags.api.service.tags'
             - '%bundles.location_id%'
             - '%bundles.cards_limit%'
+            - '%bundles.categories_id%'
     app.controller.tag:
         class: AppBundle\Controller\TagController
         arguments:

@@ -31,6 +31,10 @@ class BundlesQueryType implements QueryType
             new Query\Criterion\Visibility(Query\Criterion\Visibility::VISIBLE)
         ];
 
+        if (isset($parameters['contents_id'])) {
+            $criteria[] = new Query\Criterion\ContentId($parameters['contents_id']);
+        }
+
         if (isset($parameters['search']) && !empty($parameters['search'])) {
             $options['query'] = new Query\Criterion\FullText($parameters['search'], [
                 'customFields' => [

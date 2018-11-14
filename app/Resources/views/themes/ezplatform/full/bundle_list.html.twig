@@ -11,45 +11,74 @@
                 </div>
             </div>
         </div>
-        <div class="bundles-list-search">
-            <div class="container">
-                <div class="form-row align-items-center">
-                    <div class="col-12">
-                        {{ render_esi(controller('app.controller.bundle:renderSearchBundleForm', {"searchText": searchText})) }}
-                    </div>
+        <div class="container bundles-list-container">
+            <div class="row">
+                <div class="col-md-2 bundles-filters">
+                    <h3>Categories</h3>
+                    <ul class="list-unstyled">
+                        {% set selectedCategory = 'All' %}
+                        <li {% if selectedBundleCategory is defined and selectedBundleCategory == null %} class="active" {% endif %}>
+                            <a href="{{ path(ez_route('_ezplatform_bundles_list')) }}">{{ selectedCategory }} Bundles</a>
+                        </li>
+                        {% if bundlesCategories is defined and bundlesCategories|length > 0 %}
+                            {% for bundleCategory in bundlesCategories %}
+                                <li {% if selectedBundleCategory is defined and selectedBundleCategory == bundleCategory.keyword %} class="active"
+                                        {% set selectedCategory = bundleCategory.keyword %} {% endif %}
+                                    data-query-param="{{ bundleCategory.keyword }}">
+                                    <a href="{{ path(ez_route('_ezplatform_bundles_list', {category: bundleCategory.keyword})) }}">{{ bundleCategory.keyword }}</a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
                 </div>
-            </div>
-        </div>
-        <div class="bundles-list-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 bundles-list-container">
-                        <div class="row align-items-center">
-                            <div class="col-xs-12 col-md-9 bundles-list-keyword">
-                                {% if search is defined and search is not empty %}
-                                    <h2>Search / Keyword: {{ search }}</h2>
-                                {% else %}
-                                    <h2>All Bundles</h2>
-                                {% endif %}
-                            </div>
-                            <div class="col-xs-12 col-md-3 sort-container">
-                                {% set sortingOrder = order is defined ? order : 'default' %}
-                                {{ render_esi(controller('app.controller.bundle:renderSortOrderBundleForm', {"order": sortingOrder})) }}
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bundles-list-search">
+                                <div class="form-row align-items-center">
+                                    {{ render_esi(controller('app.controller.bundle:renderSearchBundleForm', {"searchText": searchText})) }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                {% include '@ezdesign/parts/bundle_list/list.html.twig' with {
-                    'items': items,
-                    'viewType': 'line',
-                    'extraParams': {
-                        'page': 1
-                    }
-                } only %}
-                <div class="row">
-                    <div class="button-load-more mx-auto pagerfanta">
-                        {{ pagerfanta(pager, 'bundles_list') }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bundles-list-content">
+                                {% if items is defined and items|length > 0 %}
+                                <div class="row align-items-center">
+                                    <div class="col-xs-12 col-md-9 bundles-list-keyword">
+                                        {% if search is defined and search is not empty %}
+                                            <h2>Search / Keyword: {{ search }}</h2>
+                                        {% else %}
+                                            <h2>{{ selectedCategory }} Bundles</h2>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-xs-12 col-md-3 sort-container">
+                                        {% set sortingOrder = order is defined ? order : 'default' %}
+                                        {{ render_esi(controller('app.controller.bundle:renderSortOrderBundleForm', {"order": sortingOrder})) }}
+                                    </div>
+                                </div>
+                                {% include '@ezdesign/parts/bundle_list/list.html.twig' with {
+                                    'items': items,
+                                    'viewType': 'line',
+                                    'extraParams': {
+                                        'page': 1
+                                    }
+                                } only %}
+                                <div class="row">
+                                    <div class="button-load-more mx-auto pagerfanta">
+                                        {{ pagerfanta(pager, 'bundles_list') }}
+                                    </div>
+                                </div>
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h2>Bundles not found</h2>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
