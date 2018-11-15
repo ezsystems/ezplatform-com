@@ -20,7 +20,7 @@ parameters:
     # `bundles_list` locationId
     bundles.location_id: 168
     # 'bundles_list` elements limit on `bundles_list` page
-    bundles.cards_limit: 10
+    bundles.cards_limit: 12
     # 'bundle_categories tag id'
     bundles.categories_id: 32
     # 'bundles' cache expiration time in seconds
