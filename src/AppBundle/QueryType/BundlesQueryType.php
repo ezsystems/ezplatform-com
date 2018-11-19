@@ -12,6 +12,7 @@ namespace AppBundle\QueryType;
 use eZ\Publish\Core\QueryType\QueryType;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\LocationQuery;
+use Netgen\TagsBundle\API\Repository\Values\Content\Query as TagQuery;
 
 class BundlesQueryType implements QueryType
 {
@@ -31,8 +32,8 @@ class BundlesQueryType implements QueryType
             new Query\Criterion\Visibility(Query\Criterion\Visibility::VISIBLE)
         ];
 
-        if (isset($parameters['contents_id'])) {
-            $criteria[] = new Query\Criterion\ContentId($parameters['contents_id']);
+        if (isset($parameters['tag_id'])) {
+            $criteria[] = new TagQuery\Criterion\TagId($parameters['tag_id']);
         }
 
         if (isset($parameters['search']) && !empty($parameters['search'])) {

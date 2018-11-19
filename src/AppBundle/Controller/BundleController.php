@@ -79,14 +79,7 @@ class BundleController
     /**
      * @var int
      */
-
-    private $bundleCategoriesId;
-    /**
-     * @var array
-     */
-    private $relatedBundles;
-
-
+    private $bundleCategoriesParentTagId;
 
     /**
      * BundleController constructor.
@@ -100,7 +93,7 @@ class BundleController
      * @param TagsService $tagsService
      * @param int $bundlesListLocationId
      * @param int $bundlesListCardsLimit
-     * @param int $bundleCategoriesId
+     * @param int $bundleCategoriesParentTagId
      */
     public function __construct(
         EngineInterface $templating,
@@ -113,7 +106,7 @@ class BundleController
         TagsService $tagsService,
         int $bundlesListLocationId,
         int $bundlesListCardsLimit,
-        int $bundleCategoriesId
+        int $bundleCategoriesParentTagId
     ) {
         $this->templating = $templating;
         $this->searchService = $searchService;
@@ -125,7 +118,7 @@ class BundleController
         $this->tagsService = $tagsService;
         $this->bundlesListLocationId = $bundlesListLocationId;
         $this->bundlesListCardsLimit = $bundlesListCardsLimit;
-        $this->bundleCategoriesId = $bundleCategoriesId;
+        $this->bundleCategoriesParentTagId = $bundleCategoriesParentTagId;
     }
 
     /**
@@ -158,8 +151,10 @@ class BundleController
             $searchText = $searchForm->get('search')->getData();
         }
 
+        $tagId = null;
+
         if ($category && $category !== self::DEFAULT_BUNDLES_CATEGORY) {
-            $this->relatedBundles = $this->getRelatedBundles($category);
+            $tagId = $this->getCategoryTagId($category);
         }
 
         // Get content of Bundles List page
@@ -172,7 +167,7 @@ class BundleController
         $content = $contentSearchResult->searchHits[0]->valueObject;
 
         // Create pager
-        $adapter = new ContentSearchHitAdapter($this->getBundlesQuery(0, $order, $searchText), $this->searchService);
+        $adapter = new ContentSearchHitAdapter($this->getBundlesQuery(0, $order, $searchText, $tagId), $this->searchService);
 
         $pagerfanta = new Pagerfanta($adapter);
         $pagerfanta->setMaxPerPage($this->bundlesListCardsLimit);
@@ -188,7 +183,7 @@ class BundleController
             'order' => $order,
             'pager' => $pagerfanta,
             'searchText' => $searchText,
-            'bundlesCategories' => $this->getBundlesCategoriesList($this->bundleCategoriesId),
+            'bundlesCategories' => $this->getBundlesCategoriesList($this->bundleCategoriesParentTagId),
             'selectedBundleCategory' => $category !== self::DEFAULT_BUNDLES_CATEGORY ? $category : ''
         ]);
     }
@@ -282,32 +277,32 @@ class BundleController
      * @param string $category
      * @param string $language
      *
-     * @return array
+     * @return int
      *
-     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    private function getRelatedBundles(string $category, string $language = ''): array
+    private function getCategoryTagId(string $category, string $language = ''): int
     {
         $tags = $this->tagsService->loadTagsByKeyword($category, $language);
 
-        $tag = array_filter($tags, function(Tag $tag) {
-            return $tag->parentTagId === $this->bundleCategoriesId;
+        $tags = array_filter($tags, function(Tag $tag) {
+            return $tag->parentTagId === $this->bundleCategoriesParentTagId;
         });
 
-        $relatedContent = $this->tagsService->getRelatedContent(reset($tag));
+        $tag = reset($tags);
 
-        return $relatedContent ? array_column($relatedContent, 'id') : [0];
+        return $tag->id;
     }
 
     /**
      * @param int $offset
      * @param null $order
      * @param string $searchText
+     * @param int $tagId
      *
      * @return \eZ\Publish\API\Repository\Values\Content\LocationQuery
      */
-    private function getBundlesQuery($offset = 0, $order = null, $searchText = '')
+    private function getBundlesQuery($offset = 0, $order = null, $searchText = '', $tagId = null)
     {
         return $this->bundlesQueryType->getQuery([
             'parent_location_id' => $this->bundlesListLocationId,
@@ -315,7 +310,7 @@ class BundleController
             'offset' => $offset,
             'order' => $order,
             'search' => $searchText,
-            'contents_id' => $this->relatedBundles
+            'tag_id' => $tagId
         ]);
     }
 

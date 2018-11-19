@@ -27,7 +27,7 @@ services:
             - '@eztags.api.service.tags'
             - '%bundles.location_id%'
             - '%bundles.cards_limit%'
-            - '%bundles.categories_id%'
+            - '%bundles.categories_parent_tag_id%'
     app.controller.tag:
         class: AppBundle\Controller\TagController
         arguments:
