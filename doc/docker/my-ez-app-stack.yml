@@ -25,7 +25,6 @@ services:
      - SYMFONY_ENV=prod
      - SYMFONY_DEBUG
      - SYMFONY_HTTP_CACHE
-     - SYMFONY_HTTP_CACHE_CLASS
      - SYMFONY_TRUSTED_PROXIES
      - DATABASE_USER=ezp
      - DATABASE_PASSWORD=SetYourOwnPassword
@@ -42,6 +41,8 @@ services:
      - RECOMMENDATIONS_CUSTOMER_ID
      - RECOMMENDATIONS_LICENSE_KEY
      - PUBLIC_SERVER_URI
+     - FASTLY_SERVICE_ID
+     - FASTLY_KEY
     volumes:
      - vardir:/var/www/web/var
     networks:

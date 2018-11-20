@@ -1,13 +1,13 @@
 {
-    "name": "ezsystems/ezplatform",
-    "description": "eZ Platform distribution",
-    "homepage": "https://github.com/ezsystems/ezplatform",
+    "name": "ezsystems/ezplatform-com",
+    "description": "eZ Platform Enterprise Edition distribution",
+    "homepage": "https://github.com/ezsystems/ezplatform-com",
     "license": "proprietary",
     "type": "project",
     "authors": [
         {
             "name": "eZ dev-team & eZ Community",
-            "homepage": "https://github.com/ezsystems/ezplatform/contributors"
+            "homepage": "https://github.com/ezsystems/ezplatform-com/contributors"
         }
     ],
     "repositories": [
@@ -126,7 +126,7 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": {
-            "dev-master": "2.2.x-dev"
+            "dev-master": "2.3.x-dev"
         }
     }
 }

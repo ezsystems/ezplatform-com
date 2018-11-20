@@ -6,13 +6,15 @@ services:
     build:
       context: ../../
       dockerfile: ${APP_DOCKER_FILE}
+      args:
+       - PHP_IMAGE
     depends_on:
      - db
     environment:
+     - COMPOSER_MEMORY_LIMIT
      - SYMFONY_ENV=${SYMFONY_ENV-prod}
      - SYMFONY_DEBUG
      - SYMFONY_HTTP_CACHE
-     - SYMFONY_HTTP_CACHE_CLASS
      - SYMFONY_TRUSTED_PROXIES
      - DATABASE_USER
      - DATABASE_PASSWORD
@@ -21,6 +23,8 @@ services:
      - RECOMMENDATIONS_CUSTOMER_ID
      - RECOMMENDATIONS_LICENSE_KEY
      - PUBLIC_SERVER_URI
+     - FASTLY_SERVICE_ID
+     - FASTLY_KEY
     networks:
      - backend
 
@@ -28,6 +32,8 @@ services:
     build:
       context: ../../
       dockerfile: doc/docker/Dockerfile-nginx
+      args:
+       - PHP_IMAGE
     depends_on:
      - app
     ports:

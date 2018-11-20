@@ -5,7 +5,7 @@
 #      (This will change once we move to use Symfony flex)
 parameters:
     # A secret key that's used to generate certain security-related tokens
-    env(SYMFONY_SECRET): ThisEzPlatformTokenIsNotSoSecretChangeIt
+    env(SYMFONY_SECRET): ThisEzPlatformTokenIsNotSoSecret_PleaseChangeIt
 
     # Settings for database backend used by Doctrine DBAL
     # In turn used for default storage engine & default search engine (if legacy is configured as search engine)
