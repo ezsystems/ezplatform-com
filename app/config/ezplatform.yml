@@ -1,5 +1,6 @@
 ezpublish:
     # HttpCache settings, By default 'local' (Symfony HttpCache Proxy), by setting it to 'http' you can point it to Varnish
+    # You may also set it to 'fastly' if you want to use the fastly CDN
     http_cache:
         purge_type: '%purge_type%'
 
@@ -21,7 +22,6 @@ ezpublish:
             # It's used to distinguish common siteaccesses from admin ones.
             # In case of multisite with multiple admin panels, remember to add any additional admin siteaccess to this group.
             admin_group: [admin]
-
         default_siteaccess: site
         match:
             URIElement: 1
@@ -45,9 +45,12 @@ ezpublish:
                 default_ttl: '%httpcache_default_ttl%'
             # HttpCache purge server(s) setting, eg Varnish, for when ezpublish.http_cache.purge_type is set to 'http'.
             http_cache:
+                # If using fastly, 'purge_server' must be set to 'https://api.fastly.com'
                 purge_servers: ['%purge_server%']
+                fastly:
+                    service_id: '%fastly_service_id%'
+                    key: '%fastly_key%'
             design: main
-
         # WARNING: Do not remove or rename this group.
         admin_group:
             cache_service_name: '%cache_pool%'
@@ -57,6 +60,11 @@ ezpublish:
                 default_ttl: '%httpcache_default_ttl%'
             http_cache:
                 purge_servers: ['%purge_server%']
+                fastly:
+                    service_id: '%fastly_service_id%'
+                    key: '%fastly_key%'
+            page_builder:
+                siteaccess_list: [site]
 
     url_alias:
         slug_converter:

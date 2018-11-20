@@ -25,6 +25,8 @@ relationships:
     # If you wish to have a separate Redis instance for sessions, uncomment
     # this relationship and the corresponding service in .platform/services.yaml
     #redissession: 'redissession:redis'
+    # If you wish to use solr, uncomment this relationship and the corresponding service in .platform/services.yaml
+    #solr: 'solrsearch:solr'
 
 variables:
     #php:
@@ -59,6 +61,7 @@ mounts:
     "/web/var": "shared:files/files"
     # Might want to not mount this one, it will slow down sessions, if you need cluster use memcached/redis!
     "/var/sessions": "shared:files/sessions"
+    "/src/AppBundle/MigrationVersions/References": "shared:files/src/AppBundle/MigrationVersions/References"
     # Uncomment if you want to use DFS clustering:
     #"/dfsdata": "shared:files/dfsdata"
 
@@ -67,6 +70,15 @@ hooks:
     # Build hook, done once before connected to services, disk is still writable here
     build: |
         set -e
+        if [ -z "$COMPOSER_KEY" ]; then
+            echo "The 'composer_key' project variable must be set."
+            exit 1
+        elif [ -z "$COMPOSER_PASSWORD" ]; then
+            echo "The 'composer_password' project variable must be set."
+            exit 1
+        fi
+
+        composer config http-basic.updates.ez.no $COMPOSER_KEY $COMPOSER_PASSWORD
         rm web/app_dev.php
         if [ "$SYMFONY_ENV" = "dev" ] ; then
             composer install --prefer-dist --no-progress --no-interaction --optimize-autoloader
