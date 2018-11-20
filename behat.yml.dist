@@ -26,6 +26,13 @@ default:
 
         EzSystems\PlatformBehatBundle\ServiceContainer\EzBehatExtension: ~
 
+        Bex\Behat\ScreenshotExtension:
+            active_image_drivers: cloudinary
+            image_drivers:
+                cloudinary:
+                    cloud_name: ezplatformtravis
+                    preset: ezplatform
+
     suites: ~
 
 imports:
@@ -34,3 +41,6 @@ imports:
     - vendor/ezsystems/repository-forms/behat_suites.yml
     - vendor/ezsystems/ezplatform-admin-ui/behat_suites.yml
     - vendor/ezsystems/behatbundle/EzSystems/BehatBundle/behat_suites.yml
+    - vendor/ezsystems/ezplatform-page-builder/behat_suites.yml
+    - vendor/ezsystems/flex-workflow/behat_suites.yml
+    - vendor/ezsystems/date-based-publisher/behat_suites.yml
