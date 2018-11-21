@@ -47,6 +47,11 @@ class Package
     /**
      * @var \DateTime
      */
+    public $creationDate;
+
+    /**
+     * @var \DateTime
+     */
     public $updateDate;
 
     /**

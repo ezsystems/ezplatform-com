@@ -1,29 +1,28 @@
-<div class="bundle-card-line-container{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
-    <a href="{{ ez_field_value(content, 'packagist_url') }}" title="See on Packagist.org">
-        <div class="bundle-card-line">
-            <div class="bundle-card-line-data">
-                <div class="bundle-card-line-authors">
-                    <div class="bundle-card-line-owner">
-                        {% if packageDetails.authorAvatarUrl is defined and packageDetails.author.name is defined %}
-                            <div class="bundle-card-line-owner-photo">
-                                <img src="{{ packageDetails.authorAvatarUrl }}?s=100" alt="{{ packageDetails.author.name }}" />
-                            </div>
-                            <div class="bundle-card-line-owner-name">
-                                <span class="bundle-card-line-owner-label">Made by:</span>
-                                <span class="bundle-card-line-owner-author">{{ packageDetails.author.name|truncate(20, true) }}</span>
-                            </div>
-                        {% endif %}
-                    </div>
+<div class="bundle-card bundle-card--line{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
+    <a href="{{ path(ez_route('_ezplatform_bundle_details', {'locationId': locationId })) }}" title="See bundle details">
+        <div class="bundle-card__container bundle-card__container--line">
+            <div class="bundle-card__header bundle-card__header--line">
+                <div class="bundle-card__name">
+                    {% if packageDetails.authorAvatarUrl is defined and packageDetails.author.name is defined %}
+                        <div class="bundle-card__avatar">
+                            <img src="{{ packageDetails.authorAvatarUrl }}?s=100" alt="{{ packageDetails.author.name }}" />
+                        </div>
+                        <div class="bundle-card__owner">
+                            <span class="bundle-card__owner-label">Made by:</span>
+                            <span class="bundle-card__owner-author">{{ packageDetails.author.name|truncate(20, true) }}</span>
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="bundle-card-line-information">
-                    <h2>
-                        {{ ez_render_field(content, 'bundle_id') }}
-                    </h2>
-                    <div class="bundle-card-line-description">
-                        {{ ez_render_field(content, 'description') }}
-                    </div>
+            </div>
+            <div class="bundle-card__body bundle-card__body--line">
+                <div class="bundle-card__name">
+                    <h2>{{ ez_render_field(content, 'name') }}</h2>
+                </div>
+                <div class="bundle-card__description">
+                    {{ ez_render_field(content, 'description') }}
                 </div>
             </div>
         </div>
     </a>
 </div>
+

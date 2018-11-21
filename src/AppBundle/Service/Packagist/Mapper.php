@@ -25,7 +25,6 @@ class Mapper
 
     /**
      * @param PackagistApiPackage $packagistApiPackage
-     * @param string $packageId
      * @return Package
      */
     public function createPackageFromPackagistApiResult(PackagistApiPackage $packagistApiPackage)
@@ -33,7 +32,6 @@ class Mapper
         $package = new Package();
 
         $package->packageId = $packagistApiPackage->getName();
-
         $package->description = $packagistApiPackage->getDescription();
         $package->downloads = $this->getDownloads($packagistApiPackage);
         $package->maintainers = $this->getMaintainers($packagistApiPackage);
@@ -42,6 +40,7 @@ class Mapper
         $package->stars = $this->getStars($packagistApiPackage);
         $package->author = $this->getAuthor($packagistApiPackage);
         $package->updateDate = $this->getUpdateDate($packagistApiPackage);
+        $package->creationDate = $this->getCreationDate($packagistApiPackage);
         $package->checksum = $this->getChecksum($package);
 
         return $package;
@@ -116,6 +115,7 @@ class Mapper
     {
         $version = $this->getCurrentVersion($packagistApiPackage);
         $authors = $version->getAuthors();
+
         return reset($authors);
     }
 
@@ -158,5 +158,14 @@ class Mapper
         }
 
         return md5($checksum);
+    }
+
+    /**
+     * @param PackagistApiPackage $packagistApiPackage
+     * @return bool|\DateTime
+     */
+    private function getCreationDate(PackagistApiPackage $packagistApiPackage): \DateTime
+    {
+        return \DateTime::createFromFormat(\DateTime::ISO8601, $packagistApiPackage->getTime());
     }
 }
