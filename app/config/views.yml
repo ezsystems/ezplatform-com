@@ -113,3 +113,8 @@ ezpublish:
                         template: "@ezdesign/embed/image.html.twig"
                         match:
                             Identifier\ContentType: image
+                    top_banner:
+                        template: "@ezdesign/row/top_banner.html.twig"
+                        match:
+                            Identifier\ContentType: top_banner
+
