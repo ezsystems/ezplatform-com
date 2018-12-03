@@ -74,6 +74,14 @@ _ezplatform_bundles_list:
     requirements:
         "order": 'default|latestUpdate|stars|downloads'
 
+#I will change this when we provide new name for bundles
+_ezplatform_bundle_details:
+    path: bundle/{locationId}
+    defaults: { _controller: app.controller.bundle:getBundleDetailsAction }
+    methods: [GET]
+    requirements:
+        "locationId": '\d+'
+
 _ezplatform_bundles_search_init:
     path: /Bundles/search/
     defaults: { _controller: app.controller.bundle:searchBundlesAction, page: 1, order: 'default' }

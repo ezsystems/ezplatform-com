@@ -29,7 +29,8 @@ class BundlesQueryType implements QueryType
 
         $criteria = [
             new Query\Criterion\ParentLocationId($parameters['parent_location_id']),
-            new Query\Criterion\Visibility(Query\Criterion\Visibility::VISIBLE)
+            new Query\Criterion\Visibility(Query\Criterion\Visibility::VISIBLE),
+            new Query\Criterion\ContentTypeIdentifier('bundle')
         ];
 
         if (isset($parameters['tag_id'])) {

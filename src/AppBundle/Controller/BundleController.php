@@ -8,8 +8,8 @@ use AppBundle\QueryType\BundlesQueryType;
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\SearchService;
-use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
 use Netgen\TagsBundle\API\Repository\TagsService;
 use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
@@ -62,6 +62,11 @@ class BundleController
     private $router;
 
     /**
+     * @var \eZ\Publish\API\Repository\LocationService
+     */
+    private $locationService;
+
+    /**
      * @var \Netgen\TagsBundle\API\Repository\TagsService;
      */
     private $tagsService;
@@ -91,6 +96,7 @@ class BundleController
      * @param FormFactory $formFactory
      * @param DefaultRouter $router
      * @param TagsService $tagsService
+     * @param LocationService $locationService
      * @param int $bundlesListLocationId
      * @param int $bundlesListCardsLimit
      * @param int $bundleCategoriesParentTagId
@@ -104,6 +110,7 @@ class BundleController
         FormFactory $formFactory,
         DefaultRouter $router,
         TagsService $tagsService,
+        LocationService $locationService,
         int $bundlesListLocationId,
         int $bundlesListCardsLimit,
         int $bundleCategoriesParentTagId
@@ -116,6 +123,7 @@ class BundleController
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->tagsService = $tagsService;
+        $this->locationService = $locationService;
         $this->bundlesListLocationId = $bundlesListLocationId;
         $this->bundlesListCardsLimit = $bundlesListCardsLimit;
         $this->bundleCategoriesParentTagId = $bundleCategoriesParentTagId;
@@ -157,14 +165,7 @@ class BundleController
             $tagId = $this->getCategoryTagId($category);
         }
 
-        // Get content of Bundles List page
-        $query = new Query();
-        $criterion = new Query\Criterion\LocationId($this->bundlesListLocationId);
-
-        $query->filter = $criterion;
-
-        $contentSearchResult = $this->searchService->findContent($query);
-        $content = $contentSearchResult->searchHits[0]->valueObject;
+        $content = $this->locationService->loadLocation($this->bundlesListLocationId)->getContent();
 
         // Create pager
         $adapter = new ContentSearchHitAdapter($this->getBundlesQuery(0, $order, $searchText, $tagId), $this->searchService);
@@ -179,12 +180,30 @@ class BundleController
         return $this->templating->renderResponse('@ezdesign/full/bundle_list.html.twig', [
             'items' => $bundles,
             'content' => $content,
-            'viewType' => 'full',
             'order' => $order,
             'pager' => $pagerfanta,
             'searchText' => $searchText,
             'bundlesCategories' => $this->getBundlesCategoriesList($this->bundleCategoriesParentTagId),
             'selectedBundleCategory' => $category !== self::DEFAULT_BUNDLES_CATEGORY ? $category : ''
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Twig\Error\Error
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
+     */
+    public function getBundleDetailsAction(Request $request)
+    {
+        $content = $this->locationService->loadLocation($request->get('locationId'))->getContent();
+
+        return $this->templating->renderResponse('@ezdesign/full/bundle.html.twig', [
+            'content' => $content,
+            'bundle' => $this->packagistServiceProvider->getPackageDetails($content->getName())
         ]);
     }
 

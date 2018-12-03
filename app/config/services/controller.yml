@@ -25,6 +25,7 @@ services:
             - '@form.factory'
             - '@router.default'
             - '@eztags.api.service.tags'
+            - '@ezpublish.api.service.location'
             - '%bundles.location_id%'
             - '%bundles.cards_limit%'
             - '%bundles.categories_parent_tag_id%'
