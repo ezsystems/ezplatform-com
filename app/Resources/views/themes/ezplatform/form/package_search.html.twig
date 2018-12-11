@@ -1,0 +1,10 @@
+{{ form_start(searchPackageForm) }}
+<div class="form-group">
+    {{ form_widget(searchPackageForm.search, {'id': 'package-list-search-query'} )}}
+    <div class="input-group-addon">
+        <button type="submit" class="btn package-list__search-button">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+{{ form_end(searchPackageForm) }}

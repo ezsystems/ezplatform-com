@@ -1,4 +1,4 @@
-.bundle-list {
+.package-list {
     overflow: hidden;
     background: #f7f7f7;
 
@@ -74,7 +74,7 @@
             margin-right: 20px;
         }
 
-        #bundle-list-search-query {
+        #package-list-search-query {
             height: 51px;
             font-size: 21px;
             font-weight: 300;
@@ -161,14 +161,14 @@
 }
 
 @media (max-width: 992px) {
-    .bundle-list {
+    .package-list {
         &__search {
 
             .form-row {
                 margin-right: 0px;
             }
 
-            #bundle-list-search-query {
+            #package-list-search-query {
                 width: 79%;
             }
 

@@ -1,0 +1,105 @@
+{% extends '@ezdesign/pagelayout.html.twig' %}
+
+{% block content %}
+    <div class="package">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="package__banner package__banner--orange">
+                        <h1 class="package__header">{{ package.packageId }}</h1>
+                        <a href="{{ ez_field_value(content, 'packagist_url') }}" class="package__header-btn">Install Package</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <ul class="package__nav-tab nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#package-info" data-toggle="tab" role="tab" aria-controls="package-info" aria-selected="true">Package Info</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#comments" data-toggle="tab" role="tab" aria-controls="comments" aria-selected="false">Comments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="//discuss.ezplatform.com/c/packages" target="_blank">Support</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row package__tab-content">
+                <div class="col-md-8">
+                    <div class="tab-content">
+                        <div id="package-info" class="tab-pane fade show active" role="tabpanel" aria-labelledby="package-info">
+                            {{ ez_render_field(content, 'description') }}
+                        </div>
+                        <div id="comments" class="tab-pane fade" role="tabpanel" aria-labelledby="comments">
+                            {{ ez_comments_render_content(content.contentInfo, {
+                                'identifier': content.id,
+                                'url': app.request.uri
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="package__details">
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Created by:</h2>
+                            <div class="package__details-section-author">
+                                {% set authorAvatar = package.authorAvatarUrl is defined ? package.authorAvatarUrl : package.maintainers[0].avatarUrl %}
+                                {% set authorName = package.author.name is defined ? package.author.name : package.maintainers[0].name %}
+                                <img src="{{ authorAvatar }}" class="author-avatar">
+                                <p class="d-inline-block">{{ authorName }}</p>
+                            </div>
+                        </div>
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Categories:</h2>
+                            <div class="package__details-section-categories">
+                                {% if not ez_is_field_empty(content, 'package_category') %}
+                                    {% for tags in content.fields.package_category %}
+                                        {% for tag in tags.tags %}
+                                            {% set tagKeyword = netgen_tags_tag_keyword( tag ) %}
+                                            <a href="{{ path(ez_route('_ezplatform_package_list_category', { category: tagKeyword })) }}" class="package__category-btn package__category-btn--dark-grey">{{ tagKeyword }}</a>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Downloads:</h2>
+                            <div class="package__details-section-downloads">
+                                <i class="fa fa-download"></i>
+                                {{ package.downloads }}
+                            </div>
+                        </div>
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Stars:</h2>
+                            <div class="package__details-section-stars">
+                                <i class="fa fa-star" aria-hidden="true"></i>
+                                {{ package.stars }}
+                            </div>
+                        </div>
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Forks:</h2>
+                            <div class="package__details-section-forks">
+                                <i class="fa fa-code-fork" aria-hidden="true"></i>
+                                {{ package.forks }}
+                            </div>
+                        </div>
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Created:</h2>
+                            <div class="package__details-section-date">
+                                {{ package.creationDate|date("Y-m-d") }}
+                            </div>
+                        </div>
+                        <div class="package__details-section">
+                            <h2 class="package__details-section-header">Updated:</h2>
+                            <div class="package__details-section-date">
+                                {{ package.updateDate|date("Y-m-d") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

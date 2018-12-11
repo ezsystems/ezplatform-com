@@ -100,20 +100,20 @@ jQuery(document).ready(function(){
         })
     });
 
-    $('form[name="bundle_order"] select').change(function() {
-        const searchText = $("#bundles-list-search-query").val(),
+    $('form[name="package_order"] select').change(function() {
+        const searchText = $("#package-list-search-query").val(),
         page = parseInt($(".pagerfanta span.current").html()),
         order  = $(this).val(),
-        category = $('.bundles-filters li.active').data('query-param');
+        category = $('.package-list__filters li.active').data('query-param');
 
         let orderQueryParam = $(this).val() ? `/${order}` : '',
         categoryQueryParam = typeof category !== "undefined" ? `${category}/` : 'all/';
 
         if (searchText) {
-            window.location.href = `/Bundles/search/all/${searchText}/${page}${orderQueryParam}`;
+            window.location.href = `/packages/search/all/${searchText}/${page}${orderQueryParam}`;
         }
         else {
-            window.location.href = `/Bundles/${categoryQueryParam}${page}${orderQueryParam}`;
+            window.location.href = `/packages/category/${categoryQueryParam}${page}${orderQueryParam}`;
         }
     });
 

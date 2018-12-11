@@ -1,31 +1,32 @@
 {% extends '@ezdesign/pagelayout.html.twig' %}
 
 {% block content %}
-    <section class="bundle-list">
-        <div class="bundle-list__header">
+    <section class="package-list">
+        <div class="package-list__header">
             {{ ez_render_field(content, 'description') }}
-            <div class="row bundle-list__header-bar">
+            <div class="row package-list__header-bar">
                 <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
             </div>
         </div>
-        <div class="container bundle-list__container">
+        <div class="container package-list__container">
             <div class="row">
-                <div class="col-md-2 bundle-list__filters">
+                <div class="col-md-2 package-list__filters">
                     <h3>Categories</h3>
                     <ul class="list-unstyled">
                         {% set selectedCategory = 'All' %}
-                        <li {% if selectedBundleCategory is defined and selectedBundleCategory == null %} class="active" {% endif %}>
-                            <a href="{{ path(ez_route('_ezplatform_bundles_list')) }}">{{ selectedCategory }} Bundles</a>
+                        <li {% if selectedPackageCategory is defined and selectedPackageCategory == null %} class="active" {% endif %}>
+                            <a href="{{ path(ez_route('_ezplatform_package_list')) }}">{{ selectedCategory }} Packages</a>
                         </li>
-                        {% if bundlesCategories is defined and bundlesCategories|length > 0 %}
-                            {% for bundleCategory in bundlesCategories %}
-                                <li {% if selectedBundleCategory is defined and selectedBundleCategory == bundleCategory.keyword %} class="active"
-                                        {% set selectedCategory = bundleCategory.keyword %} {% endif %}
-                                    data-query-param="{{ bundleCategory.keyword }}">
-                                    <a href="{{ path(ez_route('_ezplatform_bundles_list', {category: bundleCategory.keyword})) }}">{{ bundleCategory.keyword }}</a>
+                        {% if packageCategories is defined and packageCategories|length > 0 %}
+                            {% for packageCategory in packageCategories %}
+                                {% set keyword = packageCategory.keyword|lower %}
+                                <li {% if selectedPackageCategory is defined and selectedPackageCategory == keyword %} class="active"
+                                        {% set selectedCategory = keyword %} {% endif %}
+                                    data-query-param="{{ keyword }}">
+                                    <a href="{{ path(ez_route('_ezplatform_package_list_category', {category: keyword})) }}">{{ packageCategory.keyword }}</a>
                                 </li>
                             {% endfor %}
                         {% endif %}
@@ -34,31 +35,31 @@
                 <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="find-bundle" class="bundle-list__search">
+                            <div id="find-bundle" class="package-list__search">
                                 <div class="form-row align-items-center">
-                                    {{ render_esi(controller('app.controller.bundle:renderSearchBundleForm', {"searchText": searchText})) }}
+                                    {{ render_esi(controller('app.controller.package:renderSearchPackageForm', {"searchText": searchText})) }}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="bundle-list__content">
+                            <div class="package-list__content">
                                 {% if items is defined and items|length > 0 %}
                                 <div class="row align-items-center">
-                                    <div class="col-xs-12 col-md-9 bundle-list__keyword">
+                                    <div class="col-xs-12 col-md-9 package-list__keyword">
                                         {% if search is defined and search is not empty %}
                                             <h2>Search / Keyword: {{ search }}</h2>
                                         {% else %}
-                                            <h2>{{ selectedCategory }} Bundles</h2>
+                                            <h2>{{ selectedCategory }} Packages</h2>
                                         {% endif %}
                                     </div>
-                                    <div class="col-xs-12 col-md-3 bundle-list__sort-container">
+                                    <div class="col-xs-12 col-md-3 package-list__sort-container">
                                         {% set sortingOrder = order is defined ? order : 'default' %}
-                                        {{ render_esi(controller('app.controller.bundle:renderSortOrderBundleForm', {"order": sortingOrder})) }}
+                                        {{ render_esi(controller('app.controller.package:renderSortOrderPackageForm', {"order": sortingOrder})) }}
                                     </div>
                                 </div>
-                                {% include '@ezdesign/parts/bundle_list/list.html.twig' with {
+                                {% include '@ezdesign/parts/package/list.html.twig' with {
                                     'items': items,
                                     'viewType': 'line',
                                     'extraParams': {
@@ -67,13 +68,13 @@
                                 } only %}
                                 <div class="row">
                                     <div class="button-load-more mx-auto pagerfanta">
-                                        {{ pagerfanta(pager, 'bundles_list') }}
+                                        {{ pagerfanta(pager, 'package_list') }}
                                     </div>
                                 </div>
                                 {% else %}
                                     <div class="row">
                                         <div class="col-12">
-                                            <h2>Bundles not found</h2>
+                                            <h2>Packages not found</h2>
                                         </div>
                                     </div>
                                 {% endif %}

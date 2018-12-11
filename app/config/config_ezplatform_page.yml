@@ -17,16 +17,16 @@ parameters:
     blog.posts_limit: 10
     # `authors` folder locationId
     blog.authors_container_location_id: 72
-    # `bundles_list` locationId
-    bundles.location_id: 168
-    # 'bundles_list` elements limit on `bundles_list` page
-    bundles.cards_limit: 12
-    # 'bundle_categories parent tag id'
-    bundles.categories_parent_tag_id: 32
-    # 'bundles' cache expiration time in seconds
-    bundles.cache_expiration_time: 604800
-    # names of excluded bundle maintainers
-    bundles.excluded_maintainers: ['ezrobot']
+    # `package_list` locationId
+    packages.location_id: 168
+    # 'package_list` elements limit on `packages_list` page
+    packages.cards_limit: 12
+    # 'package_categories parent tag id'
+    packages.categories_parent_tag_id: 32
+    # 'package' cache expiration time in seconds
+    packages.cache_expiration_time: 604800
+    # names of excluded package maintainers
+    packages.excluded_maintainers: ['ezrobot']
     # overwrites default tag view page template
     netgen_tags.default.tag_view.pagelayout: 'pagelayout.html.twig'
     # overwrites default tag related content limit
@@ -63,6 +63,5 @@ ez_comments:
 twig:
     globals:
         blogLocationId: '%blog.location_id%'
-        bundlesListLocationId: '%bundles.location_id%'
         communityMetricsIframeUrl: '%community_metrics.iframe_url%'
         productFeedbackIframeUrl: '%product_feedback.iframe_url%'

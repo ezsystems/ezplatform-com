@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Update Bundle List Command.
+ * Update Package List Command.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateBundlesListCommand extends ContainerAwareCommand
+class UpdatePackageListCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -29,8 +29,8 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:update_bundles_list')
-            ->setDescription('This command updates Bundle List with data gathered from Packagist.org')
+            ->setName('app:update_package_list')
+            ->setDescription('This command updates Package List with data gathered from Packagist.org')
             ->addOption('force', 'f', InputOption::VALUE_NONE, false)
             ->addOption('details', 'd', InputOption::VALUE_NONE, false);
     }
@@ -58,8 +58,8 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
 
         foreach ($results->searchHits as $searchHit) {
             $currentPackage = $searchHit->valueObject;
-            $package = $packagistServiceProvider->getPackageDetails($currentPackage->getFieldValue('bundle_id'), $input->getOption('force'));
-            $output->write('<question>'.$currentPackage->getFieldValue('bundle_id').'</question>');
+            $package = $packagistServiceProvider->getPackageDetails($currentPackage->getFieldValue('package_id'), $input->getOption('force'));
+            $output->write('<question>'.$currentPackage->getFieldValue('package_id').'</question>');
 
             if (($package->checksum !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
                 if ( !empty($this->getDiff($currentPackage, $package)) && $input->getOption('details')) {
@@ -87,7 +87,7 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
                 $output->writeln(': <comment>Already up-to-date</comment>');
             }
         }
-        $output->writeln('<info>The bundles have been successfully updated.</info>');
+        $output->writeln('<info>The packages have been successfully updated.</info>');
     }
 
     /**
@@ -96,7 +96,7 @@ class UpdateBundlesListCommand extends ContainerAwareCommand
     private function getQuery()
     {
         $query = new Query();
-        $criterion = new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('bundles.location_id'));
+        $criterion = new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('packages.location_id'));
         $query->filter = $criterion;
         $query->limit = 1000;
 
