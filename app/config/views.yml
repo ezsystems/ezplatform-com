@@ -73,8 +73,10 @@ ezpublish:
                         template: "@ezdesign/line/blog_post.html.twig"
                         match:
                             Identifier\ContentType: blog_post
+
+                card:
                     package:
-                        template: "@ezdesign/line/package_card.html.twig"
+                        template: "@ezdesign/card/package.html.twig"
                         match:
                             Identifier\ContentType: package
 

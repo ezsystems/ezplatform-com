@@ -7,7 +7,5 @@ services:
     app.packagist_service_provider:
         class: AppBundle\Service\Packagist\PackagistServiceProvider
         arguments:
-            - '@ezpublish.cache_pool'
             - '@app.packagist_api_client'
             - '@app.packagist_api_mapper'
-            - '%packages.cache_expiration_time'

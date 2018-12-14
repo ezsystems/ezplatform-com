@@ -5,7 +5,7 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-namespace AppBundle\Service\Packagist;
+namespace AppBundle\ValueObject;
 
 class Package
 {
@@ -58,6 +58,16 @@ class Package
      * @var \Packagist\Api\Result\Package\Author
      */
     public $author;
+
+    /**
+     * @var string
+     */
+    public $repository;
+
+    /**
+     * @var string
+     */
+    public $readme;
 
     /**
      * @var string

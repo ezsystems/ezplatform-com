@@ -11,7 +11,13 @@
 
 namespace AppBundle\Service\Packagist;
 
+use AppBundle\ValueObject\Package;
+
+/**
+ * Interface PackagistServiceProviderInterface
+ * @package AppBundle\Service\Packagist
+ */
 interface PackagistServiceProviderInterface
 {
-    public function getPackageDetails($packageName);
+    public function getPackageDetails($packageName): ?Package;
 }
