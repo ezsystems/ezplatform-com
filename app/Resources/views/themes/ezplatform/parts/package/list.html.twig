@@ -4,7 +4,7 @@
         {% for card in items %}
             <div class="col-md-4 col-xs-12">
                 {{ render(controller('ez_content:viewAction', {
-                    'locationId': card.bundle.valueObject.versionInfo.contentInfo.mainLocationId,
+                    'locationId': card.package.valueObject.versionInfo.contentInfo.mainLocationId,
                     'viewType': viewType,
                     'params': {
                         'extra': extraParams,

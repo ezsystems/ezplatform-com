@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Form OrderType for sorting Bundle ContentType on Bundle_list.
+ * Form OrderType for sorting Package ContentType on package_list.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -10,7 +10,7 @@ namespace AppBundle\View\Template;
 
 use Pagerfanta\View\Template\DefaultTemplate;
 
-class BundlesListTemplate extends DefaultTemplate
+class PackageListTemplate extends DefaultTemplate
 {
     public function __construct()
     {

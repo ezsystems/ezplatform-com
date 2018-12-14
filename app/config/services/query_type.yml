@@ -9,7 +9,7 @@ services:
         tags:
             - name: ezpublish.query_type
 
-    app.query_type.bundles:
-        class: AppBundle\QueryType\BundlesQueryType
+    app.query_type.packages:
+        class: AppBundle\QueryType\PackagesQueryType
         tags:
             - name: ezpublish.query_type

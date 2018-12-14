@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Form OrderType for sorting Bundle ContentType on Bundle_list.
+ * Form OrderType for sorting Package ContentType on package_list.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -12,7 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class BundleSearchType extends AbstractType
+class PackageSearchType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -21,12 +21,12 @@ class BundleSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->setAction('/Bundles/search/')
+            ->setAction('/packages/search/')
             ->setMethod('POST')
             ->add('search', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => 'Search Bundle...',
+                    'placeholder' => 'Search Package...',
                 ],
             ]);
     }

@@ -65,33 +65,31 @@ _ezplatform_blog_ajax:
     requirements:
         "page": '\d+'
 
+# PACKAGE LIST
+_ezplatform_package_list:
+    path: /packages/{page}
+    defaults: { _controller: app.controller.package:showPackageListAction, page: 1 }
+    methods: [GET]
+    requirements:
+        "page": '\d+'
 
-# BUNDLES LIST
-_ezplatform_bundles_list:
-    path: /Bundles/{category}/{page}/{order}/{searchText}
-    defaults: { _controller: app.controller.bundle:showBundlesListAction, page: 1, order: 'default', searchText: '', category: 'all' }
+_ezplatform_package_list_category:
+    path: /packages/category/{category}/{page}/{order}/{searchText}
+    defaults: { _controller: app.controller.package:showPackageListAction, page: 1, order: 'default', searchText: '', category: 'all' }
     methods: [GET]
     requirements:
         "order": 'default|latestUpdate|stars|downloads'
 
-#I will change this when we provide new name for bundles
-_ezplatform_bundle_details:
-    path: bundle/{locationId}
-    defaults: { _controller: app.controller.bundle:getBundleDetailsAction }
-    methods: [GET]
-    requirements:
-        "locationId": '\d+'
-
-_ezplatform_bundles_search_init:
-    path: /Bundles/search/
-    defaults: { _controller: app.controller.bundle:searchBundlesAction, page: 1, order: 'default' }
+_ezplatform_package_list_search_init:
+    path: /packages/search/
+    defaults: { _controller: app.controller.package:searchPackagesAction, page: 1, order: 'default' }
     methods: [POST]
     requirements:
         "order": 'default|latestUpdate|stars|downloads'
 
-_ezplatform_bundles_search:
-    path: /Bundles/search/{category}/{searchText}/{page}/{order}
-    defaults: { _controller: app.controller.bundle:showBundlesListAction, page: 1, order: 'default', searchText: '', category: 'all' }
+_ezplatform_package_list_search:
+    path: /packages/search/{category}/{searchText}/{page}/{order}
+    defaults: { _controller: app.controller.package:showPackageListAction, page: 1, order: 'default', searchText: '', category: 'all' }
     methods: [GET, POST]
 
 # TAGS

@@ -1,0 +1,85 @@
+.package {
+    &-card {
+        width: 100%;
+        height: 225px;
+        background: #fff;
+        margin: 0 0 40px 0;
+
+        &__container {
+            height: 100%;
+            border: solid 1px #ccc;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            padding: 25px 20px;
+            overflow: hidden;
+
+            &:hover {
+                box-shadow: 0 7px 15px #ddd;
+            }
+        }
+
+        &__header {
+            width: 100%;
+            height: 22%;
+            overflow: hidden;
+        }
+
+        &__avatar {
+            width: 34px;
+            height: 34px;
+            float: left;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        &__body {
+            float: left;
+            overflow: hidden;
+            height: 78%;
+            margin-top: 10px;
+        }
+
+        &__name {
+            h2 {
+                font-size: 19px;
+                color: #333;
+                font-weight: 600;
+                margin-top: 20px;
+                word-break: break-word;
+            }
+        }
+
+        &__description {
+            font-size: 15px;
+            color: #63605d;
+            font-weight: 400;
+
+            p {
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+
+    &-owner {
+        position: relative;
+        top: -5px;
+        width: 75%;
+        float: left;
+        margin-left: 10px;
+        color: #63605d;
+
+        &__label {
+            display: block;
+            font-size: 15px;
+        }
+
+        &__author {
+            font-size: 16px;
+            font-weight: 600;
+        }
+    }
+}

@@ -13,7 +13,7 @@ ezpublish:
                             omitted_location_ids:
                                 - '%blog.location_id%'
                                 - '%blog.authors_container_location_id%'
-                                - '%bundles.location_id%'
+                                - '%packages.location_id%'
                             query:
                                 query_type: AppBundle:Children
                                 parameters:
@@ -21,7 +21,7 @@ ezpublish:
                                     excluded_content_types:
                                         - layout
                                         - article
-                                        - bundle_list
+                                        - package_list
                                 assign_results_to: items
                         template: "@ezdesign/full/home.html.twig"
                         match:
@@ -57,21 +57,26 @@ ezpublish:
                         template: "@ezdesign/full/article.html.twig"
                         match:
                             Identifier\ContentType: article
-                    bundle_list:
-                        controller: app.controller.bundle:showBundlesListAction
-                        template: "@ezdesign/full/bundle_list.html.twig"
+                    package_list:
+                        controller: app.controller.package:showPackageListAction
+                        template: "@ezdesign/full/package_list.html.twig"
                         match:
-                            Identifier\ContentType: bundle_list
+                            Identifier\ContentType: package_list
+                    package:
+                        controller: app.controller.package:getPackageDetailsAction
+                        template: "@ezdesign/full/package.html.twig"
+                        match:
+                            Identifier\ContentType: package
 
                 line:
                     blog_post:
                         template: "@ezdesign/line/blog_post.html.twig"
                         match:
                             Identifier\ContentType: blog_post
-                    bundle:
-                        template: "@ezdesign/line/bundle_card.html.twig"
+                    package:
+                        template: "@ezdesign/line/package_card.html.twig"
                         match:
-                            Identifier\ContentType: bundle
+                            Identifier\ContentType: package
 
                 row:
                     banner_slider:

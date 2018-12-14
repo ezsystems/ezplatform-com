@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\BundleOrderType;
-use AppBundle\Form\BundleSearchType;
-use AppBundle\QueryType\BundlesQueryType;
+use AppBundle\Form\PackageOrderType;
+use AppBundle\Form\PackageSearchType;
+use AppBundle\QueryType\PackagesQueryType;
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
@@ -20,11 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-class BundleController
+class PackageController
 {
     private const DEFAULT_ORDER_CLAUSE = 'default';
 
-    private const DEFAULT_BUNDLES_CATEGORY = 'all';
+    private const DEFAULT_PACKAGE_CATEGORY = 'all';
 
     /**
      * @var \Symfony\Bundle\TwigBundle\TwigEngine
@@ -42,9 +42,9 @@ class BundleController
     private $aliasRouter;
 
     /**
-     * @var \AppBundle\QueryType\BundlesQueryType
+     * @var \AppBundle\QueryType\PackagesQueryType
      */
-    private $bundlesQueryType;
+    private $packagesQueryType;
 
     /**
      * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface;
@@ -74,65 +74,65 @@ class BundleController
     /**
      * @var int
      */
-    private $bundlesListLocationId;
+    private $packageListLocationId;
 
     /**
      * @var int
      */
-    private $bundlesListCardsLimit;
+    private $packageListCardsLimit;
 
     /**
      * @var int
      */
-    private $bundleCategoriesParentTagId;
+    private $packageCategoriesParentTagId;
 
     /**
-     * BundleController constructor.
+     * PackageBundleController constructor.
      * @param EngineInterface $templating
      * @param SearchService $searchService
      * @param UrlAliasRouter $aliasRouter
-     * @param BundlesQueryType $bundlesQueryType
+     * @param PackagesQueryType $packagesQueryType
      * @param PackagistServiceProviderInterface $packagistServiceProvider
      * @param FormFactory $formFactory
      * @param DefaultRouter $router
      * @param TagsService $tagsService
      * @param LocationService $locationService
-     * @param int $bundlesListLocationId
-     * @param int $bundlesListCardsLimit
-     * @param int $bundleCategoriesParentTagId
+     * @param int $packageListLocationId
+     * @param int $packageListCardsLimit
+     * @param int $packageCategoriesParentTagId
      */
     public function __construct(
         EngineInterface $templating,
         SearchService $searchService,
         UrlAliasRouter $aliasRouter,
-        BundlesQueryType $bundlesQueryType,
+        PackagesQueryType $packagesQueryType,
         PackagistServiceProviderInterface $packagistServiceProvider,
         FormFactory $formFactory,
         DefaultRouter $router,
         TagsService $tagsService,
         LocationService $locationService,
-        int $bundlesListLocationId,
-        int $bundlesListCardsLimit,
-        int $bundleCategoriesParentTagId
+        int $packageListLocationId,
+        int $packageListCardsLimit,
+        int $packageCategoriesParentTagId
     ) {
         $this->templating = $templating;
         $this->searchService = $searchService;
         $this->aliasRouter = $aliasRouter;
-        $this->bundlesQueryType = $bundlesQueryType;
+        $this->packagesQueryType = $packagesQueryType;
         $this->packagistServiceProvider = $packagistServiceProvider;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->tagsService = $tagsService;
         $this->locationService = $locationService;
-        $this->bundlesListLocationId = $bundlesListLocationId;
-        $this->bundlesListCardsLimit = $bundlesListCardsLimit;
-        $this->bundleCategoriesParentTagId = $bundleCategoriesParentTagId;
+        $this->packageListLocationId = $packageListLocationId;
+        $this->packageListCardsLimit = $packageListCardsLimit;
+        $this->packageCategoriesParentTagId = $packageCategoriesParentTagId;
     }
 
     /**
-     * Renders full view `bundle_list`.
+     * Renders full view `package_list`.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @param string $category
      * @param int $page
      * @param string $order
@@ -141,19 +141,18 @@ class BundleController
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Twig\Error\Error
-     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    public function showBundlesListAction(Request $request, string $category = self::DEFAULT_BUNDLES_CATEGORY, $page = 1, $order = self::DEFAULT_ORDER_CLAUSE, $searchText = '')
+    public function showPackageListAction(Request $request, string $category = self::DEFAULT_PACKAGE_CATEGORY, $page = 1, $order = self::DEFAULT_ORDER_CLAUSE, $searchText = '')
     {
-        $orderForm = $this->formFactory->create(BundleOrderType::class);
+        $orderForm = $this->formFactory->create(PackageOrderType::class);
         $orderForm->handleRequest($request);
         if ($orderForm->isSubmitted() && $orderForm->isValid()) {
             $order = $orderForm->get('order')->getData();
         }
 
-        $searchForm = $this->formFactory->create(BundleSearchType::class);
+        $searchForm = $this->formFactory->create(PackageSearchType::class);
         $searchForm->handleRequest($request);
         if ($searchForm->isSubmitted() || $searchForm->isValid()) {
             $searchText = $searchForm->get('search')->getData();
@@ -161,30 +160,30 @@ class BundleController
 
         $tagId = null;
 
-        if ($category && $category !== self::DEFAULT_BUNDLES_CATEGORY) {
+        if ($category && $category !== self::DEFAULT_PACKAGE_CATEGORY) {
             $tagId = $this->getCategoryTagId($category);
         }
 
-        $content = $this->locationService->loadLocation($this->bundlesListLocationId)->getContent();
+        $content = $this->locationService->loadLocation($this->packageListLocationId)->getContent();
 
         // Create pager
-        $adapter = new ContentSearchHitAdapter($this->getBundlesQuery(0, $order, $searchText, $tagId), $this->searchService);
+        $adapter = new ContentSearchHitAdapter($this->getPackagesQuery(0, $order, $searchText, $tagId), $this->searchService);
 
         $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage($this->bundlesListCardsLimit);
+        $pagerfanta->setMaxPerPage($this->packageListCardsLimit);
         $pagerfanta->setCurrentPage($page);
 
-        // Get list of bundles using already fetched data from pager
-        $bundles = $this->getList($adapter->getSlice(($page - 1) * $this->bundlesListCardsLimit, $this->bundlesListCardsLimit));
+        // Get list of packages using already fetched data from pager
+        $packages = $this->getList($adapter->getSlice(($page - 1) * $this->packageListCardsLimit, $this->packageListCardsLimit));
 
-        return $this->templating->renderResponse('@ezdesign/full/bundle_list.html.twig', [
-            'items' => $bundles,
+        return $this->templating->renderResponse('@ezdesign/full/package_list.html.twig', [
+            'items' => $packages,
             'content' => $content,
             'order' => $order,
             'pager' => $pagerfanta,
             'searchText' => $searchText,
-            'bundlesCategories' => $this->getBundlesCategoriesList($this->bundleCategoriesParentTagId),
-            'selectedBundleCategory' => $category !== self::DEFAULT_BUNDLES_CATEGORY ? $category : ''
+            'packageCategories' => $this->getPackageCategoriesList($this->packageCategoriesParentTagId),
+            'selectedPackageCategory' => $category !== self::DEFAULT_PACKAGE_CATEGORY ? mb_strtolower($category) : ''
         ]);
     }
 
@@ -197,13 +196,13 @@ class BundleController
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    public function getBundleDetailsAction(Request $request)
+    public function getPackageDetailsAction(Request $request)
     {
         $content = $this->locationService->loadLocation($request->get('locationId'))->getContent();
 
-        return $this->templating->renderResponse('@ezdesign/full/bundle.html.twig', [
+        return $this->templating->renderResponse('@ezdesign/full/package.html.twig', [
             'content' => $content,
-            'bundle' => $this->packagistServiceProvider->getPackageDetails($content->getName())
+            'package' => $this->packagistServiceProvider->getPackageDetails($content->getName())
         ]);
     }
 
@@ -214,22 +213,22 @@ class BundleController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function searchBundlesAction(Request $request)
+    public function searchPackagesAction(Request $request)
     {
-        $searchForm = $this->formFactory->create(BundleSearchType::class);
+        $searchForm = $this->formFactory->create(PackageSearchType::class);
         $searchForm->handleRequest($request);
 
         if (!$searchForm->isSubmitted() || !$searchForm->isValid()) {
             return new RedirectResponse($this->aliasRouter->generate('ez_urlalias',
-                ['locationId' => $this->bundlesListLocationId], UrlGeneratorInterface::ABSOLUTE_PATH));
+                ['locationId' => $this->packageListLocationId], UrlGeneratorInterface::ABSOLUTE_PATH));
         }
         $searchText = $searchForm->get('search')->getData();
 
-        return new RedirectResponse($this->router->generate('_ezplatform_bundles_search', [
+        return new RedirectResponse($this->router->generate('_ezplatform_package_list_search', [
             'page' => 1,
             'order' => self::DEFAULT_ORDER_CLAUSE,
             'searchText' => $searchText,
-            'category' => self::DEFAULT_BUNDLES_CATEGORY
+            'category' => self::DEFAULT_PACKAGE_CATEGORY
         ]));
     }
 
@@ -240,16 +239,16 @@ class BundleController
      *
      * @throws \Twig\Error\Error
      */
-    public function renderSortOrderBundleForm($order)
+    public function renderSortOrderPackageForm($order)
     {
-        $sortOrderBundleForm = $this->formFactory->create(BundleOrderType::class, [
+        $sortOrderPackageForm = $this->formFactory->create(PackageOrderType::class, [
             'order' => $order,
         ]);
 
         return $this->templating->renderResponse(
-            '@ezdesign/form/bundle_sort_order.html.twig',
+            '@ezdesign/form/package_sort_order.html.twig',
             [
-                'sortOrderBundleForm' => $sortOrderBundleForm->createView(),
+                'sortOrderPackageForm' => $sortOrderPackageForm->createView(),
             ]
         )->setPrivate();
     }
@@ -261,22 +260,22 @@ class BundleController
      *
      * @throws \Twig\Error\Error
      */
-    public function renderSearchBundleForm($searchText)
+    public function renderSearchPackageForm($searchText)
     {
-        $searchBundleForm = $this->formFactory->create(BundleSearchType::class, [
+        $searchPackageForm = $this->formFactory->create(PackageSearchType::class, [
             'search' => $searchText,
         ]);
 
         return $this->templating->renderResponse(
-            '@ezdesign/form/bundle_search.html.twig',
+            '@ezdesign/form/package_search.html.twig',
             [
-                'searchBundleForm' => $searchBundleForm->createView(),
+                'searchPackageForm' => $searchPackageForm->createView(),
             ]
         )->setPrivate();
     }
 
     /**
-     * Returns list with bundles categories
+     * Returns list with package categories
      *
      * @var int $categoryId
      *
@@ -285,7 +284,7 @@ class BundleController
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    private function getBundlesCategoriesList(int $categoryId): array
+    private function getPackageCategoriesList(int $categoryId): array
     {
         $tag = $this->tagsService->loadTag($categoryId);
 
@@ -305,7 +304,7 @@ class BundleController
         $tags = $this->tagsService->loadTagsByKeyword($category, $language);
 
         $tags = array_filter($tags, function(Tag $tag) {
-            return $tag->parentTagId === $this->bundleCategoriesParentTagId;
+            return mb_strtolower($tag->parentTagId) === mb_strtolower($this->packageCategoriesParentTagId);
         });
 
         $tag = reset($tags);
@@ -321,11 +320,11 @@ class BundleController
      *
      * @return \eZ\Publish\API\Repository\Values\Content\LocationQuery
      */
-    private function getBundlesQuery($offset = 0, $order = null, $searchText = '', $tagId = null)
+    private function getPackagesQuery($offset = 0, $order = null, $searchText = '', $tagId = null)
     {
-        return $this->bundlesQueryType->getQuery([
-            'parent_location_id' => $this->bundlesListLocationId,
-            'limit' => $this->bundlesListCardsLimit,
+        return $this->packagesQueryType->getQuery([
+            'parent_location_id' => $this->packageListLocationId,
+            'limit' => $this->packageListCardsLimit,
             'offset' => $offset,
             'order' => $order,
             'search' => $searchText,
@@ -334,7 +333,7 @@ class BundleController
     }
 
     /**
-     * Returns list of bundles with package details for given $searchResult set.
+     * Returns list of packages with package details for given $searchResult set.
      *
      * @param array $searchHits
      *
@@ -342,14 +341,14 @@ class BundleController
      */
     private function getList(array $searchHits)
     {
-        $bundles = [];
+        $packages = [];
         foreach ($searchHits as $searchHit) {
-            $bundles[] = [
-                'bundle' => $searchHit,
+            $packages[] = [
+                'package' => $searchHit,
                 'packageDetails' => $this->packagistServiceProvider->getPackageDetails($searchHit->valueObject->contentInfo->name),
             ];
         }
 
-        return $bundles;
+        return $packages;
     }
 }

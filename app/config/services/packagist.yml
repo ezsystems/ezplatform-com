@@ -3,11 +3,11 @@ services:
         class: Packagist\Api\Client
     app.packagist_api_mapper:
         class: AppBundle\Service\Packagist\Mapper
-        arguments: ['%bundles.excluded_maintainers%']
+        arguments: ['%packages.excluded_maintainers%']
     app.packagist_service_provider:
         class: AppBundle\Service\Packagist\PackagistServiceProvider
         arguments:
             - '@ezpublish.cache_pool'
             - '@app.packagist_api_client'
             - '@app.packagist_api_mapper'
-            - '%bundles.cache_expiration_time'
+            - '%packages.cache_expiration_time'
