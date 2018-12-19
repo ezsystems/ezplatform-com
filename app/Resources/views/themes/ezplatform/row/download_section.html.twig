@@ -7,48 +7,47 @@
                 <ul class="nav nav-pills nav-justified" role="tablist">
                     {% if not ez_is_field_empty(content, 'composer_description') %}
                         <li class="nav-item">
-                            <a href="#composer-option" class="nav-link active show" data-toggle="tab" role="tab">
+                            <a href="#composer-option" class="nav-link active show" data-toggle="tab" data-ga-action="Composer tab" role="tab">
                                 <img src="{{ asset('images/composer.svg', 'ezdesign') }}" alt="Download" class="download">
-                                <div class="label">Composer</div>
+                                <span class="label">Composer</span>
                             </a>
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a href="#ezlaunchpad-option" class="nav-link" data-toggle="tab" role="tab">
+                        <a href="#ezlaunchpad-option" class="nav-link" data-toggle="tab" data-ga-action="eZ launchpad tab" role="tab">
                             <img src="{{ asset('images/ez-launchpad.svg', 'ezdesign') }}" alt="eZ Launchpad" class="download">
-                            <div class="label">eZ Launchpad</div>
+                            <span class="label">eZ Launchpad</span>
                         </a>
                     </li>
                     {% if not ez_is_field_empty(content, 'platform_sh_description') %}
                         <li class="nav-item">
-                            <a href="#platform-sh-option" class="nav-link" data-toggle="tab" role="tab">
+                            <a href="#platform-sh-option" class="nav-link" data-toggle="tab" data-ga-action="platform.sh tab" role="tab">
                                 <img src="{{ asset('images/platform-sh-logo.svg', 'ezdesign') }}" alt="Download" class="download">
-                                <div class="label">platform.sh</div>
+                                <span class="label">platform.sh</span>
                             </a>
                         </li>
                     {% endif %}
                     {% if not ez_is_field_empty(content, 'download_description') %}
                         <li class="nav-item">
-                            <a href="#download-option" class="nav-link" data-toggle="tab" role="tab">
+                            <a href="#download-option" class="nav-link" data-toggle="tab" data-ga-action="Download tab" role="tab">
                                 <img src="{{ asset('images/download.svg', 'ezdesign') }}" alt="Download" class="download">
-                                <div class="label">Download</div>
+                                <span class="label">Download</span>
                             </a>
                         </li>
                     {% endif %}
                 </ul>
-
                 <div class="tab-content">
                     {% if not ez_is_field_empty(content, 'composer_description') %}
                         <div role="tabpanel" class="tab-pane active" id="composer-option">
                             <div class="details">
                                 <h3>Composer</h3>
-                                <div class="description text-center">
+                                <div data-ga-action="Composer documentation" class="description text-center ga-link-listener">
                                     {{ ez_render_field(content, 'composer_description') }}
                                 </div>
                             </div>
                             <div class="launch text-center">
                                 <img src="{{ asset('images/pulley-hero.svg', 'ezdesign') }}" alt="Platform.sh" class="hero">
-                                <a href="//doc.ezplatform.com/en/latest/getting_started/install_using_composer/" class="btn btn-primary">Install with composer</a>
+                                <a href="//doc.ezplatform.com/en/latest/getting_started/install_using_composer/" class="btn btn-primary" data-ga-action="Install with Composer">Install with composer</a>
                             </div>
                         </div>
                     {% endif %}
@@ -61,7 +60,6 @@
                                     {{ ez_render_field(content, 'download_description') }}
                                 </div>
                             </div>
-
                             <table class="table table-striped text-center download-table">
                                 <thead>
                                 <tr>
@@ -72,7 +70,7 @@
                                 </thead>
                                 <tbody>
                                 {% if betas is not empty %}
-                                    <tr class="beta">
+                                    <tr class="beta" data-ga-action="Download" data-ga-label="{{ ez_field_value(release, 'release_version') }}">
                                         <th scope="row">
                                             <a href="{{ ez_field_value(betas|first, 'file') }}">{{ ez_render_field(betas|first, 'release_version') }}</a>
                                         </th>
@@ -88,7 +86,7 @@
                                 {% endif %}
 
                                 {% for release in releases %}
-                                    <tr class="releases">
+                                    <tr class="releases" data-ga-action="Download" data-ga-label="{{ ez_field_value(release, 'release_version') }}">
                                         <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>
                                             <a href="{{ ez_field_value(release, 'file') }}">{{ ez_render_field(release, 'release_version') }}</a>
                                         </th>
@@ -107,7 +105,7 @@
 
                                 <tr class="releases ezpublish">
                                     <th colspan="3">
-                                        Looking for <a href="http://share.ez.no">eZ Publish / eZ Publish Platform</a> ?
+                                        Looking for <a href="http://share.ez.no" data-ga-action="Download eZ publish">eZ Publish / eZ Publish Platform</a> ?
                                     </th>
                                 </tr>
                                 </tbody>
@@ -126,13 +124,13 @@
 
                             <div class="launch text-center">
                                 <img src="{{ asset('images/platform-sh-rocket.svg', 'ezdesign') }}" alt="Platform.sh" class="rocket">
-                                <a href="//accounts.platform.sh/platform/trial/ezplatform/setup?branch=demo" class="btn btn-primary">Deploy on platform.sh</a>
+                                <a href="//accounts.platform.sh/platform/trial/ezplatform/setup?branch=demo" class="btn btn-primary" data-ga-action="platform.sh deploy">Deploy on platform.sh</a>
                             </div>
                         </div>
                     {% endif %}
 
                     <div role="tabpanel" class="tab-pane" id="ezlaunchpad-option">
-                        <div class="details">
+                        <div class="details" data-ga-action="eZ launchpad documentation">
                             <h3>eZ Launchpad</h3>
                             {% if content.fields['launchpad_description'] is defined and not ez_is_field_empty(content, 'launchpad_description') %}
                                 <div class="description text-center">

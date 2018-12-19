@@ -35,7 +35,7 @@
         {% block canonical %}
         {% endblock %}
     </head>
-    <body>
+    <body data-ga-category="{% block gaCategory %}{% endblock %}">
         {% block main %}
             <main>
         {% endblock %}
@@ -59,6 +59,8 @@
             'bundles/ezplatformadminuiassets/vendors/popper.js/dist/umd/popper.min.js'
             'bundles/ezplatformadminuiassets/vendors/bootstrap/dist/js/bootstrap.min.js'
             'assets/js/prism.js'
+            'assets/js/stringUtils.helper.js'
+            'assets/js/GoogleAnalyticsService.js'
             'assets/js/app.js'
         %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
