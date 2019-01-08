@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="package__banner package__banner--orange">
-                        <h1 class="package__header">{{ package.packageId }}</h1>
+                        <h1 class="package__header">{{ ez_render_field(content, 'name') }}</h1>
                         <a href="{{ ez_field_value(content, 'packagist_url') }}" class="package__header-btn">Install Package</a>
                     </div>
                 </div>
@@ -30,7 +30,11 @@
                 <div class="col-md-8">
                     <div class="tab-content">
                         <div id="package-info" class="tab-pane fade show active" role="tabpanel" aria-labelledby="package-info">
-                            {{ ez_render_field(content, 'description') }}
+                            {% if not ez_is_field_empty(content, 'readme') %}
+                                {{ ez_field_value(content, 'readme')|raw }}
+                            {% else %}
+                                {{ ez_render_field(content, 'description') }}
+                            {% endif %}
                         </div>
                         <div id="comments" class="tab-pane fade" role="tabpanel" aria-labelledby="comments">
                             {{ ez_comments_render_content(content.contentInfo, {
@@ -48,7 +52,7 @@
                                 {% set authorAvatar = package.authorAvatarUrl is defined ? package.authorAvatarUrl : package.maintainers[0].avatarUrl %}
                                 {% set authorName = package.author.name is defined ? package.author.name : package.maintainers[0].name %}
                                 <img src="{{ authorAvatar }}" class="author-avatar">
-                                <p class="d-inline-block">{{ authorName }}</p>
+                                <p class="d-inline">{{ authorName }}</p>
                             </div>
                         </div>
                         <div class="package__details-section">
@@ -68,21 +72,21 @@
                             <h2 class="package__details-section-header">Downloads:</h2>
                             <div class="package__details-section-downloads">
                                 <i class="fa fa-download"></i>
-                                {{ package.downloads }}
+                                {{ ez_render_field(content, 'downloads') }}
                             </div>
                         </div>
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Stars:</h2>
                             <div class="package__details-section-stars">
                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                {{ package.stars }}
+                                {{ ez_render_field(content, 'stars') }}
                             </div>
                         </div>
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Forks:</h2>
                             <div class="package__details-section-forks">
                                 <i class="fa fa-code-fork" aria-hidden="true"></i>
-                                {{ package.forks }}
+                                {{ ez_render_field(content, 'forks') }}
                             </div>
                         </div>
                         <div class="package__details-section">
@@ -94,7 +98,7 @@
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Updated:</h2>
                             <div class="package__details-section-date">
-                                {{ package.updateDate|date("Y-m-d") }}
+                                {{ ez_field_value(content, 'updated')|date("Y-m-d") }}
                             </div>
                         </div>
                     </div>

@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Form\PackageOrderType;
 use AppBundle\Form\PackageSearchType;
 use AppBundle\QueryType\PackagesQueryType;
-use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
+use AppBundle\Service\Package\PackageServiceInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
 use eZ\Publish\API\Repository\LocationService;
@@ -47,9 +47,9 @@ class PackageController
     private $packagesQueryType;
 
     /**
-     * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface;
+     * @var PackageServiceInterface
      */
-    private $packagistServiceProvider;
+    private $packageService;
 
     /**
      * @var \Symfony\Component\Form\FormFactory
@@ -87,12 +87,12 @@ class PackageController
     private $packageCategoriesParentTagId;
 
     /**
-     * PackageBundleController constructor.
+     * PackageController constructor.
      * @param EngineInterface $templating
      * @param SearchService $searchService
      * @param UrlAliasRouter $aliasRouter
      * @param PackagesQueryType $packagesQueryType
-     * @param PackagistServiceProviderInterface $packagistServiceProvider
+     * @param PackageServiceInterface $packageService
      * @param FormFactory $formFactory
      * @param DefaultRouter $router
      * @param TagsService $tagsService
@@ -106,7 +106,7 @@ class PackageController
         SearchService $searchService,
         UrlAliasRouter $aliasRouter,
         PackagesQueryType $packagesQueryType,
-        PackagistServiceProviderInterface $packagistServiceProvider,
+        PackageServiceInterface $packageService,
         FormFactory $formFactory,
         DefaultRouter $router,
         TagsService $tagsService,
@@ -119,7 +119,7 @@ class PackageController
         $this->searchService = $searchService;
         $this->aliasRouter = $aliasRouter;
         $this->packagesQueryType = $packagesQueryType;
-        $this->packagistServiceProvider = $packagistServiceProvider;
+        $this->packageService = $packageService;
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->tagsService = $tagsService;
@@ -199,10 +199,11 @@ class PackageController
     public function getPackageDetailsAction(Request $request)
     {
         $content = $this->locationService->loadLocation($request->get('locationId'))->getContent();
+        $this->packageService->getPackage($content->getName());
 
         return $this->templating->renderResponse('@ezdesign/full/package.html.twig', [
             'content' => $content,
-            'package' => $this->packagistServiceProvider->getPackageDetails($content->getName())
+            'package' => $this->packageService->getPackage($content->getName())
         ]);
     }
 
@@ -295,11 +296,11 @@ class PackageController
      * @param string $category
      * @param string $language
      *
-     * @return int
+     * @return int|null
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    private function getCategoryTagId(string $category, string $language = ''): int
+    private function getCategoryTagId(string $category, string $language = ''): ?int
     {
         $tags = $this->tagsService->loadTagsByKeyword($category, $language);
 
@@ -309,7 +310,7 @@ class PackageController
 
         $tag = reset($tags);
 
-        return $tag->id;
+        return $tag ? $tag->id : null;
     }
 
     /**
@@ -345,7 +346,7 @@ class PackageController
         foreach ($searchHits as $searchHit) {
             $packages[] = [
                 'package' => $searchHit,
-                'packageDetails' => $this->packagistServiceProvider->getPackageDetails($searchHit->valueObject->contentInfo->name),
+                'packageDetails' => $this->packageService->getPackage($searchHit->valueObject->contentInfo->name)
             ];
         }
 

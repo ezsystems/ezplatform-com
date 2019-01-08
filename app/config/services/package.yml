@@ -1,0 +1,8 @@
+services:
+  app.package.service:
+    class: AppBundle\Service\Package\PackageService
+    arguments:
+      - '@app.packagist_service_provider'
+      - '@app.github_service_provider'
+      - '@app.cache.service'
+      - '@app.dom.service'

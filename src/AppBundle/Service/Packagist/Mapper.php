@@ -7,8 +7,13 @@
 
 namespace AppBundle\Service\Packagist;
 
+use AppBundle\ValueObject\Package;
 use Packagist\Api\Result\Package as PackagistApiPackage;
 
+/**
+ * Class Mapper
+ * @package AppBundle\Service\Packagist
+ */
 class Mapper
 {
     const GITHUB_AVATAR_BASE_URL = 'https://avatars2.githubusercontent.com/';
@@ -41,6 +46,7 @@ class Mapper
         $package->author = $this->getAuthor($packagistApiPackage);
         $package->updateDate = $this->getUpdateDate($packagistApiPackage);
         $package->creationDate = $this->getCreationDate($packagistApiPackage);
+        $package->repository = $packagistApiPackage->getRepository();
         $package->checksum = $this->getChecksum($package);
 
         return $package;
@@ -54,7 +60,7 @@ class Mapper
     {
         $maintainers = [];
         foreach ($packagistApiPackage->getMaintainers() as $key => $value) {
-            if ( !in_array($value->getName(), $this->excludedMaintainers)) {
+            if (!in_array($value->getName(), $this->excludedMaintainers)) {
                 $maintainers[$key] = $value;
             }
         }
@@ -164,7 +170,7 @@ class Mapper
      * @param PackagistApiPackage $packagistApiPackage
      * @return bool|\DateTime
      */
-    private function getCreationDate(PackagistApiPackage $packagistApiPackage): \DateTime
+    private function getCreationDate(PackagistApiPackage $packagistApiPackage)
     {
         return \DateTime::createFromFormat(\DateTime::ISO8601, $packagistApiPackage->getTime());
     }

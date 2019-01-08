@@ -67,7 +67,9 @@
         "symfony/thanks": "^1.0.7",
         "ezsystems/comments-bundle": "~6.0",
         "knplabs/packagist-api": "^1.5.1",
-        "netgen/tagsbundle": "^3.0"
+        "netgen/tagsbundle": "^3.0",
+        "knplabs/github-api": "^2.10",
+        "symfony/dom-crawler": "3.4.20"
     },
     "require-dev": {
         "behat/behat": "^3.4.3",

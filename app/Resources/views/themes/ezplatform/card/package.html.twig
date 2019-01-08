@@ -1,0 +1,25 @@
+<div class="package-card package-card{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
+    <a href="{{ path(location) }}" title="See bundle details">
+        <div class="package-card__container">
+            <div class="package-card__header">
+                {% set authorAvatar = packageDetails.authorAvatarUrl is defined ? packageDetails.authorAvatarUrl : packageDetails.maintainers[0].avatarUrl %}
+                {% set authorName = packageDetails.author.name is defined ? packageDetails.author.name : packageDetails.maintainers[0].name %}
+                <div class="package-card__avatar">
+                    <img src="{{ authorAvatar }}?s=100" alt="{{ authorName }}" />
+                </div>
+                <div class="package-card__owner package-owner">
+                    <span class="package-owner__label">Made by:</span>
+                    <span class="package-owner__author">{{ authorName|truncate(20, true) }}</span>
+                </div>
+            </div>
+            <div class="package-card__body">
+                <div class="package-card__name">
+                    <h2>{{ ez_render_field(content, 'name') }}</h2>
+                </div>
+                <div class="package-card__description">
+                    {{ ez_render_field(content, 'description') }}
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

@@ -21,7 +21,7 @@ services:
             - '@ezpublish.api.service.search'
             - '@ezpublish.urlalias_router'
             - '@app.query_type.packages'
-            - '@app.packagist_service_provider'
+            - '@app.package.service'
             - '@form.factory'
             - '@router.default'
             - '@eztags.api.service.tags'

@@ -98,4 +98,3 @@ class PackagesQueryType implements QueryType
         return 'AppBundle:Packages';
     }
 }
-

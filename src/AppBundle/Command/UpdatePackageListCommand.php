@@ -9,7 +9,11 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Service\Packagist\Package;
+use AppBundle\Service\DOM\DOMServiceInterface;
+use AppBundle\Service\GitHub\GitHubServiceProvider;
+use AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface;
+use AppBundle\ValueObject\Package;
+use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\API\Repository\Exceptions\PropertyNotFoundException;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -20,6 +24,7 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DomCrawler\Crawler;
 
 class UpdatePackageListCommand extends ContainerAwareCommand
 {
@@ -45,7 +50,10 @@ class UpdatePackageListCommand extends ContainerAwareCommand
         }
 
         $repository = $this->getContainer()->get('ezpublish.api.repository');
-        $packagistServiceProvider = $this->getContainer()->get('app.packagist_service_provider');
+        $packageService = $this->getContainer()->get('app.package.service');
+        $gitHubService = $this->getContainer()->get('app.github_service_provider');
+        $domService = $this->getContainer()->get('app.dom.service');
+
         $contentService = $repository->getContentService();
 
         $query = $this->getQuery();
@@ -58,11 +66,17 @@ class UpdatePackageListCommand extends ContainerAwareCommand
 
         foreach ($results->searchHits as $searchHit) {
             $currentPackage = $searchHit->valueObject;
-            $package = $packagistServiceProvider->getPackageDetails($currentPackage->getFieldValue('package_id'), $input->getOption('force'));
+
+            if (!$currentPackage->getFieldValue('package_id')) {
+                return null;
+            }
+
+            $package = $packageService->getPackage($currentPackage->getFieldValue('package_id'), $input->getOption('force'));
             $output->write('<question>'.$currentPackage->getFieldValue('package_id').'</question>');
 
             if (($package->checksum !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
                 if ( !empty($this->getDiff($currentPackage, $package)) && $input->getOption('details')) {
+
                     $output->writeln(': <info>Updated</info>');
                     $table = new Table($output);
                     $table->setHeaders(['Field', 'Old value', 'New value']);
@@ -72,7 +86,7 @@ class UpdatePackageListCommand extends ContainerAwareCommand
                     $output->writeln(': <info>Updated.</info>');
                 }
 
-                $contentUpdateStruct = $this->getContentUpdateStruct($contentService, $package);
+                $contentUpdateStruct = $this->getContentUpdateStruct($contentService, $gitHubService, $package, $domService);
 
                 $contentId = $searchHit->valueObject->versionInfo->contentInfo->id;
                 $repository->sudo(
@@ -96,7 +110,11 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     private function getQuery()
     {
         $query = new Query();
-        $criterion = new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('packages.location_id'));
+        $criterion = new Query\Criterion\LogicalAnd([
+                new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('packages.location_id')),
+                new Query\Criterion\ContentTypeIdentifier('package')
+        ]);
+
         $query->filter = $criterion;
         $query->limit = 1000;
 
@@ -105,10 +123,13 @@ class UpdatePackageListCommand extends ContainerAwareCommand
 
     /**
      * @param \eZ\Publish\API\Repository\ContentService $contentService
-     * @param \AppBundle\Service\Packagist\Package $package
+     * @param \AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface $packageRepositoryService
+     * @param \AppBundle\ValueObject\Package $package
+     * @param \AppBundle\Service\DOM\DOMServiceInterface $domService
+     *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct
      */
-    private function getContentUpdateStruct(ContentService $contentService, Package $package)
+    private function getContentUpdateStruct(ContentService $contentService, PackageRepositoryServiceInterface $packageRepositoryService, Package $package, DOMServiceInterface $domService)
     {
         $contentUpdateStruct = $contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = 'eng-GB';
@@ -117,6 +138,15 @@ class UpdatePackageListCommand extends ContainerAwareCommand
         $contentUpdateStruct->setField('stars', $package->stars);
         $contentUpdateStruct->setField('forks', $package->forks);
         $contentUpdateStruct->setField('checksum', $package->checksum);
+
+        $readme = $packageRepositoryService->getReadme(new RepositoryMetadata($package->repository));
+
+        if ($readme) {
+            $crawler = new Crawler($readme);
+            $domService->removeElementsFromDOM($crawler, ['.anchor', '[data-canonical-src]']);
+            $domService->setAbsoluteURL($crawler, ['repository' => $package->repository, 'link' => GitHubServiceProvider::GITHUB_URL_PARTS]);
+            $contentUpdateStruct->setField('readme', $crawler->html());
+        }
 
         $escapedDescription = htmlspecialchars($package->description, ENT_XML1);
 
@@ -138,7 +168,8 @@ EOX;
 
     /**
      * @param \eZ\Publish\API\Repository\Values\ValueObject $current
-     * @param \AppBundle\Service\Packagist\Package $package
+     * @param \AppBundle\ValueObject\Package $package
+     *
      * @return array
      */
     private function getDiff(ValueObject $current, Package $package)
