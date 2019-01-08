@@ -5,3 +5,12 @@ ezrichtext.custom_tags.ezbutton.attributes.url.label: Url
 ezrichtext.custom_tags.ezbutton.attributes.title.label: Title
 ezrichtext.custom_tags.ezbutton.attributes.target.label: Target
 ezrichtext.custom_tags.ezbutton.attributes.class.label: 'Custom CSS class'
+
+# ezyoutube
+ezrichtext.custom_tags.ezyoutube.label: YouTube
+ezrichtext.custom_tags.ezyoutube.description: ''
+ezrichtext.custom_tags.ezyoutube.attributes.autoplay.label: Autoplay
+ezrichtext.custom_tags.ezyoutube.attributes.height.label: Height
+ezrichtext.custom_tags.ezyoutube.attributes.title.label: Title
+ezrichtext.custom_tags.ezyoutube.attributes.video_url.label: 'Video url'
+ezrichtext.custom_tags.ezyoutube.attributes.width.label: Width

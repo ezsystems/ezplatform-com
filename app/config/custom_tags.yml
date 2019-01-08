@@ -3,7 +3,7 @@ ezpublish:
         admin_group:
             fieldtypes:
                 ezrichtext:
-                    custom_tags: [ezbutton]
+                    custom_tags: [ezbutton, ezyoutube]
     ezrichtext:
         custom_tags:
             ezbutton:
@@ -22,3 +22,22 @@ ezpublish:
                     class:
                         type: 'string'
                         required: false
+
+            ezyoutube:
+                template: '@ezdesign/fields/ezrichtext/custom_tags/ezyoutube.html.twig'
+                icon: '/bundles/ezplatformadminui/img/ez-icons.svg#video'
+                attributes:
+                    video_url:
+                        type: 'string'
+                        required: true
+                    width:
+                        type: 'number'
+                        required: true
+                        default_value: 640
+                    height:
+                        type: 'number'
+                        required: true
+                        default_value: 360
+                    autoplay:
+                        type: 'boolean'
+                        default_value: false
