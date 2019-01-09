@@ -5,3 +5,7 @@ services:
             - '@ezpublish.api.service.content_type'
         tags:
             - name: twig.extension
+
+    AppBundle\Twig\YoutubeIdExtractorExtension:
+        tags:
+            - { name: twig.extension }
