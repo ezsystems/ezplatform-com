@@ -53,7 +53,6 @@ class AppKernel extends Kernel
             new EzSystems\EzPlatformFormBuilderBundle\EzPlatformFormBuilderBundle(),
             new EzSystems\DateBasedPublisherBundle\EzSystemsDateBasedPublisherBundle(),
             new EzSystems\FlexWorkflowBundle\EzSystemsFlexWorkflowBundle(),
-            new EzSystems\EzPlatformEnterpriseEditionInstallerBundle\EzPlatformEnterpriseEditionInstallerBundle(),
             // Dependencies
             new EzSystems\CommentsBundle\EzSystemsCommentsBundle(),
             new Lolautruche\EzCoreExtraBundle\EzCoreExtraBundle(),
