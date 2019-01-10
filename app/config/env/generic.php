@@ -71,3 +71,16 @@ if ($value = getenv('LOG_TYPE')) {
 if ($value = getenv('SESSION_HANDLER_ID')) {
     $container->setParameter('ezplatform.session.handler_id', $value);
 }
+
+if ($value = getenv('SESSION_SAVE_PATH')) {
+    $container->setParameter('ezplatform.session.save_path', $value);
+}
+
+// EzSystemsPlatformFastlyCacheBundle settings
+if ($value = getenv('FASTLY_SERVICE_ID')) {
+    $container->setParameter('fastly_service_id', $value);
+}
+
+if ($value = getenv('FASTLY_KEY')) {
+    $container->setParameter('fastly_key', $value);
+}
