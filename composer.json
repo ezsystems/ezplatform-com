@@ -32,6 +32,7 @@
         "doctrine/doctrine-bundle": "^1.9.1",
         "doctrine/orm": "^2.6.3",
         "ezsystems/date-based-publisher": "~3.1.1",
+        "ezsystems/comments-bundle": "~6.0",
         "ezsystems/ez-support-tools": "~0.2.1",
         "ezsystems/ezplatform-admin-ui": "~1.4.0",
         "ezsystems/ezplatform-admin-ui-assets": "~3.1.0",
