@@ -10,7 +10,7 @@
 namespace AppBundle\Service\Cache;
 
 use Psr\Cache\CacheItemInterface;
-use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 
 /**
  * Class CacheService
@@ -19,18 +19,18 @@ use Psr\Cache\CacheItemPoolInterface;
 class CacheService implements CacheServiceInterface
 {
     /**
-     * @var CacheItemPoolInterface
+     * @var \Symfony\Component\Cache\Adapter\TagAwareAdapterInterface
      */
-    private $cacheItemPool;
+    private $cache;
 
     /**
      * @var int
      */
     private $cacheExpirationTime;
 
-    public function __construct(CacheItemPoolInterface $cacheItemPool, int $cacheExpirationTime)
+    public function __construct(TagAwareAdapterInterface $cacheItemPool, int $cacheExpirationTime)
     {
-        $this->cacheItemPool = $cacheItemPool;
+        $this->cache = $cacheItemPool;
         $this->cacheExpirationTime = $cacheExpirationTime;
     }
 
@@ -43,7 +43,7 @@ class CacheService implements CacheServiceInterface
      */
     public function getItem(string $key): CacheItemInterface
     {
-        return $this->cacheItemPool->getItem($key);
+        return $this->cache->getItem($key);
     }
 
     /**
@@ -55,7 +55,7 @@ class CacheService implements CacheServiceInterface
      */
     public function getItems(array $keys = []): iterable
     {
-        return $this->cacheItemPool->getItems($keys);
+        return $this->cache->getItems($keys);
     }
 
     /**
@@ -67,7 +67,19 @@ class CacheService implements CacheServiceInterface
      */
     public function save(CacheItemInterface $item): bool
     {
-        return $this->cacheItemPool->save($item);
+        return $this->cache->save($item);
+    }
+
+    /**
+     * @param array $tags
+     *
+     * @return bool
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function invalidateTags(array $tags): bool
+    {
+        return $this->cache->invalidateTags($tags);
     }
 
     /**

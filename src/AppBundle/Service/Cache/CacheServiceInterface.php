@@ -23,5 +23,7 @@ interface CacheServiceInterface
 
     public function save(CacheItemInterface $item): bool;
 
+    public function invalidateTags(array $tags): bool;
+
     public function getCacheExpirationTime(): int;
 }
