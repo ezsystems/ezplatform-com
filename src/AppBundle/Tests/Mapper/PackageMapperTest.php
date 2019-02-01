@@ -1,15 +1,15 @@
 <?php
 
 /**
- * MapperTest
+ * PackageMapperTest
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-namespace AppBundle\Service\Packagist\Test;
+namespace AppBundle\Tests\Mapper;
 
-use AppBundle\Service\Packagist\Mapper;
+use AppBundle\Mapper\PackageMapper;
 use AppBundle\Tests\Fixtures\PackageTestFixture;
 use AppBundle\Tests\Fixtures\PackagistApiPackageTestFixture;
 use AppBundle\ValueObject\Package;
@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package AppBundle\Service\Packagist\Test
  */
-class MapperTest extends TestCase
+class PackageMapperTest extends TestCase
 {
     /**
      * @var \Packagist\Api\Result\Package
@@ -40,7 +40,7 @@ class MapperTest extends TestCase
     protected $packagistPackage;
 
     /**
-     * @var \AppBundle\Service\Packagist\Mapper
+     * @var \AppBundle\Mapper\PackageMapper
      */
     protected $mapper;
 
@@ -56,7 +56,7 @@ class MapperTest extends TestCase
     /**
      * Tests mapper without excluded maintainers
      *
-     * @covers \AppBundle\Service\Packagist\Mapper::createPackageFromPackagistApiResult()
+     * @covers \AppBundle\Mapper\PackageMapper::createPackageFromPackagistApiResult()
      */
     public function testCreatePackageFromPackagistApiResultWithoutExcludedMaintainer()
     {
@@ -69,7 +69,7 @@ class MapperTest extends TestCase
     /**
      * Tests mapper with excluded maintainers
      *
-     * @covers \AppBundle\Service\Packagist\Mapper::createPackageFromPackagistApiResult()
+     * @covers \AppBundle\Mapper\PackageMapper::createPackageFromPackagistApiResult()
      */
     public function testCreatePackageFromPackagistApiResultWithExcludedMaintainer()
     {
@@ -86,7 +86,7 @@ class MapperTest extends TestCase
      */
     private function getPackageFromMapper(array $excludedMaintainers = []): Package
     {
-        $mapper = new Mapper($excludedMaintainers);
+        $mapper = new PackageMapper($excludedMaintainers);
         return $mapper->createPackageFromPackagistApiResult($this->packagistPackage);
     }
 }

@@ -11,9 +11,9 @@
 
 namespace AppBundle\Service\Packagist;
 
+use AppBundle\Mapper\PackageMapper;
 use AppBundle\ValueObject\Package;
 use Packagist\Api\Client;
-use Guzzle\Http\Exception\CurlException;
 
 /**
  * Class PackagistServiceProvider
@@ -27,7 +27,7 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     private $packagistClient;
 
     /**
-     * @var Mapper
+     * @var PackageMapper
      */
     private $mapper;
 
@@ -35,11 +35,11 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
      * PackagistServiceProvider constructor.
      *
      * @param Client $packagistClient
-     * @param Mapper $mapper
+     * @param PackageMapper $mapper
      */
     public function __construct(
         Client $packagistClient,
-        Mapper $mapper
+        PackageMapper $mapper
     ) {
         $this->packagistClient = $packagistClient;
         $this->mapper = $mapper;
@@ -53,7 +53,7 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     {
         try {
             return $this->mapper->createPackageFromPackagistApiResult($this->packagistClient->get($packageName));
-        } catch (CurlException $curlException) {
+        } catch (\Exception $exception) {
             return null;
         }
     }

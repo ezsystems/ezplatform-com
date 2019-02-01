@@ -1,0 +1,54 @@
+{% extends '@ezdesign/pagelayout.html.twig' %}
+
+{% block content %}
+    <div class="container-fluid package-add__container">
+        <div class="container">
+            <div class="row package-add__header mx-0">
+                <div class="col-md-4 col-xs-12 pl-md-0">
+                    <h1 class="package-add__title">Submit a Package</h1>
+                </div>
+                <div class="col-md-8 col-xs-12 pr-md-0">
+                    {% include '@ezdesign/parts/package/publication_status.html.twig' with {'step' : 'submission' } %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    {{ form_start(addForm) }}
+                    <div class="form-group">
+                        {{ form_label(addForm.url) }}
+                        {{ form_widget(addForm.url) }}
+                        <div class="form-error">
+                            {{ form_errors(addForm.url) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(addForm.name) }}
+                        {{ form_widget(addForm.name) }}
+                        <div class="form-error">
+                            {{ form_errors(addForm.name) }}
+                        </div>
+                    </div>
+                    <div class="form-group multiple-select">
+                        {{ form_label(addForm.categories) }}
+                        {{ form_widget(addForm.categories) }}
+                        <div class="form-error">
+                            {{ form_errors(addForm.categories) }}
+                        </div>
+                    </div>
+                    <div class="form-group text-md-center form-btn">
+                        <input type="submit" value="Submit Package" class="btn btn-primary">
+                    </div>
+                    {{ form_end(addForm) }}
+                </div>
+                <div class="col-md-3">
+                    <div class="doc-info">
+                        <span>Don't you have a packagist URL?</span>
+                        <a class="d-block" href="https://doc.ezplatform.com/en/latest/tutorials/extending_admin_ui/1_creating_a_bundle/" target="_blank">
+                            Here is how to get one
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

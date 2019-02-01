@@ -2,7 +2,7 @@ services:
     app.packagist_api_client:
         class: Packagist\Api\Client
     app.packagist_api_mapper:
-        class: AppBundle\Service\Packagist\Mapper
+        class: AppBundle\Mapper\PackageMapper
         arguments: ['%packages.excluded_maintainers%']
     app.packagist_service_provider:
         class: AppBundle\Service\Packagist\PackagistServiceProvider

@@ -1,8 +1,0 @@
-services:
-    app.github_api_client:
-        class: Github\Client
-    app.github_service_provider:
-        class: AppBundle\Service\GitHub\GitHubServiceProvider
-        arguments:
-            - '@app.github_api_client'
-            - '%env(GITHUB_TOKEN)%'

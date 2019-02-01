@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * PackageController
+ *
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 namespace AppBundle\Controller;
 
+use AppBundle\Form\PackageAddType;
 use AppBundle\Form\PackageOrderType;
 use AppBundle\Form\PackageSearchType;
 use AppBundle\QueryType\PackagesQueryType;
@@ -9,7 +16,8 @@ use AppBundle\Service\Package\PackageServiceInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
 use eZ\Publish\API\Repository\LocationService;
-use eZ\Publish\API\Repository\SearchService;
+use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
+use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
 use Netgen\TagsBundle\API\Repository\TagsService;
 use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
@@ -17,6 +25,7 @@ use Pagerfanta\Pagerfanta;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -89,7 +98,7 @@ class PackageController
     /**
      * PackageController constructor.
      * @param EngineInterface $templating
-     * @param SearchService $searchService
+     * @param SearchServiceInterface $searchService
      * @param UrlAliasRouter $aliasRouter
      * @param PackagesQueryType $packagesQueryType
      * @param PackageServiceInterface $packageService
@@ -103,7 +112,7 @@ class PackageController
      */
     public function __construct(
         EngineInterface $templating,
-        SearchService $searchService,
+        SearchServiceInterface $searchService,
         UrlAliasRouter $aliasRouter,
         PackagesQueryType $packagesQueryType,
         PackageServiceInterface $packageService,
@@ -130,6 +139,39 @@ class PackageController
     }
 
     /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Twig\Error\Error
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
+     */
+    public function addPackageAction(Request $request): Response
+    {
+        $addForm = $this->formFactory->create(PackageAddType::class, [
+                'package_categories' => $this->getPackageCategoriesList(),
+                'packageListLocationId' => $this->packageListLocationId
+            ]
+        );
+        $addForm->handleRequest($request);
+
+        if ($addForm->isSubmitted() && $addForm->isValid()) {
+            $content = $this->packageService->addPackage($addForm->getData());
+
+            if ($content) {
+                return $this->templating->renderResponse('@ezdesign/full/package_submit_success.html.twig', [
+                    'content' => $content
+                ]);
+            }
+        }
+
+        return $this->templating->renderResponse('@ezdesign/full/package_add.html.twig', [
+            'addForm' => $addForm->createView()
+        ]);
+    }
+
+    /**
      * Renders full view `package_list`.
      *
      * @param Request $request
@@ -144,7 +186,12 @@ class PackageController
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    public function showPackageListAction(Request $request, string $category = self::DEFAULT_PACKAGE_CATEGORY, $page = 1, $order = self::DEFAULT_ORDER_CLAUSE, $searchText = '')
+    public function showPackageListAction(
+        Request $request,
+        string $category = self::DEFAULT_PACKAGE_CATEGORY,
+        $page = 1, $order = self::DEFAULT_ORDER_CLAUSE,
+        $searchText = ''
+    ): Response
     {
         $orderForm = $this->formFactory->create(PackageOrderType::class);
         $orderForm->handleRequest($request);
@@ -182,7 +229,7 @@ class PackageController
             'order' => $order,
             'pager' => $pagerfanta,
             'searchText' => $searchText,
-            'packageCategories' => $this->getPackageCategoriesList($this->packageCategoriesParentTagId),
+            'packageCategories' => $this->getPackageCategoriesList(),
             'selectedPackageCategory' => $category !== self::DEFAULT_PACKAGE_CATEGORY ? mb_strtolower($category) : ''
         ]);
     }
@@ -196,7 +243,7 @@ class PackageController
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    public function getPackageDetailsAction(Request $request)
+    public function getPackageDetailsAction(Request $request): Response
     {
         $content = $this->locationService->loadLocation($request->get('locationId'))->getContent();
         $this->packageService->getPackage($content->getName());
@@ -214,7 +261,7 @@ class PackageController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function searchPackagesAction(Request $request)
+    public function searchPackagesAction(Request $request): RedirectResponse
     {
         $searchForm = $this->formFactory->create(PackageSearchType::class);
         $searchForm->handleRequest($request);
@@ -240,7 +287,7 @@ class PackageController
      *
      * @throws \Twig\Error\Error
      */
-    public function renderSortOrderPackageForm($order)
+    public function renderSortOrderPackageForm(string $order): Response
     {
         $sortOrderPackageForm = $this->formFactory->create(PackageOrderType::class, [
             'order' => $order,
@@ -261,7 +308,7 @@ class PackageController
      *
      * @throws \Twig\Error\Error
      */
-    public function renderSearchPackageForm($searchText)
+    public function renderSearchPackageForm(string $searchText): Response
     {
         $searchPackageForm = $this->formFactory->create(PackageSearchType::class, [
             'search' => $searchText,
@@ -285,9 +332,9 @@ class PackageController
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    private function getPackageCategoriesList(int $categoryId): array
+    private function getPackageCategoriesList(): array
     {
-        $tag = $this->tagsService->loadTag($categoryId);
+        $tag = $this->tagsService->loadTag($this->packageCategoriesParentTagId);
 
         return $this->tagsService->loadTagChildren($tag);
     }
@@ -321,7 +368,7 @@ class PackageController
      *
      * @return \eZ\Publish\API\Repository\Values\Content\LocationQuery
      */
-    private function getPackagesQuery($offset = 0, $order = null, $searchText = '', $tagId = null)
+    private function getPackagesQuery($offset = 0, $order = null, $searchText = '', $tagId = null): LocationQuery
     {
         return $this->packagesQueryType->getQuery([
             'parent_location_id' => $this->packageListLocationId,
@@ -340,7 +387,7 @@ class PackageController
      *
      * @return array
      */
-    private function getList(array $searchHits)
+    private function getList(array $searchHits): array
     {
         $packages = [];
         foreach ($searchHits as $searchHit) {

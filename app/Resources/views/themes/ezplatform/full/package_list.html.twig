@@ -34,18 +34,20 @@
                 </div>
                 <div class="col-md-10">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div id="find-bundle" class="package-list__search">
+                        <div class="col-md-8 package-list__search">
+                            <div id="find-bundle">
                                 <div class="form-row align-items-center">
                                     {{ render_esi(controller('app.controller.package:renderSearchPackageForm', {"searchText": searchText})) }}
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-4 text-right">
+                            <a href="{{ path(ez_route('_ezplatform_package_add')) }}" class="btn btn-blue rounded">Add Package</a>
+                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row package-list__content">
                         <div class="col-md-12">
-                            <div class="package-list__content">
-                                {% if items is defined and items|length > 0 %}
+                            {% if items is defined and items|length > 0 %}
                                 <div class="row align-items-center">
                                     <div class="col-xs-12 col-md-9 package-list__keyword">
                                         {% if search is defined and search is not empty %}
@@ -71,14 +73,13 @@
                                         {{ pagerfanta(pager, 'package_list') }}
                                     </div>
                                 </div>
-                                {% else %}
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h2>Packages not found</h2>
-                                        </div>
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h2>Packages not found</h2>
                                     </div>
-                                {% endif %}
-                            </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

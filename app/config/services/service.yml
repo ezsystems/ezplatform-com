@@ -1,0 +1,26 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Service\:
+        resource: '../../../src/AppBundle/Service/*'
+
+    AppBundle\Service\Package\PackageService:
+        arguments:
+            $parentLocationId: '%packages.location_id%'
+            $tagsService: '@ezpublish.api.service.tags'
+
+    AppBundle\Service\Cache\CacheService:
+        arguments:
+            $cacheExpirationTime: '%packages.cache_expiration_time%'
+
+    AppBundle\Service\GitHub\GitHubServiceProvider:
+        arguments:
+            $authenticationToken: '%env(GITHUB_TOKEN)%'
+
+    GitHub\Client:
+        class: Github\Client
+
+    EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset:
+        class: EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset

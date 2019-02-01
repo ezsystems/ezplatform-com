@@ -1,6 +1,0 @@
-services:
-  app.cache.service:
-    class: AppBundle\Service\Cache\CacheService
-    arguments:
-      - '@ezpublish.cache_pool'
-      - '%packages.cache_expiration_time%'

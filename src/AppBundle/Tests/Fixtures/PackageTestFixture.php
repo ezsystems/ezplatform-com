@@ -9,7 +9,7 @@
 
 namespace AppBundle\Tests\Fixtures;
 
-use AppBundle\Service\Packagist\Mapper;
+use AppBundle\Mapper\PackageMapper;
 use AppBundle\ValueObject\Package;
 
 /**
@@ -30,7 +30,7 @@ class PackageTestFixture extends AbstractPackageTestFixture
         $package->repository = 'http://github.com/test/package';
         $package->downloads = 222;
         $package->maintainers = $this->getMaintainers();
-        $package->authorAvatarUrl = Mapper::GITHUB_AVATAR_BASE_URL.'test';
+        $package->authorAvatarUrl = PackageMapper::GITHUB_AVATAR_BASE_URL.'test';
         $package->forks = 3;
         $package->stars = 12;
         $package->author = $this->getAuthor();

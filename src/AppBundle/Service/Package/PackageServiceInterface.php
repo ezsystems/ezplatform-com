@@ -10,6 +10,7 @@
 namespace AppBundle\Service\Package;
 
 use AppBundle\ValueObject\Package;
+use eZ\Publish\API\Repository\Values\Content\Content;
 
 /**
  * Interface PackageServiceInterface
@@ -18,4 +19,6 @@ use AppBundle\ValueObject\Package;
 interface PackageServiceInterface
 {
     public function getPackage(string $packageName): Package;
+
+    public function addPackage(array $formData): Content;
 }

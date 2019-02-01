@@ -73,6 +73,11 @@ _ezplatform_blog_ajax:
         "page": '\d+'
 
 # PACKAGE LIST
+_ezplatform_package_add:
+    path: /packages/add
+    defaults: { _controller: app.controller.package:addPackageAction }
+    methods: [GET, POST]
+
 _ezplatform_package_list:
     path: /packages/{page}
     defaults: { _controller: app.controller.package:showPackageListAction, page: 1 }

@@ -1,0 +1,24 @@
+ezpublish:
+    system:
+        default:
+            workflows:
+                package_workflow:
+                    name: "Package workflow"
+                    matchers:
+                        content_type: package
+                        content_status: draft
+                    stages:
+                        draft:
+                            label: 'In Review'
+                            color: '#4a69bd'
+                        approved:
+                            label: 'Approved'
+                            color: '#0f0'
+                            last_stage: true
+                    initial_stage: draft
+                    transitions:
+                        to_approved:
+                            from: draft
+                            to: approved
+                            label: 'Approve'
+                            icon: '/bundles/ezplatformadminui/img/ez-icons.svg#approved'

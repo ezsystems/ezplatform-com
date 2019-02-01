@@ -5,16 +5,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-namespace AppBundle\Service\Packagist;
+namespace AppBundle\Mapper;
 
 use AppBundle\ValueObject\Package;
 use Packagist\Api\Result\Package as PackagistApiPackage;
 
 /**
- * Class Mapper
- * @package AppBundle\Service\Packagist
+ * Class PackageMapper
+ *
+ * @package AppBundle\Mapper
  */
-class Mapper
+class PackageMapper
 {
     const GITHUB_AVATAR_BASE_URL = 'https://avatars2.githubusercontent.com/';
 
@@ -23,7 +24,7 @@ class Mapper
      */
     private $excludedMaintainers;
 
-    public function __construct($excludedMaintainers)
+    public function __construct(array $excludedMaintainers = [])
     {
         $this->excludedMaintainers = $excludedMaintainers;
     }
