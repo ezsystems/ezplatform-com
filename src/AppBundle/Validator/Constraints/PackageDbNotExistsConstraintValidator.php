@@ -10,7 +10,9 @@ namespace AppBundle\Validator\Constraints;
 
 use AppBundle\Url\UrlBuilder;
 use AppBundle\ValueObject\RepositoryMetadata;
+use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
+use eZ\Publish\API\Repository\UserService as UserServiceInterface;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\ContentTypeIdentifier;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Field;
@@ -35,6 +37,16 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
     ];
 
     /**
+     * @var \eZ\Publish\API\Repository\PermissionResolver
+     */
+    private $permissionResolver;
+
+    /**
+     * @var \eZ\Publish\API\Repository\UserService
+     */
+    private $userService;
+
+    /**
      * @var \eZ\Publish\API\Repository\SearchService
      */
     private $searchService;
@@ -49,14 +61,25 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
      */
     private $urlBuilder;
 
+    /**
+     * @var int
+     */
+    private $packageContributorId;
+
     public function __construct(
+        PermissionResolverInterface $permissionResolver,
+        UserServiceInterface $userService,
         SearchServiceInterface $searchService,
         ContentDraftsDataset $contentDraftsDataset,
-        UrlBuilder $urlBuilder
+        UrlBuilder $urlBuilder,
+        int $packageContributorId
     ) {
+        $this->permissionResolver = $permissionResolver;
+        $this->userService = $userService;
         $this->searchService = $searchService;
         $this->contentDraftsDataset = $contentDraftsDataset;
         $this->urlBuilder = $urlBuilder;
+        $this->packageContributorId = $packageContributorId;
     }
 
     /**
@@ -64,6 +87,7 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
      * @param Constraint $constraint
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      */
     public function validate($value, Constraint $constraint)
     {
@@ -80,6 +104,10 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
             'target_field' => $constraint->getTargetField(),
             'search' => $value
         ];
+
+        $this->permissionResolver->setCurrentUserReference(
+            $this->userService->loadUser($this->packageContributorId)
+        );
 
         $drafts = $this->contentDraftsDataset->load();
         $repositoryMetadata = new RepositoryMetadata($value);

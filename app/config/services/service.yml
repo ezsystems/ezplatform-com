@@ -10,6 +10,7 @@ services:
         arguments:
             $parentLocationId: '%packages.location_id%'
             $tagsService: '@ezpublish.api.service.tags'
+            $packageContributorId: '%package_contributor_id%'
 
     AppBundle\Service\Cache\CacheService:
         arguments:

@@ -10,7 +10,8 @@ parameters:
     release_container_location_id: 57
     # `folder` in the media library containing all the betas
     beta_container_location_id: 58
-
+    # package contributor id
+    package_contributor_id: 452
     # `blog` locationId
     blog.location_id: 71
     # `blog_post` limit on the `blog` page

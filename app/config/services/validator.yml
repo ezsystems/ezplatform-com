@@ -6,3 +6,7 @@ services:
 
     AppBundle\Validator\:
         resource: '../../../src/AppBundle/Validator/*'
+
+    AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator:
+        arguments:
+            $packageContributorId: '%package_contributor_id%'

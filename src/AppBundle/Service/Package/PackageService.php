@@ -12,6 +12,8 @@ use AppBundle\Service\AbstractService;
 use AppBundle\Service\Cache\CacheServiceInterface;
 use AppBundle\Service\DOM\DOMServiceInterface;
 use AppBundle\Service\GitHub\GitHubServiceProvider;
+use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
+use eZ\Publish\API\Repository\UserService as UserServiceInterface;
 use AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface;
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use AppBundle\ValueObject\Package;
@@ -36,22 +38,22 @@ class PackageService extends AbstractService implements PackageServiceInterface
     static $DEFAULT_LANG_CODE = 'eng-GB';
 
     /**
-     * @var PackagistServiceProviderInterface
+     * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface
      */
     private $packagistServiceProvider;
 
     /**
-     * @var PackageRepositoryServiceInterface
+     * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface
      */
     private $packageRepositoryService;
 
     /**
-     * @var CacheServiceInterface $cacheService
+     * @var \AppBundle\Service\Cache\CacheServiceInterface
      */
     private $cacheService;
 
     /**
-     * @var DOMServiceInterface $domService
+     * @var \AppBundle\Service\DOM\DOMServiceInterface
      */
     private $domService;
 
@@ -65,7 +67,14 @@ class PackageService extends AbstractService implements PackageServiceInterface
      */
     private $parentLocationId;
 
+    /**
+     * @var int
+     */
+    private $packageContributorId;
+
     public function __construct(
+        PermissionResolverInterface $permissionResolver,
+        UserServiceInterface $userService,
         ContentTypeServiceInterface $contentTypeService,
         ContentServiceInterface $contentService,
         LocationServiceInterface $locationService,
@@ -74,7 +83,8 @@ class PackageService extends AbstractService implements PackageServiceInterface
         CacheServiceInterface $cacheService,
         DOMServiceInterface $domService,
         TagsServiceInterface $tagsService,
-        int $parentLocationId
+        int $parentLocationId,
+        int $packageContributorId
     ) {
         $this->packagistServiceProvider = $packagistServiceProvider;
         $this->packageRepositoryService = $packageRepositoryService;
@@ -82,8 +92,9 @@ class PackageService extends AbstractService implements PackageServiceInterface
         $this->domService = $domService;
         $this->tagsService = $tagsService;
         $this->parentLocationId = $parentLocationId;
+        $this->packageContributorId = $packageContributorId;
 
-        parent::__construct($contentTypeService, $contentService, $locationService);
+        parent::__construct($permissionResolver, $userService, $contentTypeService, $contentService, $locationService);
     }
 
     /**
@@ -105,6 +116,10 @@ class PackageService extends AbstractService implements PackageServiceInterface
         $packageUrl = $formData['url'] ?? '';
         $packageName = $formData['name'] ?? '';
         $packageCategories = $formData['categories'] ?? [];
+
+        $this->permissionResolver->setCurrentUserReference(
+            $this->userService->loadUser($this->packageContributorId)
+        );
 
         $packageDetails = $this->getPackageDetails($this->getPackageIdFromUrl($packageUrl));
 
@@ -228,7 +243,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     {
         $escapedString = htmlspecialchars($stringToXml, ENT_XML1);
 
-        $xmlText = <<< EOX
+        return <<< EOX
 <?xml version='1.0' encoding='utf-8'?>
 <section 
     xmlns="http://docbook.org/ns/docbook" 
@@ -239,6 +254,5 @@ class PackageService extends AbstractService implements PackageServiceInterface
 <para>{$escapedString}</para>
 </section>
 EOX;
-        return $xmlText;
     }
 }
