@@ -20,8 +20,8 @@ services:
         arguments:
             $authenticationToken: '%env(GITHUB_TOKEN)%'
 
-    GitHub\Client:
-        class: Github\Client
+    Github\Client: ~
 
-    EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset:
-        class: EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset
+    Gitlab\Client: ~
+
+    EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset: ~

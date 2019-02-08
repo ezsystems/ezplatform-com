@@ -6,10 +6,11 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Validator\Constraints;
 
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
-use AppBundle\Url\UrlBuilder;
 use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 use Symfony\Component\Validator\Constraint;
@@ -33,19 +34,12 @@ class PackagistUrlConstraintValidator extends ConstraintValidator
      */
     private $packagistServiceProvider;
 
-    /**
-     * @var \AppBundle\Url\UrlBuilder
-     */
-    private $urlBuilder;
-
     public function __construct(
         SearchServiceInterface $searchService,
-        PackagistServiceProviderInterface $packagistServiceProvider,
-        UrlBuilder $urlBuilder
+        PackagistServiceProviderInterface $packagistServiceProvider
     ) {
         $this->searchService = $searchService;
         $this->packagistServiceProvider = $packagistServiceProvider;
-        $this->urlBuilder = $urlBuilder;
     }
 
     public function validate($value, Constraint $constraint)
@@ -59,7 +53,7 @@ class PackagistUrlConstraintValidator extends ConstraintValidator
         }
 
         $repositoryMetadata = new RepositoryMetadata($value);
-        $repositoryId = $this->urlBuilder->urlGlue($repositoryMetadata->getUsername(), $repositoryMetadata->getRepositoryName());
+        $repositoryId = $repositoryMetadata->getRepositoryId();
 
         if (!$this->packagistServiceProvider->getPackageDetails($repositoryId)) {
             $this->context

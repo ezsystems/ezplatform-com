@@ -35,12 +35,12 @@ class RepositoryMetadataTest extends AbstractTestCase
     /**
      * @var \ReflectionMethod
      */
-    protected $methodGetUsernameFromRepositoryId;
+    protected $methodGetUsernameFromRepositoryUrl;
 
     /**
      * @var \ReflectionMethod
      */
-    protected $methodGetRepositoryNameFromRepositoryId;
+    protected $methodGetRepositoryNameFromRepositoryUrl;
 
     /**
      * @var string
@@ -64,8 +64,8 @@ class RepositoryMetadataTest extends AbstractTestCase
         $this->repositoryUsername = 'test';
 
         $repositoryMetadataReflection = new \ReflectionClass(RepositoryMetadata::class);
-        $this->methodGetUsernameFromRepositoryId = $this->getInaccessibleClassMethod($repositoryMetadataReflection, 'getUsernameFromRepositoryId');
-        $this->methodGetRepositoryNameFromRepositoryId = $this->getInaccessibleClassMethod($repositoryMetadataReflection, 'getRepositoryNameFromRepositoryId');
+        $this->methodGetUsernameFromRepositoryUrl = $this->getInaccessibleClassMethod($repositoryMetadataReflection, 'getUsernameFromRepositoryUrl');
+        $this->methodGetRepositoryNameFromRepositoryUrl = $this->getInaccessibleClassMethod($repositoryMetadataReflection, 'getRepositoryNameFromRepositoryUrl');
 
         $this->repositoryMetadata = new RepositoryMetadata($this->package->repository);
     }
@@ -81,26 +81,26 @@ class RepositoryMetadataTest extends AbstractTestCase
     /**
      * Tests if repository name is parsed properly from repositoryId
      *
-     * @covers \AppBundle\ValueObject\RepositoryMetadata::getRepositoryNameFromRepositoryId()
+     * @covers \AppBundle\ValueObject\RepositoryMetadata::getRepositoryNameFromRepositoryUrl()
      */
     public function testReturnRepositoryNameFromRepositoryId()
     {
         $this->assertEquals(
             $this->repositoryName,
-            $this->methodGetRepositoryNameFromRepositoryId->invokeArgs($this->repositoryMetadata, [])
+            $this->methodGetRepositoryNameFromRepositoryUrl->invokeArgs($this->repositoryMetadata, [])
         );
     }
 
     /**
      * Tests if repository username is parsed properly from repositoryId
      *
-     * @covers \AppBundle\ValueObject\RepositoryMetadata::getUsernameFromRepositoryId()
+     * @covers \AppBundle\ValueObject\RepositoryMetadata::getUsernameFromRepositoryUrl()
      */
     public function testReturnRepositoryUsernameFromRepositoryId()
     {
         $this->assertEquals(
             $this->repositoryUsername,
-            $this->methodGetUsernameFromRepositoryId->invokeArgs($this->repositoryMetadata, [])
+            $this->methodGetUsernameFromRepositoryUrl->invokeArgs($this->repositoryMetadata, [])
         );
     }
 

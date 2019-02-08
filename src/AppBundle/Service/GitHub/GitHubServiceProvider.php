@@ -8,10 +8,11 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Service\GitHub;
 
-use AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface;
+use AppBundle\Service\PackageRepository\PackageRepositoryServiceProviderInterface;
 use AppBundle\ValueObject\RepositoryMetadata;
 use Github\Api\Repo;
 use Github\Client;
@@ -20,8 +21,9 @@ use Github\Client;
  * Class GitHubServiceProvider
  * @package AppBundle\Service\GitHub
  */
-class GitHubServiceProvider implements PackageRepositoryServiceInterface
+class GitHubServiceProvider implements PackageRepositoryServiceProviderInterface
 {
+    const REPOSITORY_PLATFORM_NAME = 'github';
     const GITHUB_DEFAULT_BRANCH = 'HEAD';
     const GITHUB_HREF_PART = 'blob';
     const GITHUB_IMG_PART = 'raw';
@@ -60,6 +62,16 @@ class GitHubServiceProvider implements PackageRepositoryServiceInterface
         } catch (\Exception $exception) {
             return null;
         }
+    }
+
+    /**
+     * @param RepositoryMetadata $repositoryMetadata
+     *
+     * @return bool
+     */
+    public function canGetClientProvider(RepositoryMetadata $repositoryMetadata): bool
+    {
+        return $repositoryMetadata->getRepositoryPlatform() === self::REPOSITORY_PLATFORM_NAME;
     }
 
     /**

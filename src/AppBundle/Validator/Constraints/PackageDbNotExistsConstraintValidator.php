@@ -6,9 +6,10 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Validator\Constraints;
 
-use AppBundle\Url\UrlBuilder;
 use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
@@ -57,11 +58,6 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
     private $contentDraftsDataset;
 
     /**
-     * @var \AppBundle\Url\UrlBuilder
-     */
-    private $urlBuilder;
-
-    /**
      * @var int
      */
     private $packageContributorId;
@@ -71,14 +67,12 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
         UserServiceInterface $userService,
         SearchServiceInterface $searchService,
         ContentDraftsDataset $contentDraftsDataset,
-        UrlBuilder $urlBuilder,
         int $packageContributorId
     ) {
         $this->permissionResolver = $permissionResolver;
         $this->userService = $userService;
         $this->searchService = $searchService;
         $this->contentDraftsDataset = $contentDraftsDataset;
-        $this->urlBuilder = $urlBuilder;
         $this->packageContributorId = $packageContributorId;
     }
 
@@ -110,9 +104,9 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
         );
 
         $drafts = $this->contentDraftsDataset->load();
-        $repositoryMetadata = new RepositoryMetadata($value);
 
-        $repositoryId = $this->urlBuilder->urlGlue($repositoryMetadata->getUsername(), $repositoryMetadata->getRepositoryName());
+        $repositoryMetadata = new RepositoryMetadata($value);
+        $repositoryId = $repositoryMetadata->getRepositoryId();
 
         unset($repositoryMetadata);
 

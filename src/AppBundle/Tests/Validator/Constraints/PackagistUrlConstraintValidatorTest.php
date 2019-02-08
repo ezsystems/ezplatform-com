@@ -6,11 +6,12 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Tests\Validator\Constraints;
 
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use AppBundle\Tests\Fixtures\InvalidConstraintTypeFixture;
-use AppBundle\Url\UrlBuilder;
 use AppBundle\Validator\Constraints\PackagistUrlConstraint;
 use AppBundle\Validator\Constraints\PackagistUrlConstraintValidator;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
@@ -37,11 +38,6 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
      */
     private $searchServiceMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UrlBuilder
-     */
-    private $urlBuilderMock;
-
     protected function setUp()
     {
         parent::setUp();
@@ -52,11 +48,9 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
 
         $this->searchServiceMock = $this->getMockBuilder(SearchServiceInterface::class)->getMock();
         $this->packagistServiceProviderMock = $this->getMockBuilder(PackagistServiceProviderInterface::class)->getMock();
-        $this->urlBuilderMock = $this->getMockBuilder(UrlBuilder::class)->getMock();
         $this->packagistUrlConstraintValidator = new PackagistUrlConstraintValidator(
             $this->searchServiceMock,
-            $this->packagistServiceProviderMock,
-            $this->urlBuilderMock
+            $this->packagistServiceProviderMock
         );
     }
 
@@ -87,12 +81,6 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
      */
     public function testBuildViolationWhenPackagistUrlIsInvalid()
     {
-        $this->urlBuilderMock
-            ->expects($this->once())
-            ->method('urlGlue')
-            ->withAnyParameters()
-            ->willReturn('bundle/not-existing-bundle');
-
         $this->packagistServiceProviderMock
             ->expects($this->once())
             ->method('getPackageDetails')
@@ -112,7 +100,7 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
 
         $this->packagistUrlConstraintValidator->initialize($this->getExecutionContextMock());
         $this->packagistUrlConstraintValidator->validate(
-            'https://packagist.org/packages/netgen/open-graph-bundle',
+            'https://packagist.org/packages/bundle/not-existing-bundle',
             $this->constraintMock
         );
     }

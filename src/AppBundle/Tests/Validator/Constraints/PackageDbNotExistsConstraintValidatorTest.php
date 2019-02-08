@@ -6,18 +6,23 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Tests\Validator\Constraints;
 
 use AppBundle\Tests\Fixtures\InvalidConstraintTypeFixture;
-use AppBundle\Url\UrlBuilder;
 use AppBundle\Validator\Constraints\PackageDbNotExistsConstraint;
 use AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator;
 use eZ\Publish\API\Repository\ContentService as ContentServiceInterface;
 use eZ\Publish\API\Repository\ContentTypeService as ContentTypeServiceInterface;
 use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
+use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
+use eZ\Publish\API\Repository\UserService as UserServiceInterface;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
+use eZ\Publish\API\Repository\Values\User\UserReference;
+use eZ\Publish\Core\Repository\Values\User\User;
 use EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -34,6 +39,16 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     private $constraintMock;
 
     /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|PermissionResolverInterface
+     */
+    private $permissionResolverMock;
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject|UserServiceInterface
+     */
+    private $userServiceMock;
+
+    /**
      * @var \PHPUnit\Framework\MockObject\MockObject|SearchServiceInterface
      */
     private $searchServiceMock;
@@ -44,12 +59,12 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     private $contentDraftsDatasetMock;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UrlBuilder
+     * @var int
      */
-    private $urlBuilderMock;
+    private $packageContributorId;
 
     /**
-     * @var PackageDbNotExistsConstraintValidator
+     * @var \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator
      */
     private $packageDbNotExistsConstraintValidator;
 
@@ -86,9 +101,9 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
         $this->targetField = 'packagist_url';
         $this->search = 'bundle/published-bundle';
         $this->searchResult = $this->getMockBuilder(SearchResult::class)->getMock();
+        $this->permissionResolverMock = $this->getMockBuilder(PermissionResolverInterface::class)->getMock();
+        $this->userServiceMock = $this->getMockBuilder(UserServiceInterface::class)->getMock();
         $this->searchServiceMock = $this->getMockBuilder(SearchServiceInterface::class)->getMock();
-        $this->urlBuilderMock = $this->getMockBuilder(UrlBuilder::class)->getMock();
-
         $this->contentDraftsDatasetMock = $this->getMockBuilder(ContentDraftsDataset::class)
             ->setConstructorArgs([
                 $this->getMockBuilder(ContentServiceInterface::class)->getMock(),
@@ -96,11 +111,14 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
                 $this->getMockBuilder(LocationServiceInterface::class)->getMock()
             ])
             ->getMock();
+        $this->packageContributorId = 111;
 
         $this->packageDbNotExistsConstraintValidator = new PackageDbNotExistsConstraintValidator(
+            $this->permissionResolverMock,
+            $this->userServiceMock,
             $this->searchServiceMock,
             $this->contentDraftsDatasetMock,
-            $this->urlBuilderMock
+            $this->packageContributorId
         );
     }
 
@@ -118,6 +136,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
      * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      */
     public function testThrowExceptionWhenConstraintIsNotPackagistUrlConstraint()
     {
@@ -132,6 +151,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
      * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator::validate
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      */
     public function testBuildViolationWhenDraftIsWaitingForApproval()
     {
@@ -151,16 +171,20 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
             ->method('getTargetField')
             ->willReturn($this->targetField);
 
+        $this->permissionResolverMock
+            ->expects($this->once())
+            ->method('setCurrentUserReference')
+            ->willReturn(UserReference::class);
+
+        $this->userServiceMock
+            ->expects($this->once())
+            ->method('loadUser')
+            ->willReturn(new User());
+
         $this->contentDraftsDatasetMock
             ->expects($this->once())
             ->method('load')
             ->willReturn($this->contentDraftsDatasetMock);
-
-        $this->urlBuilderMock
-            ->expects($this->once())
-            ->method('urlGlue')
-            ->withAnyParameters()
-            ->willReturn('bundle/bundle-with-existing-draft');
 
         $this->contentDraftsDatasetMock
             ->expects($this->once())
@@ -191,7 +215,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
      * @dataProvider existsPackageProvider()
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
-     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      */
     public function testBuildViolationWhenPackageIsPublished(string $targetField, string $messageArg)
     {
@@ -211,16 +235,20 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
             ->method('getTargetField')
             ->willReturn($targetField);
 
+        $this->permissionResolverMock
+            ->expects($this->once())
+            ->method('setCurrentUserReference')
+            ->willReturn(UserReference::class);
+
+        $this->userServiceMock
+            ->expects($this->once())
+            ->method('loadUser')
+            ->willReturn(new User());
+
         $this->contentDraftsDatasetMock
             ->expects($this->once())
             ->method('load')
             ->willReturn($this->contentDraftsDatasetMock);
-
-        $this->urlBuilderMock
-            ->expects($this->once())
-            ->method('urlGlue')
-            ->withAnyParameters()
-            ->willReturn($this->search);
 
         $this->contentDraftsDatasetMock
             ->expects($this->once())

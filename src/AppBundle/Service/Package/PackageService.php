@@ -6,15 +6,18 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Service\Package;
 
 use AppBundle\Service\AbstractService;
 use AppBundle\Service\Cache\CacheServiceInterface;
 use AppBundle\Service\DOM\DOMServiceInterface;
 use AppBundle\Service\GitHub\GitHubServiceProvider;
+use AppBundle\Service\GitLab\GitLabServiceProvider;
+use AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy;
 use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
 use eZ\Publish\API\Repository\UserService as UserServiceInterface;
-use AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface;
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use AppBundle\ValueObject\Package;
 use AppBundle\ValueObject\RepositoryMetadata;
@@ -29,13 +32,17 @@ use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
 
 /**
  * Class PackageService
+ *
  * @package AppBundle\Service\Package
  */
 class PackageService extends AbstractService implements PackageServiceInterface
 {
-    static $CONTENT_TYPE_NAME = 'package';
-
-    static $DEFAULT_LANG_CODE = 'eng-GB';
+    const CONTENT_TYPE_NAME = 'package';
+    const DEFAULT_LANG_CODE = 'eng-GB';
+    private const REPOSITORY_PLATFORMS = [
+        'github' => GitHubServiceProvider::GITHUB_URL_PARTS,
+        'gitlab' => GitLabServiceProvider::GITLAB_URL_PARTS
+    ];
 
     /**
      * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface
@@ -43,9 +50,9 @@ class PackageService extends AbstractService implements PackageServiceInterface
     private $packagistServiceProvider;
 
     /**
-     * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface
+     * @var \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy
      */
-    private $packageRepositoryService;
+    private $packageRepository;
 
     /**
      * @var \AppBundle\Service\Cache\CacheServiceInterface
@@ -79,7 +86,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
         ContentServiceInterface $contentService,
         LocationServiceInterface $locationService,
         PackagistServiceProviderInterface $packagistServiceProvider,
-        PackageRepositoryServiceInterface $packageRepositoryService,
+        PackageRepositoryProviderStrategy $packageRepository,
         CacheServiceInterface $cacheService,
         DOMServiceInterface $domService,
         TagsServiceInterface $tagsService,
@@ -87,7 +94,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
         int $packageContributorId
     ) {
         $this->packagistServiceProvider = $packagistServiceProvider;
-        $this->packageRepositoryService = $packageRepositoryService;
+        $this->packageRepository = $packageRepository;
         $this->cacheService = $cacheService;
         $this->domService = $domService;
         $this->tagsService = $tagsService;
@@ -100,7 +107,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     /**
      * @param array $formData
      *
-     * @return \eZ\Publish\API\Repository\Values\Content\Content
+     * @return Content
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException
      * @throws \eZ\Publish\API\Repository\Exceptions\ContentValidationException
@@ -110,8 +117,8 @@ class PackageService extends AbstractService implements PackageServiceInterface
      */
     public function addPackage(array $formData): Content
     {
-        $contentType = $this->contentTypeService->loadContentTypeByIdentifier(self::$CONTENT_TYPE_NAME);
-        $contentCreateStruct = $this->contentService->newContentCreateStruct($contentType, self::$DEFAULT_LANG_CODE);
+        $contentType = $this->contentTypeService->loadContentTypeByIdentifier(self::CONTENT_TYPE_NAME);
+        $contentCreateStruct = $this->contentService->newContentCreateStruct($contentType, self::DEFAULT_LANG_CODE);
 
         $packageUrl = $formData['url'] ?? '';
         $packageName = $formData['name'] ?? '';
@@ -121,7 +128,8 @@ class PackageService extends AbstractService implements PackageServiceInterface
             $this->userService->loadUser($this->packageContributorId)
         );
 
-        $packageDetails = $this->getPackageDetails($this->getPackageIdFromUrl($packageUrl));
+        $repositoryMetadata = new RepositoryMetadata($packageUrl);
+        $packageDetails = $this->getPackageDetails($repositoryMetadata->getRepositoryId());
 
         $contentCreateStruct->setField('package_id', $packageDetails->packageId);
         $contentCreateStruct->setField('name', $packageName);
@@ -167,7 +175,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     }
 
     /**
-     * @param $packageName
+     * @param string $packageName
      *
      * @return Package|null
      */
@@ -177,17 +185,31 @@ class PackageService extends AbstractService implements PackageServiceInterface
 
         $packageDetails = $this->packagistServiceProvider->getPackageDetails($packageName);
 
-        $readme = $this->packageRepositoryService->getReadme(new RepositoryMetadata($packageDetails->repository));
+        $repositoryMetadata = new RepositoryMetadata($packageDetails->repository);
+        $readme = $this->packageRepository->getReadme($repositoryMetadata);
 
         if ($readme) {
             $crawler = new Crawler($readme);
             $this->domService->removeElementsFromDOM($crawler, ['.anchor', '[data-canonical-src]']);
-            $this->domService->setAbsoluteURL($crawler, ['repository' => $packageDetails->repository, 'link' => GitHubServiceProvider::GITHUB_URL_PARTS]);
+            $this->domService->setAbsoluteURL($crawler, [
+                'repository' => $packageDetails->repository,
+                'link' => $this->getRepositoryUrlParts($repositoryMetadata->getRepositoryPlatform())
+            ]);
 
             $packageDetails->readme = $crawler->html();
         }
 
         return $packageDetails;
+    }
+
+    /**
+     * @param string $repositoryPlatform
+     *
+     * @return array
+     */
+    private function getRepositoryUrlParts(string $repositoryPlatform): array
+    {
+        return self::REPOSITORY_PLATFORMS[$repositoryPlatform] ?? [];
     }
 
     /**
@@ -198,21 +220,6 @@ class PackageService extends AbstractService implements PackageServiceInterface
     private function removeReservedCharactersFromPackageName(string $packageName): string
     {
         return str_replace(['{', '}', '(', ')', '/', '\\', '@', ':'], '-', $packageName);
-    }
-
-    /**
-     * @param string $packagistUrl
-     *
-     * @return string
-     */
-    private function getPackageIdFromUrl(string $packagistUrl): string
-    {
-        $repositoryMetadata = new RepositoryMetadata($packagistUrl);
-
-        $packageId = $repositoryMetadata->getUsername() . '/' . $repositoryMetadata->getRepositoryName();
-        unset($repositoryMetadata);
-
-        return $packageId;
     }
 
     /**

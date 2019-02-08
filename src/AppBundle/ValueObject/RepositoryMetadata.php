@@ -19,6 +19,16 @@ final class RepositoryMetadata
 {
     private const DEFAULT_DELIMITER = '/';
 
+    private const ALLOWED_REPOSITORY_PLATFORMS = [
+        'github',
+        'gitlab'
+    ];
+
+    /**
+     * @var array
+     */
+    private $splitUrl = [];
+
     /**
      * @var string
      */
@@ -34,11 +44,26 @@ final class RepositoryMetadata
      */
     private $repositoryName;
 
-    public function __construct(string $repositoryId)
+    /**
+     * @var string
+     */
+    private $repositoryPlatform;
+
+    public function __construct(string $repositoryUrl)
     {
-        $this->repositoryId = $this->splitRepositoryId($repositoryId);
-        $this->username = $this->getUsernameFromRepositoryId();
-        $this->repositoryName = $this->getRepositoryNameFromRepositoryId();
+        $this->splitUrl = $this->splitRepositoryUrl($repositoryUrl);
+        $this->username = $this->getUsernameFromRepositoryUrl();
+        $this->repositoryName = $this->getRepositoryNameFromRepositoryUrl();
+        $this->repositoryId = $this->getRepositoryId();
+        $this->repositoryPlatform = $this->getRepositoryPlatformFromRepositoryUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function getRepositoryId()
+    {
+        return $this->username . self::DEFAULT_DELIMITER . $this->repositoryName;
     }
 
     /**
@@ -58,11 +83,19 @@ final class RepositoryMetadata
     }
 
     /**
+     * @return string
+     */
+    public function getRepositoryPlatform(): string
+    {
+        return $this->repositoryPlatform;
+    }
+
+    /**
      * @param string $repositoryId
      *
      * @return array
      */
-    private function splitRepositoryId(string $repositoryId): array
+    private function splitRepositoryUrl(string $repositoryId): array
     {
         return explode(self::DEFAULT_DELIMITER, $repositoryId);
     }
@@ -70,16 +103,30 @@ final class RepositoryMetadata
     /**
      * @return string|null
      */
-    private function getUsernameFromRepositoryId(): ?string
+    private function getUsernameFromRepositoryUrl(): ?string
     {
-        return isset($this->repositoryId[count($this->repositoryId) - 2]) ? $this->repositoryId[count($this->repositoryId) - 2] : '';
+        return $this->splitUrl[count($this->splitUrl) - 2] ?? '';
     }
 
     /**
      * @return string|null
      */
-    private function getRepositoryNameFromRepositoryId(): ?string
+    private function getRepositoryNameFromRepositoryUrl(): ?string
     {
-        return end($this->repositoryId);
+        return end($this->splitUrl);
+    }
+
+    /**
+     * @return string|null
+     */
+    private function getRepositoryPlatformFromRepositoryUrl(): ?string
+    {
+        $platformDomain = $this->splitUrl[count($this->splitUrl) - 3] ?? '';
+        $platform = explode('.', $platformDomain)[0] ?? '';
+
+        return in_array(
+            $platform,
+                self::ALLOWED_REPOSITORY_PLATFORMS
+            ) ? $platform : '';
     }
 }

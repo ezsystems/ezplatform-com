@@ -6,16 +6,16 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Command;
 
 use AppBundle\Service\Cache\CacheServiceInterface;
 use AppBundle\Service\DOM\DOMServiceInterface;
-use AppBundle\Service\GitHub\GitHubServiceProvider;
+use AppBundle\Service\GitLab\GitLabServiceProvider;
 use AppBundle\Service\Package\PackageServiceInterface;
-use AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface;
+use AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy;
 use AppBundle\ValueObject\Package;
-use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\Exceptions\PropertyNotFoundException;
 use eZ\Publish\API\Repository\Repository;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -25,8 +25,12 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ * Class UpdatePackageListCommand
+ *
+ * @package AppBundle\Command
+ */
 class UpdatePackageListCommand extends ContainerAwareCommand
 {
     /**
@@ -50,28 +54,33 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     private $packageService;
 
     /**
-     * @var \AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface
+     * @var \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy
      */
-    private $packageRepositoryService;
+    private $packageRepository;
 
     /**
      * @var \AppBundle\Service\DOM\DOMServiceInterface
      */
     private $domService;
 
+
+    private $gitLabServiceProvider;
+
     public function __construct(
         Repository $repository,
         CacheServiceInterface $cacheService,
         PackageServiceInterface $packageService,
-        PackageRepositoryServiceInterface $packageRepositoryService,
-        DOMServiceInterface $domService
+        PackageRepositoryProviderStrategy $packageRepository,
+        DOMServiceInterface $domService,
+        GitLabServiceProvider $gitLabServiceProvider
     ) {
         $this->repository = $repository;
         $this->contentService = $this->repository->getContentService();
         $this->cacheService = $cacheService;
         $this->packageService = $packageService;
-        $this->packageRepositoryService = $packageRepositoryService;
+        $this->packageRepository = $packageRepository;
         $this->domService = $domService;
+        $this->gitLabServiceProvider = $gitLabServiceProvider;
 
         parent::__construct();
     }
@@ -109,8 +118,7 @@ class UpdatePackageListCommand extends ContainerAwareCommand
 
         foreach ($results->searchHits as $searchHit) {
             $currentPackage = $searchHit->valueObject;
-
-            $package = $this->packageService->getPackage($currentPackage->getFieldValue('package_id'), $input->getOption('force'));
+            $package = $this->packageService->getPackage($currentPackage->getFieldValue('package_id')->text, $input->getOption('force'));
             $output->write('<question>'.$currentPackage->getFieldValue('package_id').'</question>');
 
             if (($package->checksum !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
@@ -167,7 +175,7 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \AppBundle\ValueObject\Package $package
+     * @param Package $package
      *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct
      */
@@ -180,15 +188,7 @@ class UpdatePackageListCommand extends ContainerAwareCommand
         $contentUpdateStruct->setField('stars', $package->stars);
         $contentUpdateStruct->setField('forks', $package->forks);
         $contentUpdateStruct->setField('checksum', $package->checksum);
-
-        $readme = $this->packageRepositoryService->getReadme(new RepositoryMetadata($package->repository));
-
-        if ($readme) {
-            $crawler = new Crawler($readme);
-            $this->domService->removeElementsFromDOM($crawler, ['.anchor', '[data-canonical-src]']);
-            $this->domService->setAbsoluteURL($crawler, ['repository' => $package->repository, 'link' => GitHubServiceProvider::GITHUB_URL_PARTS]);
-            $contentUpdateStruct->setField('readme', $crawler->html());
-        }
+        $contentUpdateStruct->setField('readme', $package->readme);
 
         $escapedDescription = htmlspecialchars($package->description, ENT_XML1);
 
