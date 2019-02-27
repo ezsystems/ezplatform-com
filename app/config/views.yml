@@ -81,10 +81,6 @@ ezpublish:
                             Identifier\ContentType: package
 
                 row:
-                    banner_slider:
-                        template: "@ezdesign/row/banner_slider.html.twig"
-                        match:
-                            Identifier\ContentType: banner_slider
                     download_section:
                         template: "@ezdesign/row/download_section.html.twig"
                         controller: app.controller.download:showAction
