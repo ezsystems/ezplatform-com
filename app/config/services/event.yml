@@ -3,6 +3,10 @@ services:
         autowire: true
         autoconfigure: true
 
-    AppBundle\Event\Workflow\PublishOnLastStageSubscriber:
+    AppBundle\Event\Subscriber\PublishOnLastStageSubscriber:
         arguments:
             $publishOnLastStageWorkflows: '%app.workflow.publish_on_last_stage%'
+
+    AppBundle\Event\Subscriber\NotificationSenderSubscriber:
+        arguments:
+            $recipients: '%packages.submission_mail_notification_recipients%'

@@ -1,0 +1,18 @@
+{%- block from -%}
+    noreply@ezplatform.com
+{%- endblock from -%}
+
+{%- block subject -%}
+    New package {% if name is defined %}{{ name }} {% endif %}was submitted on ezplatform.com
+{%- endblock subject -%}
+
+{%- block body -%}
+    <p>
+        Hi there! <br/><br/>
+        New package was submitted to ezplatform.com <br/>
+        {% if name is defined %}Package name: {{ name }} <br/> {% endif %}
+        {% if packagist_url is defined %}Package URL: {{ packagist_url }} <br/>{% endif %}
+        Open dashboard <a href="https://ezplatform.com/admin/dashboard">click here</a> to review the package. <br/>
+        Click `Approve` to publish the package or `Delete the draft` to delete it.
+    </p>
+{%- endblock body -%}

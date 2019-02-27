@@ -6,8 +6,11 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
+use AppBundle\Event\AddPackageEvent;
 use AppBundle\Form\PackageAddType;
 use AppBundle\Form\PackageOrderType;
 use AppBundle\Form\PackageSearchType;
@@ -22,6 +25,7 @@ use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
 use Netgen\TagsBundle\API\Repository\TagsService;
 use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,11 +33,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
 
+/**
+ * Class PackageController
+ *
+ * @package AppBundle\Controller
+ */
 class PackageController
 {
     private const DEFAULT_ORDER_CLAUSE = 'default';
 
     private const DEFAULT_PACKAGE_CATEGORY = 'all';
+
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * @var \Symfony\Bundle\TwigBundle\TwigEngine
@@ -97,6 +111,7 @@ class PackageController
 
     /**
      * PackageController constructor.
+     * @param EventDispatcherInterface $eventDispatcher
      * @param EngineInterface $templating
      * @param SearchServiceInterface $searchService
      * @param UrlAliasRouter $aliasRouter
@@ -111,6 +126,7 @@ class PackageController
      * @param int $packageCategoriesParentTagId
      */
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
         EngineInterface $templating,
         SearchServiceInterface $searchService,
         UrlAliasRouter $aliasRouter,
@@ -124,6 +140,7 @@ class PackageController
         int $packageListCardsLimit,
         int $packageCategoriesParentTagId
     ) {
+        $this->eventDispatcher = $eventDispatcher;
         $this->templating = $templating;
         $this->searchService = $searchService;
         $this->aliasRouter = $aliasRouter;
@@ -160,6 +177,8 @@ class PackageController
             $content = $this->packageService->addPackage($addForm->getData());
 
             if ($content) {
+                $this->eventDispatcher->dispatch(AddPackageEvent::EVENT_NAME, new AddPackageEvent($content));
+
                 return $this->templating->renderResponse('@ezdesign/full/package_submit_success.html.twig', [
                     'content' => $content
                 ]);

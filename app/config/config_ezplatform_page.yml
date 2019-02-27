@@ -46,6 +46,10 @@ parameters:
     # default jpeg quality used in image_variations.xml
     images.default_jpeg_quality: 90
 
+    # mail notification recipients after package submission
+    packages.submission_mail_notification_recipients:
+        - 'contribution@ez.no'
+
 # configuration for the CommentsBundle
 ez_comments:
     system:

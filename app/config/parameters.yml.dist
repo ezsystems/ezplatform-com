@@ -16,3 +16,9 @@ parameters:
     env(DATABASE_USER): root
     env(DATABASE_PASSWORD):
     env(GITHUB_TOKEN):
+    env(MAILER_TRANSPORT):
+    env(MAILER_HOST):
+    env(MAILER_USER):
+    env(MAILER_PASSWORD):
+    env(MAILER_PORT):
+    env(MAILER_ENCRYPTION):

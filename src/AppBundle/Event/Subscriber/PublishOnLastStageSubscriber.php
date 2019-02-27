@@ -6,7 +6,7 @@
  */
 declare(strict_types=1);
 
-namespace AppBundle\Event\Workflow;
+namespace AppBundle\Event\Subscriber;
 
 use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\API\Repository\PermissionResolver;
@@ -18,6 +18,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\Transition;
 
+/**
+ * Class PublishOnLastStageSubscriber
+ *
+ * @package AppBundle\Event\Subscriber
+ */
 class PublishOnLastStageSubscriber implements EventSubscriberInterface
 {
     /** @var \eZ\Publish\API\Repository\PermissionResolver */

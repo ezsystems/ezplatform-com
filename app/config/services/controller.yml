@@ -17,6 +17,7 @@ services:
     app.controller.package:
         class: AppBundle\Controller\PackageController
         arguments:
+            - '@event_dispatcher'
             - '@templating'
             - '@ezpublish.api.service.search'
             - '@ezpublish.urlalias_router'
