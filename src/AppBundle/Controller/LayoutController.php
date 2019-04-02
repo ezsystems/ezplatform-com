@@ -1,9 +1,20 @@
 <?php
 
+/**
+ * LayoutController.
+ *
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 
+/**
+ * Class LayoutController.
+ */
 class LayoutController extends Controller
 {
     /** @var \eZ\Publish\API\Repository\Values\Content\Content */
@@ -12,9 +23,12 @@ class LayoutController extends Controller
     /**
      * Renders given $template with layout settings.
      *
-     * @param string $template
+     * @param $template
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
     public function showPartAction($template)
     {
@@ -27,6 +41,9 @@ class LayoutController extends Controller
      * Returns `Layout` Content object.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Content
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
     private function getLayoutContent()
     {

@@ -1,38 +1,28 @@
 services:
-    app.controller.download:
-        class: AppBundle\Controller\DownloadController
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    AppBundle\Controller\:
+        resource: '../../../src/AppBundle/Controller/*'
+
+    AppBundle\Controller\DownloadController:
         arguments:
-            - '@ezpublish.api.service.search'
-            - '@app.query_type.latest_releases'
-            - '%release_container_location_id%'
-            - '%beta_container_location_id%'
-    app.controller.blog:
-        class: AppBundle\Controller\BlogController
+            $releaseContainerLocationId: '%release_container_location_id%'
+            $betaContainerLocationId: '%beta_container_location_id%'
+
+    AppBundle\Controller\BlogController:
         arguments:
-            - '@templating'
-            - '@ezpublish.api.service.search'
-            - '@app.query_type.children'
-            - '%blog.location_id%'
-            - '%blog.posts_limit%'
-    app.controller.package:
-        class: AppBundle\Controller\PackageController
+            $blogLocationId: '%blog.location_id%'
+            $blogPostsLimit: '%blog.posts_limit%'
+
+    AppBundle\Controller\PackageController:
         arguments:
-            - '@event_dispatcher'
-            - '@templating'
-            - '@ezpublish.api.service.search'
-            - '@ezpublish.urlalias_router'
-            - '@app.query_type.packages'
-            - '@AppBundle\Service\Package\PackageService'
-            - '@form.factory'
-            - '@router.default'
-            - '@eztags.api.service.tags'
-            - '@ezpublish.api.service.location'
-            - '%packages.location_id%'
-            - '%packages.cards_limit%'
-            - '%packages.categories_parent_tag_id%'
-    app.controller.tag:
-        class: AppBundle\Controller\TagController
+            $router: '@router.default'
+            $packageListLocationId: '%packages.location_id%'
+            $packageListCardsLimit: '%packages.cards_limit%'
+            $packageCategoriesParentTagId: '%packages.categories_parent_tag_id%'
+
+    AppBundle\Controller\TagController:
         arguments:
-            - '@templating'
-            - '@eztags.api.service.tags'
-            - '%eztags.default.tag_view.related_content_list.limit%'
+            $relatedContentLimit: '%eztags.default.tag_view.related_content_list.limit%'

@@ -6,6 +6,8 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Form;
 
 use AppBundle\Validator\Constraints\PackageCategoryIdConstraint;
@@ -21,9 +23,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Url;
 
 /**
- * Class PackageAddType
- *
- * @package AppBundle\Form
+ * Class PackageAddType.
  */
 class PackageAddType extends AbstractType
 {
@@ -44,10 +44,10 @@ class PackageAddType extends AbstractType
                     new Url(),
                     new PackageDbNotExistsConstraint([
                         'packageListLocationId' => $packageListLocationId,
-                        'targetField' => 'packagist_url'
+                        'targetField' => 'packagist_url',
                     ]),
-                    new PackagistUrlConstraint()
-                ]
+                    new PackagistUrlConstraint(),
+                ],
             ])
             ->add('name', TextType::class, [
                 'label' => 'Package Name',
@@ -59,9 +59,9 @@ class PackageAddType extends AbstractType
                     new NotNull(),
                     new PackageDbNotExistsConstraint([
                         'packageListLocationId' => $packageListLocationId,
-                        'targetField' => 'name'
+                        'targetField' => 'name',
                     ]),
-                ]
+                ],
             ])
             ->add('categories', ChoiceType::class, [
                 'label' => 'Categories',
@@ -70,11 +70,11 @@ class PackageAddType extends AbstractType
                 'choices' => $categories,
                 'attr' => [
                     'class' => 'form-control',
-                    'placeholder' => false
+                    'placeholder' => false,
                 ],
                 'constraints' => [
-                    new PackageCategoryIdConstraint(['categories' => array_values($categories)])
-                ]
+                    new PackageCategoryIdConstraint(['categories' => array_values($categories)]),
+                ],
             ]);
     }
 

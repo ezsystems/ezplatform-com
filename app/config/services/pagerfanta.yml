@@ -1,11 +1,9 @@
 services:
-    app.pagerfanta.template.package_list:
-        class: AppBundle\View\Template\PackageListTemplate
+    AppBundle\View\Template\PackageListTemplate: ~
 
-    pagerfanta.view.package_list:
-        class: Pagerfanta\View\DefaultView
+    Pagerfanta\View\DefaultView:
         public: false
         arguments:
-            - "@app.pagerfanta.template.package_list"
+            $template: '@AppBundle\View\Template\PackageListTemplate'
         tags:
             - { name: pagerfanta.view, alias: package_list }

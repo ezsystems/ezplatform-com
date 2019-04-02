@@ -6,6 +6,7 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\QueryType;
 
@@ -14,6 +15,9 @@ use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use Netgen\TagsBundle\API\Repository\Values\Content\Query as TagQuery;
 
+/**
+ * Class PackagesQueryType.
+ */
 class PackagesQueryType implements QueryType
 {
     /**
@@ -23,14 +27,14 @@ class PackagesQueryType implements QueryType
      *
      * @return \eZ\Publish\API\Repository\Values\Content\LocationQuery
      */
-    public function getQuery(array $parameters = [])
+    public function getQuery(array $parameters = []): LocationQuery
     {
         $options = [];
 
         $criteria = [
             new Query\Criterion\ParentLocationId($parameters['parent_location_id']),
             new Query\Criterion\Visibility(Query\Criterion\Visibility::VISIBLE),
-            new Query\Criterion\ContentTypeIdentifier('package')
+            new Query\Criterion\ContentTypeIdentifier('package'),
         ];
 
         if (isset($parameters['tag_id'])) {
@@ -43,8 +47,8 @@ class PackagesQueryType implements QueryType
                     'package_id',
                     'name',
                     'description',
-                    'packagist_url'
-                ]
+                    'packagist_url',
+                ],
             ]);
         }
 

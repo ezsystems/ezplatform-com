@@ -1,28 +1,33 @@
 <?php
 
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
+declare(strict_types=1);
+
 namespace AppBundle\Twig;
 
 use Twig_Extension;
 use Twig_SimpleFunction;
 use eZ\Publish\API\Repository\ContentTypeService;
 
+/**
+ * Class FieldOptionsTwigExtension.
+ */
 class FieldOptionsTwigExtension extends Twig_Extension
 {
     /** @var \eZ\Publish\API\Repository\ContentTypeService */
     private $contentTypeService;
 
-    /**
-     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeService
-     */
+    /** @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeService */
     public function __construct(ContentTypeService $contentTypeService)
     {
         $this->contentTypeService = $contentTypeService;
     }
 
     /**
-     * Returns extension name.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -30,11 +35,9 @@ class FieldOptionsTwigExtension extends Twig_Extension
     }
 
     /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('ez_field_options', [$this, 'showFieldOptions'], [
@@ -46,10 +49,12 @@ class FieldOptionsTwigExtension extends Twig_Extension
     /**
      * Returns array of selection fieldType options.
      *
-     * @param string $contentTypeIdentifier
-     * @param string $fieldName
+     * @param $contentTypeIdentifier
+     * @param $fieldName
      *
-     * @return array
+     * @return mixed
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      */
     public function showFieldOptions($contentTypeIdentifier, $fieldName)
     {

@@ -1,11 +1,12 @@
 <?php
 
 /**
- * UrlBuilderTest
+ * UrlBuilderTest.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Tests\Url;
 
@@ -13,22 +14,16 @@ use AppBundle\Url\UrlBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test case for UrlBuilderTest
+ * Test case for UrlBuilderTest.
  *
  * Class UrlBuilderTest
- *
- * @package AppBundle\Tests\Service\DOM
  */
 class UrlBuilderTest extends TestCase
 {
-    /**
-     * @var \AppBundle\Url\UrlBuilder
-     */
+    /** @var \AppBundle\Url\UrlBuilder */
     protected $urlBuilder;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $absoluteUrl = '';
 
     protected function setUp()
@@ -37,9 +32,7 @@ class UrlBuilderTest extends TestCase
         $this->absoluteUrl = 'https://www.ezplatform.com/url-test';
     }
 
-    /**
-     * Tests instantiation of UrlBuilder
-     */
+    /** Tests instantiation of UrlBuilder */
     public function testCreateUrlBuilderInstance()
     {
         $this->assertInstanceOf(UrlBuilder::class, $this->urlBuilder);
@@ -58,9 +51,7 @@ class UrlBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @return iterable
-     */
+    /** @return iterable */
     public function urlAttributesProvider(): iterable
     {
         return [

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageService
+ * PackageService.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Service\Package;
 
+use AppBundle\Helper\RichTextHelper;
 use AppBundle\Service\AbstractService;
 use AppBundle\Service\Cache\CacheServiceInterface;
 use AppBundle\Service\DOM\DOMServiceInterface;
@@ -31,9 +32,7 @@ use eZ\Publish\API\Repository\ContentTypeService as ContentTypeServiceInterface;
 use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
 
 /**
- * Class PackageService
- *
- * @package AppBundle\Service\Package
+ * Class PackageService.
  */
 class PackageService extends AbstractService implements PackageServiceInterface
 {
@@ -41,42 +40,31 @@ class PackageService extends AbstractService implements PackageServiceInterface
     const DEFAULT_LANG_CODE = 'eng-GB';
     private const REPOSITORY_PLATFORMS = [
         'github' => GitHubServiceProvider::GITHUB_URL_PARTS,
-        'gitlab' => GitLabServiceProvider::GITLAB_URL_PARTS
+        'gitlab' => GitLabServiceProvider::GITLAB_URL_PARTS,
     ];
 
-    /**
-     * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface
-     */
+    /** @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface */
     private $packagistServiceProvider;
 
-    /**
-     * @var \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy
-     */
+    /** @var \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy */
     private $packageRepository;
 
-    /**
-     * @var \AppBundle\Service\Cache\CacheServiceInterface
-     */
+    /** @var \AppBundle\Service\Cache\CacheServiceInterface */
     private $cacheService;
 
-    /**
-     * @var \AppBundle\Service\DOM\DOMServiceInterface
-     */
+    /** @var \AppBundle\Service\DOM\DOMServiceInterface */
     private $domService;
 
-    /**
-     * @var \Netgen\TagsBundle\API\Repository\TagsService
-     */
+    /** @var \Netgen\TagsBundle\API\Repository\TagsService */
     private $tagsService;
 
-    /**
-     * @var int
-     */
+    /** @var \AppBundle\Helper\RichTextHelper */
+    private $richTextHelper;
+
+    /** @var int */
     private $parentLocationId;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageContributorId;
 
     public function __construct(
@@ -90,6 +78,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
         CacheServiceInterface $cacheService,
         DOMServiceInterface $domService,
         TagsServiceInterface $tagsService,
+        RichTextHelper $richTextHelper,
         int $parentLocationId,
         int $packageContributorId
     ) {
@@ -98,6 +87,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
         $this->cacheService = $cacheService;
         $this->domService = $domService;
         $this->tagsService = $tagsService;
+        $this->richTextHelper = $richTextHelper;
         $this->parentLocationId = $parentLocationId;
         $this->packageContributorId = $packageContributorId;
 
@@ -133,7 +123,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
 
         $contentCreateStruct->setField('package_id', $packageDetails->packageId);
         $contentCreateStruct->setField('name', $packageName);
-        $contentCreateStruct->setField('description', $this->getXmlString($packageDetails->description));
+        $contentCreateStruct->setField('description', $this->richTextHelper->getXmlString($packageDetails->description));
         $contentCreateStruct->setField('packagist_url', $packageUrl);
         $contentCreateStruct->setField('downloads', $packageDetails->downloads);
         $contentCreateStruct->setField('stars', $packageDetails->stars);
@@ -158,9 +148,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     {
         $packageName = trim($packageName);
 
-        /**
-         * @var CacheItemInterface $item
-         */
+        /** @var CacheItemInterface $item */
         $item = $this->cacheService->getItem($this->removeReservedCharactersFromPackageName($packageName));
 
         if ($force || !$item->isHit()) {
@@ -193,7 +181,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
             $this->domService->removeElementsFromDOM($crawler, ['.anchor', '[data-canonical-src]']);
             $this->domService->setAbsoluteURL($crawler, [
                 'repository' => $packageDetails->repository,
-                'link' => $this->getRepositoryUrlParts($repositoryMetadata->getRepositoryPlatform())
+                'link' => $this->getRepositoryUrlParts($repositoryMetadata->getRepositoryPlatform()),
             ]);
 
             $packageDetails->readme = $crawler->html();
@@ -239,27 +227,5 @@ class PackageService extends AbstractService implements PackageServiceInterface
         }
 
         return new Value($tags);
-    }
-
-    /**
-     * @param $stringToXml
-     *
-     * @return string
-     */
-    private function getXmlString($stringToXml): string
-    {
-        $escapedString = htmlspecialchars($stringToXml, ENT_XML1);
-
-        return <<< EOX
-<?xml version='1.0' encoding='utf-8'?>
-<section 
-    xmlns="http://docbook.org/ns/docbook" 
-    xmlns:xlink="http://www.w3.org/1999/xlink" 
-    xmlns:ezxhtml="http://ez.no/xmlns/ezpublish/docbook/xhtml" 
-    xmlns:ezcustom="http://ez.no/xmlns/ezpublish/docbook/custom" 
-    version="5.0-variant ezpublish-1.0">
-<para>{$escapedString}</para>
-</section>
-EOX;
     }
 }

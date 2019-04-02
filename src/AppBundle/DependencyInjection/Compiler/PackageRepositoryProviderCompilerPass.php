@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageRepositoryProviderCompilerPass
+ * PackageRepositoryProviderCompilerPass.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -16,9 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Class PackageRepositoryProviderCompilerPass
- *
- * @package AppBundle\DependencyInjection\Compiler
+ * Class PackageRepositoryProviderCompilerPass.
  */
 class PackageRepositoryProviderCompilerPass implements CompilerPassInterface
 {
@@ -30,7 +28,7 @@ class PackageRepositoryProviderCompilerPass implements CompilerPassInterface
 
         $providers = array_keys($container->findTaggedServiceIds(self::STRATEGY_TAG_NAME));
 
-        foreach($providers as $provider) {
+        foreach ($providers as $provider) {
             $packageRepositoryProvider->addMethodCall(
                 'addPackageRepositoryServiceProvider',
                 [new Reference($provider)]

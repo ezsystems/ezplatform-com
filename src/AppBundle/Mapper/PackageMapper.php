@@ -4,6 +4,7 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Mapper;
 
@@ -11,17 +12,13 @@ use AppBundle\ValueObject\Package;
 use Packagist\Api\Result\Package as PackagistApiPackage;
 
 /**
- * Class PackageMapper
- *
- * @package AppBundle\Mapper
+ * Class PackageMapper.
  */
 class PackageMapper
 {
     const GITHUB_AVATAR_BASE_URL = 'https://avatars2.githubusercontent.com/';
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $excludedMaintainers;
 
     public function __construct(array $excludedMaintainers = [])
@@ -30,10 +27,11 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
-     * @return Package
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return \AppBundle\ValueObject\Package
      */
-    public function createPackageFromPackagistApiResult(PackagistApiPackage $packagistApiPackage)
+    public function createPackageFromPackagistApiResult(PackagistApiPackage $packagistApiPackage): Package
     {
         $package = new Package();
 
@@ -54,10 +52,11 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
-     * @return PackagistApiPackage\Maintainer[]
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return \Packagist\Api\Result\Package\Maintainer[]
      */
-    private function getMaintainers(PackagistApiPackage $packagistApiPackage)
+    private function getMaintainers(PackagistApiPackage $packagistApiPackage): iterable
     {
         $maintainers = [];
         foreach ($packagistApiPackage->getMaintainers() as $key => $value) {
@@ -70,22 +69,24 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return string
      */
-    private function getAuthorAvatarUrl(PackagistApiPackage $packagistApiPackage)
+    private function getAuthorAvatarUrl(PackagistApiPackage $packagistApiPackage): string
     {
         $parsedUrl = parse_url($packagistApiPackage->getRepository());
         $parts = explode('/', $parsedUrl['path']);
 
-        return self::GITHUB_AVATAR_BASE_URL.$parts[1];
+        return self::GITHUB_AVATAR_BASE_URL . $parts[1];
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return int
      */
-    private function getDownloads(PackagistApiPackage $packagistApiPackage)
+    private function getDownloads(PackagistApiPackage $packagistApiPackage): int
     {
         $downloads = $packagistApiPackage->getDownloads()->getTotal();
 
@@ -93,10 +94,11 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return int
      */
-    private function getForks(PackagistApiPackage $packagistApiPackage)
+    private function getForks(PackagistApiPackage $packagistApiPackage): int
     {
         $forks = $packagistApiPackage->getGithubForks();
 
@@ -104,10 +106,11 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return int
      */
-    private function getStars(PackagistApiPackage $packagistApiPackage)
+    private function getStars(PackagistApiPackage $packagistApiPackage): int
     {
         $stars = $packagistApiPackage->getGithubStars();
 
@@ -115,8 +118,9 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
-     * @return PackagistApiPackage\Author
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return mixed
      */
     private function getAuthor(PackagistApiPackage $packagistApiPackage)
     {
@@ -127,7 +131,8 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return bool|\DateTime
      */
     private function getUpdateDate(PackagistApiPackage $packagistApiPackage)
@@ -138,10 +143,11 @@ class PackageMapper
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
-     * @return PackagistApiPackage\Version
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return \Packagist\Api\Result\Package\Version
      */
-    private function getCurrentVersion(PackagistApiPackage $packagistApiPackage)
+    private function getCurrentVersion(PackagistApiPackage $packagistApiPackage): PackagistApiPackage\Version
     {
         $versions = $packagistApiPackage->getVersions();
         if (isset($versions['dev-master'])) {
@@ -154,21 +160,25 @@ class PackageMapper
     }
 
     /**
-     * @param Package $package
+     * @param \AppBundle\ValueObject\Package $package
+     *
      * @return string
      */
-    private function getChecksum(Package $package)
+    private function getChecksum(Package $package): string
     {
         $checksum = '';
         foreach (get_object_vars($package) as $key => $field) {
-            if (is_string($field) && $key != 'checksum') $checksum .= $field;
+            if (is_string($field) && $key != 'checksum') {
+                $checksum .= $field;
+            }
         }
 
         return md5($checksum);
     }
 
     /**
-     * @param PackagistApiPackage $packagistApiPackage
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return bool|\DateTime
      */
     private function getCreationDate(PackagistApiPackage $packagistApiPackage)

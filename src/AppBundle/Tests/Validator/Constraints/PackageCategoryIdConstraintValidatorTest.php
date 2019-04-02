@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageCategoryIdConstraintValidatorTest - Test Cases for Custom Form Constraint Validator Class
+ * PackageCategoryIdConstraintValidatorTest - Test Cases for Custom Form Constraint Validator Class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -16,30 +16,20 @@ use AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class PackageCategoryIdConstraintValidatorTest
- *
- * @package AppBundle\Tests\Validator\Constraints
+ * Class PackageCategoryIdConstraintValidatorTest.
  */
 class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidator
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|Constraint|PackageCategoryIdConstraint
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|Constraint|PackageCategoryIdConstraint */
     private $constraintMock;
 
-    /**
-     * @var \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator
-     */
+    /** @var \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator */
     private $packageCategoryIdConstraintValidator;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $categories;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $invalidCategories;
 
     protected function setUp()
@@ -52,13 +42,11 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
             ->getMock();
 
         $this->packageCategoryIdConstraintValidator = new PackageCategoryIdConstraintValidator();
-        $this->categories = [2,4,6];
+        $this->categories = [2, 4, 6];
         $this->invalidCategories = [5, 10, 15];
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator */
     public function testCreatePackageCategoryIdConstraintValidatorInstance()
     {
         $this->assertInstanceOf(PackageCategoryIdConstraintValidator::class, $this->packageCategoryIdConstraintValidator);
@@ -78,9 +66,7 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
         );
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate()
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate() */
     public function testBuildViolationWhenValidationValueIsNull()
     {
         $this->getExecutionContextMock()
@@ -120,9 +106,7 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
         );
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate()
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate() */
     public function testBuildViolationWhenPackageCategoryIdIsInvalid()
     {
         $this->constraintMock

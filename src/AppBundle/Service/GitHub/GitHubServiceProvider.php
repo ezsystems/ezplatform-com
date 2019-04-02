@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitHubServiceProvider
+ * GitHubServiceProvider.
  *
  * Provides method to call GitHub.com API.
  *
@@ -18,8 +18,7 @@ use Github\Api\Repo;
 use Github\Client;
 
 /**
- * Class GitHubServiceProvider
- * @package AppBundle\Service\GitHub
+ * Class GitHubServiceProvider.
  */
 class GitHubServiceProvider implements PackageRepositoryServiceProviderInterface
 {
@@ -33,14 +32,10 @@ class GitHubServiceProvider implements PackageRepositoryServiceProviderInterface
         'src' => self::GITHUB_IMG_PART . '/' . self::GITHUB_DEFAULT_BRANCH,
     ];
 
-    /**
-     * @var \GitHub\Client
-     */
+    /** @var \GitHub\Client */
     private $gitHubClient;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $authenticationToken;
 
     public function __construct(Client $gitHubClient, string $authenticationToken)
@@ -65,7 +60,7 @@ class GitHubServiceProvider implements PackageRepositoryServiceProviderInterface
     }
 
     /**
-     * @param RepositoryMetadata $repositoryMetadata
+     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
      *
      * @return bool
      */
@@ -74,9 +69,7 @@ class GitHubServiceProvider implements PackageRepositoryServiceProviderInterface
         return $repositoryMetadata->getRepositoryPlatform() === self::REPOSITORY_PLATFORM_NAME;
     }
 
-    /**
-     * @return \Github\Api\Repo
-     */
+    /** @return \Github\Api\Repo */
     private function getPackageRepository(): Repo
     {
         $this->gitHubClient->authenticate($this->authenticationToken, null, Client::AUTH_URL_TOKEN);

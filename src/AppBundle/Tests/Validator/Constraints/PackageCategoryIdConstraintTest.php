@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageCategoryIdConstraintTest - Test Cases for Custom Form Constraint Class
+ * PackageCategoryIdConstraintTest - Test Cases for Custom Form Constraint Class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -14,15 +14,11 @@ use AppBundle\Validator\Constraints\PackageCategoryIdConstraint;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class PackageCategoryIdConstraintTest
- *
- * @package AppBundle\Tests\Validator\Constraints
+ * Class PackageCategoryIdConstraintTest.
  */
 class PackageCategoryIdConstraintTest extends TestCase
 {
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraint
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraint */
     public function testCreatePackageCategoryIdConstraintInstance()
     {
         $packageCategoryIdConstraint = $this->getMockBuilder(PackageCategoryIdConstraint::class)
@@ -31,17 +27,13 @@ class PackageCategoryIdConstraintTest extends TestCase
         $this->assertInstanceOf(PackageCategoryIdConstraint::class, $packageCategoryIdConstraint);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\MissingOptionsException
-     */
+    /** @expectedException \Symfony\Component\Validator\Exception\MissingOptionsException */
     public function testThrowExceptionWhenRequireOptionIsMissing()
     {
         new PackageCategoryIdConstraint([]);
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraint::getPackageCategoryIds
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraint::getPackageCategoryIds */
     public function testGetPackageCategoryIdsCanReturnArray()
     {
         $categories = [1, 2, 3, 4, 5];

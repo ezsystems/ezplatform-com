@@ -15,12 +15,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class PackageCategoryIdConstraintValidator
- *
- * @package AppBundle\Validator\Constraints
+ * Class PackageCategoryIdConstraintValidator.
  */
 class PackageCategoryIdConstraintValidator extends ConstraintValidator
 {
+    /**
+     * ({@inheritdoc})
+     */
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof PackageCategoryIdConstraint) {

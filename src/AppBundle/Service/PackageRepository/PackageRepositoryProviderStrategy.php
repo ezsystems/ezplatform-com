@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageRepositoryProviderStrategy
+ * PackageRepositoryProviderStrategy.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -13,29 +13,25 @@ namespace AppBundle\Service\PackageRepository;
 use AppBundle\ValueObject\RepositoryMetadata;
 
 /**
- * Class PackageRepositoryStrategy
- *
- * @package AppBundle\Service\PackageRepository
+ * Class PackageRepositoryStrategy.
  */
 class PackageRepositoryProviderStrategy
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $packageRepositoryServiceProviders = [];
 
     /**
-     * @param PackageRepositoryServiceProviderInterface $packageRepositoryService
+     * @param \AppBundle\Service\PackageRepository\PackageRepositoryServiceProviderInterface $packageRepositoryService
      */
-    public function addPackageRepositoryServiceProvider(PackageRepositoryServiceProviderInterface $packageRepositoryService)
+    public function addPackageRepositoryServiceProvider(PackageRepositoryServiceProviderInterface $packageRepositoryService): void
     {
         $this->packageRepositoryServiceProviders[] = $packageRepositoryService;
     }
 
     /**
-     * @param RepositoryMetadata $repositoryMetadata
+     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
      * @param string $format
-     * 
+     *
      * @return string|null
      */
     public function getReadme(RepositoryMetadata $repositoryMetadata, string $format = 'html'): ?string
@@ -46,7 +42,7 @@ class PackageRepositoryProviderStrategy
     }
 
     /**
-     * @param RepositoryMetadata $repositoryMetadata
+     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
      *
      * @return PackageRepositoryServiceProviderInterface|null
      */

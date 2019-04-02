@@ -58,12 +58,12 @@ ezpublish:
                         match:
                             Identifier\ContentType: article
                     package_list:
-                        controller: app.controller.package:showPackageListAction
+                        controller: AppBundle:Package:showPackageList
                         template: "@ezdesign/full/package_list.html.twig"
                         match:
                             Identifier\ContentType: package_list
                     package:
-                        controller: app.controller.package:getPackageDetailsAction
+                        controller: AppBundle:Package:getPackageDetails
                         template: "@ezdesign/full/package.html.twig"
                         match:
                             Identifier\ContentType: package
@@ -83,7 +83,7 @@ ezpublish:
                 row:
                     download_section:
                         template: "@ezdesign/row/download_section.html.twig"
-                        controller: app.controller.download:showAction
+                        controller: AppBundle:Download:show
                         match:
                             Identifier\ContentType: download_section
                     top_banner:
@@ -120,4 +120,3 @@ ezpublish:
                         template: "@ezdesign/row/top_banner.html.twig"
                         match:
                             Identifier\ContentType: top_banner
-

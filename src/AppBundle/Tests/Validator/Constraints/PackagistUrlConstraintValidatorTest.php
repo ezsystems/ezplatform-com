@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackagistUrlConstraintValidatorTest - Test Cases for Custom Form Constraint Validator Class
+ * PackagistUrlConstraintValidatorTest - Test Cases for Custom Form Constraint Validator Class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -18,24 +18,16 @@ use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 
 class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PackagistUrlConstraint
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|PackagistUrlConstraint */
     private $constraintMock;
 
-    /**
-     * @var \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator
-     */
+    /** @var \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator */
     private $packagistUrlConstraintValidator;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PackagistServiceProviderInterface
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|PackagistServiceProviderInterface */
     private $packagistServiceProviderMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|SearchServiceInterface
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|SearchServiceInterface */
     private $searchServiceMock;
 
     protected function setUp()
@@ -54,9 +46,7 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
         );
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator */
     public function testCreatePackageCategoryIdConstraintValidatorInstance()
     {
         $this->assertInstanceOf(PackagistUrlConstraintValidator::class, $this->packagistUrlConstraintValidator);
@@ -76,9 +66,7 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
         );
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator::validate
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator::validate */
     public function testBuildViolationWhenPackagistUrlIsInvalid()
     {
         $this->packagistServiceProviderMock

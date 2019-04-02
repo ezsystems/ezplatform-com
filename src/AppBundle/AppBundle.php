@@ -9,15 +9,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class AppBundle
- *
- * @package AppBundle
+ * Class AppBundle.
  */
 class AppBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RegisterTagCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10000);
-        $container->addCompilerPass(new PackageRepositoryProviderCompilerPass(),PassConfig::TYPE_BEFORE_OPTIMIZATION);
+        $container->addCompilerPass(new PackageRepositoryProviderCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION);
     }
 }

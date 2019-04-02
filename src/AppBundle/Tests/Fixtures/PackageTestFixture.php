@@ -1,11 +1,12 @@
 <?php
 
 /**
- * PackageTestFixture
+ * PackageTestFixture.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Tests\Fixtures;
 
@@ -13,15 +14,11 @@ use AppBundle\Mapper\PackageMapper;
 use AppBundle\ValueObject\Package;
 
 /**
- * Class PackageTestFixture
- *
- * @package AppBundle\Tests\Fixtures
+ * Class PackageTestFixture.
  */
 class PackageTestFixture extends AbstractPackageTestFixture
 {
-    /**
-     * @return Package
-     */
+    /** @return Package */
     public function getPackage(): Package
     {
         $package = new Package();
@@ -30,7 +27,7 @@ class PackageTestFixture extends AbstractPackageTestFixture
         $package->repository = 'http://github.com/test/package';
         $package->downloads = 222;
         $package->maintainers = $this->getMaintainers();
-        $package->authorAvatarUrl = PackageMapper::GITHUB_AVATAR_BASE_URL.'test';
+        $package->authorAvatarUrl = PackageMapper::GITHUB_AVATAR_BASE_URL . 'test';
         $package->forks = 3;
         $package->stars = 12;
         $package->author = $this->getAuthor();

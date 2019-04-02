@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    AppBundle\Mapper\PackageMapper:
+        arguments:
+            $excludedMaintainers: ['%packages.excluded_maintainers%']

@@ -1,11 +1,12 @@
 <?php
 
 /**
- * PackageMapperTest
+ * PackageMapperTest.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Tests\Mapper;
 
@@ -19,30 +20,17 @@ use PHPUnit\Framework\TestCase;
  * Test case for mapper.
  *
  * Class MapperTest
- *
- * @package AppBundle\Service\Packagist\Test
  */
 class PackageMapperTest extends TestCase
 {
-    /**
-     * @var \Packagist\Api\Result\Package
-     */
+    /** @var \Packagist\Api\Result\Package */
     protected $apiPackage;
 
-    /**
-     * @var \AppBundle\ValueObject\Package
-     */
+    /** @var \AppBundle\ValueObject\Package */
     protected $package;
 
-    /**
-     * @var \Packagist\Api\Result\Package
-     */
+    /** @var \Packagist\Api\Result\Package */
     protected $packagistPackage;
-
-    /**
-     * @var \AppBundle\Mapper\PackageMapper
-     */
-    protected $mapper;
 
     protected function setUp()
     {
@@ -54,7 +42,7 @@ class PackageMapperTest extends TestCase
     }
 
     /**
-     * Tests mapper without excluded maintainers
+     * Tests mapper without excluded maintainers.
      *
      * @covers \AppBundle\Mapper\PackageMapper::createPackageFromPackagistApiResult()
      */
@@ -67,7 +55,7 @@ class PackageMapperTest extends TestCase
     }
 
     /**
-     * Tests mapper with excluded maintainers
+     * Tests mapper with excluded maintainers.
      *
      * @covers \AppBundle\Mapper\PackageMapper::createPackageFromPackagistApiResult()
      */
@@ -87,6 +75,7 @@ class PackageMapperTest extends TestCase
     private function getPackageFromMapper(array $excludedMaintainers = []): Package
     {
         $mapper = new PackageMapper($excludedMaintainers);
+
         return $mapper->createPackageFromPackagistApiResult($this->packagistPackage);
     }
 }

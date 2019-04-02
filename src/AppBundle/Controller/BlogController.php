@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * BlogController.
+ *
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -7,6 +15,9 @@ use Symfony\Component\Templating\EngineInterface;
 use eZ\Publish\API\Repository\SearchService;
 use AppBundle\QueryType\ChildrenQueryType;
 
+/**
+ * Class BlogController.
+ */
 class BlogController
 {
     /** @var \Symfony\Bundle\TwigBundle\TwigEngine */
@@ -50,9 +61,12 @@ class BlogController
      *
      * @param int $page
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
+     *
+     * @throws \Twig\Error\Error
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      */
-    public function showBlogPostsAction($page)
+    public function showBlogPostsAction(int $page): JsonResponse
     {
         $offset = $page * $this->blogPostsLimit - $this->blogPostsLimit;
 
@@ -74,11 +88,9 @@ class BlogController
             ],
         ]);
 
-        $showMoreButton = $searchResults->totalCount > ($offset + count($searchResults->searchHits)) ? true : false;
-
         return new JsonResponse([
             'html' => $renderedContent,
-            'showLoadMoreButton' => $showMoreButton,
+            'showLoadMoreButton' => $searchResults->totalCount > ($offset + count($searchResults->searchHits)),
         ]);
     }
 }

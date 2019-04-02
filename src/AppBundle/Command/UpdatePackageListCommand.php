@@ -10,14 +10,17 @@ declare(strict_types=1);
 
 namespace AppBundle\Command;
 
+use AppBundle\Helper\RichTextHelper;
 use AppBundle\Service\Cache\CacheServiceInterface;
-use AppBundle\Service\DOM\DOMServiceInterface;
-use AppBundle\Service\GitLab\GitLabServiceProvider;
 use AppBundle\Service\Package\PackageServiceInterface;
-use AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy;
 use AppBundle\ValueObject\Package;
+use eZ\Publish\API\Repository\ContentService as ContentServiceInterface;
 use eZ\Publish\API\Repository\Exceptions\PropertyNotFoundException;
-use eZ\Publish\API\Repository\Repository;
+use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
+use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
+use eZ\Publish\API\Repository\UserService as UserServiceInterface;
+use eZ\Publish\API\Repository\Values\Content\Content;
+use eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\ValueObject;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -27,60 +30,52 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class UpdatePackageListCommand
- *
- * @package AppBundle\Command
+ * Class UpdatePackageListCommand.
  */
 class UpdatePackageListCommand extends ContainerAwareCommand
 {
-    /**
-     * @var \eZ\Publish\API\Repository\Repository
-     */
-    private $repository;
+    /** @var \eZ\Publish\API\Repository\PermissionResolver */
+    private $permissionResolver;
 
-    /**
-     * @var \AppBundle\Service\Cache\CacheServiceInterface
-     */
-    private $cacheService;
-
-    /**
-     * @var \eZ\Publish\API\Repository\ContentService
-     */
+    /** @var \eZ\Publish\API\Repository\ContentService */
     private $contentService;
 
-    /**
-     * @var \AppBundle\Service\Package\PackageServiceInterface
-     */
+    /** @var \eZ\Publish\API\Repository\SearchService */
+    private $searchService;
+
+    /** @var \eZ\Publish\API\Repository\UserService */
+    private $userService;
+
+    /** @var \AppBundle\Service\Cache\CacheServiceInterface */
+    private $cacheService;
+
+    /** @var \AppBundle\Service\Package\PackageServiceInterface */
     private $packageService;
 
-    /**
-     * @var \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy
-     */
-    private $packageRepository;
+    /** @var \AppBundle\Helper\RichTextHelper */
+    private $richTextHelper;
 
-    /**
-     * @var \AppBundle\Service\DOM\DOMServiceInterface
-     */
-    private $domService;
-
-
-    private $gitLabServiceProvider;
+    /** @var int */
+    private $adminId;
 
     public function __construct(
-        Repository $repository,
+        PermissionResolverInterface $permissionResolver,
+        ContentServiceInterface $contentService,
+        SearchServiceInterface $searchService,
+        UserServiceInterface $userService,
         CacheServiceInterface $cacheService,
         PackageServiceInterface $packageService,
-        PackageRepositoryProviderStrategy $packageRepository,
-        DOMServiceInterface $domService,
-        GitLabServiceProvider $gitLabServiceProvider
+        RichTextHelper $richTextHelper,
+        int $adminId
     ) {
-        $this->repository = $repository;
-        $this->contentService = $this->repository->getContentService();
+        $this->permissionResolver = $permissionResolver;
+        $this->contentService = $contentService;
+        $this->searchService = $searchService;
+        $this->userService = $userService;
         $this->cacheService = $cacheService;
         $this->packageService = $packageService;
-        $this->packageRepository = $packageRepository;
-        $this->domService = $domService;
-        $this->gitLabServiceProvider = $gitLabServiceProvider;
+        $this->richTextHelper = $richTextHelper;
+        $this->adminId = $adminId;
 
         parent::__construct();
     }
@@ -88,7 +83,7 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:update_package_list')
@@ -99,27 +94,32 @@ class UpdatePackageListCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\BadStateException
+     * @throws \eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException
+     * @throws \eZ\Publish\API\Repository\Exceptions\ContentValidationException
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         if ($input->getOption('force')) {
             $output->writeln('Force option enabled. Updating all packages.');
         }
 
-        $query = $this->getQuery();
-
-        $results = $this->repository->sudo(
-            function (Repository $repository) use ($query) {
-                return $repository->getSearchService()->findContent($query);
-            }, $this->repository
+        $this->permissionResolver->setCurrentUserReference(
+            $this->userService->loadUser($this->adminId)
         );
+
+        $results = $this->searchService->findContent($this->getQuery());
 
         $packagesToInvalidate = [];
 
         foreach ($results->searchHits as $searchHit) {
             $currentPackage = $searchHit->valueObject;
             $package = $this->packageService->getPackage($currentPackage->getFieldValue('package_id')->text, $input->getOption('force'));
-            $output->write('<question>'.$currentPackage->getFieldValue('package_id').'</question>');
+            $output->write('<question>' . $currentPackage->getFieldValue('package_id') . '</question>');
 
             if (($package->checksum !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
                 if (!empty($this->getDiff($currentPackage, $package)) && $input->getOption('details')) {
@@ -128,7 +128,6 @@ class UpdatePackageListCommand extends ContainerAwareCommand
                     $table->setHeaders(['Field', 'Old value', 'New value']);
                     $table->setRows($this->getDiff($currentPackage, $package));
                     $table->render();
-
                 } else {
                     $output->writeln(': <info>Updated.</info>');
                 }
@@ -136,17 +135,10 @@ class UpdatePackageListCommand extends ContainerAwareCommand
                 $contentUpdateStruct = $this->getContentUpdateStruct($package);
                 $contentId = $searchHit->valueObject->versionInfo->contentInfo->id;
 
-                $this->repository->sudo(
-                    function () use ($contentId, $contentUpdateStruct) {
-                        $contentInfo = $this->contentService->loadContentInfo($contentId);
-                        $contentDraft = $this->contentService->createContentDraft($contentInfo);
-                        $contentDraft = $this->contentService->updateContent($contentDraft->versionInfo, $contentUpdateStruct);
-                        $this->contentService->publishVersion($contentDraft->versionInfo);
-                    }, $this->repository
-                );
-
-                $packagesToInvalidate[] = 'content-' . $contentId;
-                $packagesToInvalidate[] = 'location-' . $currentPackage->versionInfo->contentInfo->mainLocationId;
+                if ($this->updatePackage($contentId, $contentUpdateStruct)) {
+                    $packagesToInvalidate[] = 'content-' . $contentId;
+                    $packagesToInvalidate[] = 'location-' . $currentPackage->versionInfo->contentInfo->mainLocationId;
+                }
             } else {
                 $output->writeln(': <comment>Already up-to-date</comment>');
             }
@@ -158,14 +150,34 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \eZ\Publish\API\Repository\Values\Content\Query
+     * @param int $contentId
+     * @param \eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct $contentUpdateStruct
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\Content
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\BadStateException
+     * @throws \eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException
+     * @throws \eZ\Publish\API\Repository\Exceptions\ContentValidationException
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    private function getQuery()
+    private function updatePackage(int $contentId, ContentUpdateStruct $contentUpdateStruct): Content
+    {
+        $contentInfo = $this->contentService->loadContentInfo($contentId);
+        $contentDraft = $this->contentService->createContentDraft($contentInfo);
+        $contentDraft = $this->contentService->updateContent($contentDraft->versionInfo, $contentUpdateStruct);
+
+        return $this->contentService->publishVersion($contentDraft->versionInfo);
+    }
+
+    /** @return \eZ\Publish\API\Repository\Values\Content\Query */
+    private function getQuery(): Query
     {
         $query = new Query();
         $criterion = new Query\Criterion\LogicalAnd([
             new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('packages.location_id')),
-            new Query\Criterion\ContentTypeIdentifier('package')
+            new Query\Criterion\ContentTypeIdentifier('package'),
         ]);
 
         $query->filter = $criterion;
@@ -175,11 +187,11 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param Package $package
+     * @param \AppBundle\ValueObject\Package $package
      *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct
      */
-    private function getContentUpdateStruct(Package $package)
+    private function getContentUpdateStruct(Package $package): ContentUpdateStruct
     {
         $contentUpdateStruct = $this->contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = 'eng-GB';
@@ -189,21 +201,7 @@ class UpdatePackageListCommand extends ContainerAwareCommand
         $contentUpdateStruct->setField('forks', $package->forks);
         $contentUpdateStruct->setField('checksum', $package->checksum);
         $contentUpdateStruct->setField('readme', $package->readme);
-
-        $escapedDescription = htmlspecialchars($package->description, ENT_XML1);
-
-        $xmlText = <<< EOX
-<?xml version='1.0' encoding='utf-8'?>
-<section 
-    xmlns="http://docbook.org/ns/docbook" 
-    xmlns:xlink="http://www.w3.org/1999/xlink" 
-    xmlns:ezxhtml="http://ez.no/xmlns/ezpublish/docbook/xhtml" 
-    xmlns:ezcustom="http://ez.no/xmlns/ezpublish/docbook/custom" 
-    version="5.0-variant ezpublish-1.0">
-<para>{$escapedDescription}</para>
-</section>
-EOX;
-        $contentUpdateStruct->setField('description', $xmlText);
+        $contentUpdateStruct->setField('description', $this->richTextHelper->getXmlString($package->description));
 
         return $contentUpdateStruct;
     }
@@ -214,7 +212,7 @@ EOX;
      *
      * @return array
      */
-    private function getDiff(ValueObject $current, Package $package)
+    private function getDiff(ValueObject $current, Package $package): array
     {
         $diff = [];
         foreach (get_object_vars($package) as $key => $value) {

@@ -1,5 +1,0 @@
-services:
-  app.dom.service:
-    class: AppBundle\Service\DOM\DOMService
-    arguments:
-      - '@app.url_builder'

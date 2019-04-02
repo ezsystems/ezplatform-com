@@ -19,9 +19,7 @@ use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\Transition;
 
 /**
- * Class PublishOnLastStageSubscriber
- *
- * @package AppBundle\Event\Subscriber
+ * Class PublishOnLastStageSubscriber.
  */
 class PublishOnLastStageSubscriber implements EventSubscriberInterface
 {
@@ -37,6 +35,7 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
     /** @var \EzSystems\FlexWorkflow\API\Repository\RepositoryInterface */
     private $repository;
 
+    /** @var array */
     private $publishOnLastStageWorkflows;
 
     /**
@@ -60,6 +59,7 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
         $this->publishOnLastStageWorkflows = $publishOnLastStageWorkflows;
     }
 
+    /** @return array */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -67,6 +67,11 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @param StageChangeEvent $event
+     *
+     * @throws \EzSystems\EzPlatformWorkflow\Exception\NotFoundException
+     */
     public function onStageChange(StageChangeEvent $event): void
     {
         $workflowName = $event->getWorkflowMetadata()->name;
@@ -94,6 +99,12 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param string $transitionName
+     * @param Definition $workflowDefinition
+     *
+     * @return mixed
+     */
     private function getWorkflowTransitionTos(string $transitionName, Definition $workflowDefinition)
     {
         $workflowTransitions = array_filter($workflowDefinition->getTransitions(), function (Transition $item) use ($transitionName) {

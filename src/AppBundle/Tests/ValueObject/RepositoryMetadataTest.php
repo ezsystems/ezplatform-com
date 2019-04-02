@@ -1,11 +1,12 @@
 <?php
 
 /**
- * RepositoryMetadataTest
+ * RepositoryMetadataTest.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Tests\ValueObject;
 
@@ -14,47 +15,31 @@ use AppBundle\Tests\Fixtures\PackageTestFixture;
 use AppBundle\ValueObject\RepositoryMetadata;
 
 /**
- * Test case for RepositoryMetadata class
+ * Test case for RepositoryMetadata class.
  *
  * Class RepositoryMetadataTest
- *
- * @package AppBundle\Tests\ValueObject
  */
 class RepositoryMetadataTest extends AbstractTestCase
 {
-    /**
-     * @var \AppBundle\ValueObject\Package
-     */
+    /** @var \AppBundle\ValueObject\Package */
     protected $package;
 
-    /**
-     * @var \AppBundle\ValueObject\RepositoryMetadata
-     */
+    /** @var \AppBundle\ValueObject\RepositoryMetadata */
     protected $repositoryMetadata;
 
-    /**
-     * @var \ReflectionMethod
-     */
+    /** @var \ReflectionMethod */
     protected $methodGetUsernameFromRepositoryUrl;
 
-    /**
-     * @var \ReflectionMethod
-     */
+    /** @var \ReflectionMethod */
     protected $methodGetRepositoryNameFromRepositoryUrl;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $repositoryName = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $repositoryUsername = '';
 
-    /**
-     * @throws \ReflectionException
-     */
+    /** @throws \ReflectionException */
     protected function setUp()
     {
         $fixture = new PackageTestFixture();
@@ -70,16 +55,14 @@ class RepositoryMetadataTest extends AbstractTestCase
         $this->repositoryMetadata = new RepositoryMetadata($this->package->repository);
     }
 
-    /**
-     * Tests instantiation of RepositoryMetadata
-     */
+    /** Tests instantiation of RepositoryMetadata */
     public function testCreateRepositoryMetadataObjectBasedOnRepositoryUrl()
     {
         $this->assertInstanceOf(RepositoryMetadata::class, $this->repositoryMetadata);
     }
 
     /**
-     * Tests if repository name is parsed properly from repositoryId
+     * Tests if repository name is parsed properly from repositoryId.
      *
      * @covers \AppBundle\ValueObject\RepositoryMetadata::getRepositoryNameFromRepositoryUrl()
      */
@@ -92,7 +75,7 @@ class RepositoryMetadataTest extends AbstractTestCase
     }
 
     /**
-     * Tests if repository username is parsed properly from repositoryId
+     * Tests if repository username is parsed properly from repositoryId.
      *
      * @covers \AppBundle\ValueObject\RepositoryMetadata::getUsernameFromRepositoryUrl()
      */
@@ -105,7 +88,7 @@ class RepositoryMetadataTest extends AbstractTestCase
     }
 
     /**
-     * Tests if property repositoryName is returned
+     * Tests if property repositoryName is returned.
      *
      * @covers \AppBundle\ValueObject\RepositoryMetadata::getRepositoryName()
      */
@@ -118,7 +101,7 @@ class RepositoryMetadataTest extends AbstractTestCase
     }
 
     /**
-     * Tests if property username
+     * Tests if property username.
      *
      * @covers \AppBundle\ValueObject\RepositoryMetadata::getUsername()
      */

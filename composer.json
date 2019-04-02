@@ -85,7 +85,8 @@
         "phpunit/phpunit": "^6.5.13",
         "roave/security-advisories": "dev-master",
         "sensio/generator-bundle": "^3.1.7",
-        "symfony/phpunit-bridge": "^3.4.18"
+        "symfony/phpunit-bridge": "^3.4.18",
+        "friendsofphp/php-cs-fixer": "~2.7.1"
     },
     "conflict": {
         "symfony/symfony": "3.4.9||3.4.12||3.4.16",
@@ -111,7 +112,8 @@
         ],
         "ezplatform-install": [
             "@php bin/console ezplatform:install app"
-        ]
+        ],
+        "fix-cs": "@php bin/php-cs-fixer fix -v --show-progress=estimating"
     },
     "config": {
         "bin-dir": "bin",

@@ -13,9 +13,7 @@ namespace AppBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class PackageUrlConstraint
- *
- * @package AppBundle\Validator\Constraints
+ * Class PackageUrlConstraint.
  */
 class PackagistUrlConstraint extends Constraint
 {

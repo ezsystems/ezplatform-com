@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageDbNotExistsConstraintTest - Test Cases for Custom Form Constraint Class
+ * PackageDbNotExistsConstraintTest - Test Cases for Custom Form Constraint Class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -14,25 +14,17 @@ use AppBundle\Validator\Constraints\PackageDbNotExistsConstraint;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class PackageDbNotExistsConstraintTest
- *
- * @package AppBundle\Tests\Validator\Constraints
+ * Class PackageDbNotExistsConstraintTest.
  */
 class PackageDbNotExistsConstraintTest extends TestCase
 {
-    /**
-     * @var PackageDbNotExistsConstraint
-     */
+    /** @var PackageDbNotExistsConstraint */
     private $packageDbNotExistsConstraint;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageListLocationId;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $targetField;
 
     protected function setUp()
@@ -42,15 +34,13 @@ class PackageDbNotExistsConstraintTest extends TestCase
 
         $constructorArguments = [
             'packageListLocationId' => $this->packageListLocationId,
-            'targetField' => $this->targetField
+            'targetField' => $this->targetField,
         ];
 
         $this->packageDbNotExistsConstraint = new PackageDbNotExistsConstraint($constructorArguments);
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraint
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraint */
     public function testCreatePackageDbNotExistsConstraintInstance()
     {
         $packageDbNotExistsConstraint = $this->getMockBuilder(PackageDbNotExistsConstraint::class)
@@ -71,9 +61,7 @@ class PackageDbNotExistsConstraintTest extends TestCase
         new PackageDbNotExistsConstraint($constructorArguments);
     }
 
-    /**
-     * @return iterable
-     */
+    /** @return iterable */
     public function constructorArgumentsProvider(): iterable
     {
         return [
@@ -85,17 +73,13 @@ class PackageDbNotExistsConstraintTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraint::getPackageListLocationId()
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraint::getPackageListLocationId() */
     public function testCanGetPackageListLocationId()
     {
         $this->assertEquals($this->packageListLocationId, $this->packageDbNotExistsConstraint->getPackageListLocationId());
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraint::getTargetField()
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraint::getTargetField() */
     public function testCanGetTargetField()
     {
         $this->assertEquals($this->targetField, $this->packageDbNotExistsConstraint->getTargetField());

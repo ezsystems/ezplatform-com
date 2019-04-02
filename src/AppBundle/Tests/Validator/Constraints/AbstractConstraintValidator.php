@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AbstractConstraintValidator - Provides common Mocks for Constraint Validators test cases
+ * AbstractConstraintValidator - Provides common Mocks for Constraint Validators test cases.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -16,20 +16,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 /**
- * Class AbstractConstraintValidatorTest
- *
- * @package AppBundle\Tests\Validator\Constraints
+ * Class AbstractConstraintValidatorTest.
  */
 abstract class AbstractConstraintValidator extends TestCase
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     private $executionContextMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject */
     private $constraintViolationBuilderMock;
 
     protected function setUp()
@@ -38,17 +32,13 @@ abstract class AbstractConstraintValidator extends TestCase
         $this->constraintViolationBuilderMock = $this->getMockBuilder(ConstraintViolationBuilderInterface::class)->getMock();
     }
 
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Validator\Context\ExecutionContextInterface
-     */
+    /** @return \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Validator\Context\ExecutionContextInterface */
     protected function getExecutionContextMock(): MockObject
     {
         return $this->executionContextMock;
     }
 
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|ConstraintViolationBuilderInterface
-     */
+    /** @return \PHPUnit\Framework\MockObject\MockObject|ConstraintViolationBuilderInterface */
     protected function getConstraintViolationBuilderMock(): MockObject
     {
         return $this->constraintViolationBuilderMock;

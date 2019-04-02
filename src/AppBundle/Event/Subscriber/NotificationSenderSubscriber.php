@@ -13,25 +13,17 @@ use eZ\Publish\API\Repository\Values\Content\Content;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class NotificationSenderSubscriber
- *
- * @package AppBundle\Event\Subscriber
+ * Class NotificationSenderSubscriber.
  */
 class NotificationSenderSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var \Swift_Mailer
-     */
+    /** @var \Swift_Mailer */
     private $mailer;
 
-    /**
-     * @var \Twig_Environment
-     */
+    /** @var \Twig_Environment */
     private $twig;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $recipients = [];
 
     public function __construct(
@@ -44,13 +36,11 @@ class NotificationSenderSubscriber implements EventSubscriberInterface
         $this->recipients = $recipients;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    /** {@inheritdoc} */
     public static function getSubscribedEvents(): array
     {
         return [
-            AddPackageEvent::EVENT_NAME => 'onPackageCreate'
+            AddPackageEvent::EVENT_NAME => 'onPackageCreate',
         ];
     }
 

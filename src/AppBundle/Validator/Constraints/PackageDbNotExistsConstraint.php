@@ -14,9 +14,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 /**
- * Class PackageDbNotExistsConstraint
- *
- * @package AppBundle\Validator\Constraints
+ * Class PackageDbNotExistsConstraint.
  */
 class PackageDbNotExistsConstraint extends Constraint
 {
@@ -24,14 +22,10 @@ class PackageDbNotExistsConstraint extends Constraint
 
     public $messageWaitingForApproval = 'This package is waiting for approval';
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageListLocationId = 0;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $targetField = '';
 
     public function __construct(array $options)
@@ -48,17 +42,13 @@ class PackageDbNotExistsConstraint extends Constraint
         $this->targetField = $options['targetField'];
     }
 
-    /**
-     * @return int|mixed
-     */
+    /** @return int|mixed */
     public function getPackageListLocationId(): int
     {
         return $this->packageListLocationId;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getTargetField(): string
     {
         return $this->targetField;

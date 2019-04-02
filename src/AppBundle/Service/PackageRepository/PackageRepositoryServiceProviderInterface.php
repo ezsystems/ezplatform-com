@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageRepositoryServiceInterface
+ * PackageRepositoryServiceInterface.
  *
  * Provides method to call Packagist.org API.
  *
@@ -15,9 +15,7 @@ namespace AppBundle\Service\PackageRepository;
 use AppBundle\ValueObject\RepositoryMetadata;
 
 /**
- * Interface PackageRepositoryServiceInterface
- *
- * @package AppBundle\Service\PackageRepository
+ * Interface PackageRepositoryServiceInterface.
  */
 interface PackageRepositoryServiceProviderInterface
 {

@@ -14,17 +14,13 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 /**
- * Class PackageCategoryIdConstraint
- *
- * @package AppBundle\Validator\Constraints
+ * Class PackageCategoryIdConstraint.
  */
 class PackageCategoryIdConstraint extends Constraint
 {
     public $message = 'Following category ids does not exists: {{ categories }}';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $packageCategoryIds = [];
 
     /**
@@ -41,9 +37,7 @@ class PackageCategoryIdConstraint extends Constraint
         $this->packageCategoryIds = $options['categories'];
     }
 
-    /**
-     * @return array
-     */
+    /** @return array */
     public function getPackageCategoryIds(): array
     {
         return $this->packageCategoryIds;

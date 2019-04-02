@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Github\Client: ~
+
+    Gitlab\Client: ~
+
+    Packagist\Api\Client: ~

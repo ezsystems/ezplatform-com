@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageDbNotExistsConstraintValidatorTest - Test Cases for Custom Form Constraint Validator Class
+ * PackageDbNotExistsConstraintValidatorTest - Test Cases for Custom Form Constraint Validator Class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -27,70 +27,44 @@ use EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Class PackageDbNotExistsConstraintValidatorTest
- *
- * @package AppBundle\Tests\Validator\Constraints
+ * Class PackageDbNotExistsConstraintValidatorTest.
  */
 class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValidator
 {
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PackageDbNotExistsConstraint
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|PackageDbNotExistsConstraint */
     private $constraintMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|PermissionResolverInterface
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|PermissionResolverInterface */
     private $permissionResolverMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|UserServiceInterface
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|UserServiceInterface */
     private $userServiceMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|SearchServiceInterface
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|SearchServiceInterface */
     private $searchServiceMock;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|ContentDraftsDataset
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|ContentDraftsDataset */
     private $contentDraftsDatasetMock;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageContributorId;
 
-    /**
-     * @var \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator
-     */
+    /** @var \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator */
     private $packageDbNotExistsConstraintValidator;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageListLocationId;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $targetField;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $search;
 
-    /**
-     * @var Query
-     */
+    /** @var Query */
     private $query;
 
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|SearchResult
-     */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|SearchResult */
     private $searchResult;
 
     protected function setUp()
@@ -108,7 +82,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
             ->setConstructorArgs([
                 $this->getMockBuilder(ContentServiceInterface::class)->getMock(),
                 $this->getMockBuilder(ContentTypeServiceInterface::class)->getMock(),
-                $this->getMockBuilder(LocationServiceInterface::class)->getMock()
+                $this->getMockBuilder(LocationServiceInterface::class)->getMock(),
             ])
             ->getMock();
         $this->packageContributorId = 111;
@@ -122,9 +96,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
         );
     }
 
-    /**
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator
-     */
+    /** @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator */
     public function testCreatePackageCategoryIdConstraintValidatorInstance()
     {
         $this->assertInstanceOf(PackageDbNotExistsConstraintValidator::class, $this->packageDbNotExistsConstraintValidator);
@@ -157,7 +129,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     {
         $constraintMockConstructorArgs = [
             'packageListLocationId' => $this->packageListLocationId,
-            'targetField' => $this->targetField
+            'targetField' => $this->targetField,
         ];
         $constraintMock = $this->getConstraintMock($constraintMockConstructorArgs);
 
@@ -221,7 +193,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     {
         $constraintMockConstructorArgs = [
             'packageListLocationId' => $this->packageListLocationId,
-            'targetField' => $targetField
+            'targetField' => $targetField,
         ];
         $constraintMock = $this->getConstraintMock($constraintMockConstructorArgs);
 
@@ -284,9 +256,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
         $this->packageDbNotExistsConstraintValidator->validate($this->search, $this->constraintMock);
     }
 
-    /**
-     * @return iterable
-     */
+    /** @return iterable */
     public function existsPackageProvider(): iterable
     {
         return [
@@ -320,10 +290,9 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
         $query->query = new Query\Criterion\LogicalAnd([
             new Query\Criterion\ParentLocationId($this->packageListLocationId),
             new Query\Criterion\ContentTypeIdentifier('package'),
-            new Query\Criterion\Field($targetField, Query\Criterion\Operator::EQ, $this->search)
+            new Query\Criterion\Field($targetField, Query\Criterion\Operator::EQ, $this->search),
         ]);
 
         return $query;
     }
-
 }

@@ -3,6 +3,8 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Installer;
 
 use EzSystems\PlatformInstallerBundle\Installer\DbBasedInstaller;
@@ -12,7 +14,9 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 /**
- * Install data from ezplatform.com
+ * Install data from ezplatform.com.
+ *
+ * Class AppInstaller
  */
 class AppInstaller extends DbBasedInstaller implements Installer
 {

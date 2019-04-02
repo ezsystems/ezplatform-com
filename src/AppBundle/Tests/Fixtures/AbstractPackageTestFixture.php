@@ -1,10 +1,12 @@
 <?php
+
 /**
- * AbstractPackageTestFixture
+ * AbstractPackageTestFixture.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Tests\Fixtures;
 
@@ -14,14 +16,13 @@ use Packagist\Api\Result\Package\Maintainer;
 use Packagist\Api\Result\Package\Version;
 
 /**
- * Class AbstractPackageTestFixture
- *
- * @package AppBundle\Tests\Fixtures
+ * Class AbstractPackageTestFixture.
  */
 abstract class AbstractPackageTestFixture
 {
     /**
      * @param bool $exclude
+     *
      * @return \Packagist\Api\Result\Package\Maintainer[]
      */
     protected function getMaintainers($exclude = true): array
@@ -51,9 +52,7 @@ abstract class AbstractPackageTestFixture
         return $maintainers;
     }
 
-    /**
-     * @return \Packagist\Api\Result\Package\Author
-     */
+    /** @return \Packagist\Api\Result\Package\Author */
     protected function getAuthor(): Author
     {
         $author = new Author();
@@ -67,9 +66,7 @@ abstract class AbstractPackageTestFixture
         return $author;
     }
 
-    /**
-     * @return \Packagist\Api\Result\Package\Version
-     */
+    /** @return \Packagist\Api\Result\Package\Version */
     protected function getVersion(): Version
     {
         $version = new Version();
@@ -84,9 +81,7 @@ abstract class AbstractPackageTestFixture
         return $version;
     }
 
-    /**
-     * @return \Packagist\Api\Result\Package\Downloads
-     */
+    /** @return \Packagist\Api\Result\Package\Downloads */
     protected function getDownloads(): Downloads
     {
         $downloads = new Downloads();

@@ -67,7 +67,7 @@ gregwar_captcha_routing:
 # BLOG
 _ezplatform_blog_ajax:
     path: /ezplatform/blog/load/page/{page}/{order}
-    defaults: { _controller: app.controller.blog:showBlogPostsAction }
+    defaults: { _controller: AppBundle:Blog:showBlogPosts }
     methods:  [GET]
     requirements:
         "page": '\d+'
@@ -75,39 +75,39 @@ _ezplatform_blog_ajax:
 # PACKAGE LIST
 _ezplatform_package_add:
     path: /packages/add
-    defaults: { _controller: app.controller.package:addPackageAction }
+    defaults: { _controller: AppBundle:Package:addPackage }
     methods: [GET, POST]
 
 _ezplatform_package_list:
     path: /packages/{page}
-    defaults: { _controller: app.controller.package:showPackageListAction, page: 1 }
+    defaults: { _controller: AppBundle:Package:showPackageList, page: 1 }
     methods: [GET]
     requirements:
         "page": '\d+'
 
 _ezplatform_package_list_category:
     path: /packages/category/{category}/{page}/{order}/{searchText}
-    defaults: { _controller: app.controller.package:showPackageListAction, page: 1, order: 'default', searchText: '', category: 'all' }
+    defaults: { _controller: AppBundle:Package:showPackageList, page: 1, order: 'default', searchText: '', category: 'all' }
     methods: [GET]
     requirements:
         "order": 'default|latestUpdate|stars|downloads'
 
 _ezplatform_package_list_search_init:
     path: /packages/search/
-    defaults: { _controller: app.controller.package:searchPackagesAction, page: 1, order: 'default' }
+    defaults: { _controller: AppBundle:Package:searchPackages, page: 1, order: 'default' }
     methods: [POST]
     requirements:
         "order": 'default|latestUpdate|stars|downloads'
 
 _ezplatform_package_list_search:
     path: /packages/search/{category}/{searchText}/{page}/{order}
-    defaults: { _controller: app.controller.package:showPackageListAction, page: 1, order: 'default', searchText: '', category: 'all' }
+    defaults: { _controller: AppBundle:Package:showPackageList, page: 1, order: 'default', searchText: '', category: 'all' }
     methods: [GET, POST]
 
 # TAGS
 _ezplatform_tag_related_list_ajax:
     path: /ezplatform/tag/{tagId}/related/page/{page}/{order}
-    defaults: { _controller: app.controller.tag:getTagRelatedContentAction }
+    defaults: { _controller: AppBundle:Tag:getTagRelatedContent }
     methods: [GET]
     requirements:
         "tagId": '\d+'

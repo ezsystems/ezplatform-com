@@ -1,19 +1,17 @@
 <?php
 
 /**
- * RepositoryMetadata
+ * RepositoryMetadata.
  *
  * Provides method to call Packagist.org API.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-
 namespace AppBundle\ValueObject;
 
 /**
- * Class RepositoryMetadata
- * @package AppBundle\ValueObject
+ * Class RepositoryMetadata.
  */
 final class RepositoryMetadata
 {
@@ -21,32 +19,22 @@ final class RepositoryMetadata
 
     private const ALLOWED_REPOSITORY_PLATFORMS = [
         'github',
-        'gitlab'
+        'gitlab',
     ];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $splitUrl = [];
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $repositoryId = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $username;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $repositoryName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $repositoryPlatform;
 
     public function __construct(string $repositoryUrl)
@@ -58,34 +46,26 @@ final class RepositoryMetadata
         $this->repositoryPlatform = $this->getRepositoryPlatformFromRepositoryUrl();
     }
 
-    /**
-     * @return string
-     */
-    public function getRepositoryId()
+    /** @return string */
+    public function getRepositoryId(): string
     {
         return $this->username . self::DEFAULT_DELIMITER . $this->repositoryName;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername(): string
+    /** @return string */
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @return string
-     */
-    public function getRepositoryName(): string
+    /** @return string */
+    public function getRepositoryName(): ?string
     {
         return $this->repositoryName;
     }
 
-    /**
-     * @return string
-     */
-    public function getRepositoryPlatform(): string
+    /** @return string */
+    public function getRepositoryPlatform(): ?string
     {
         return $this->repositoryPlatform;
     }
@@ -100,25 +80,19 @@ final class RepositoryMetadata
         return explode(self::DEFAULT_DELIMITER, $repositoryId);
     }
 
-    /**
-     * @return string|null
-     */
+    /** @return string|null */
     private function getUsernameFromRepositoryUrl(): ?string
     {
         return $this->splitUrl[count($this->splitUrl) - 2] ?? '';
     }
 
-    /**
-     * @return string|null
-     */
+    /** @return string|null */
     private function getRepositoryNameFromRepositoryUrl(): ?string
     {
         return end($this->splitUrl);
     }
 
-    /**
-     * @return string|null
-     */
+    /** @return string|null */
     private function getRepositoryPlatformFromRepositoryUrl(): ?string
     {
         $platformDomain = $this->splitUrl[count($this->splitUrl) - 3] ?? '';

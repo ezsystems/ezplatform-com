@@ -37,7 +37,7 @@
                         <div class="col-md-8 package-list__search">
                             <div id="find-bundle">
                                 <div class="form-row align-items-center">
-                                    {{ render_esi(controller('app.controller.package:renderSearchPackageForm', {"searchText": searchText})) }}
+                                    {{ render_esi(controller('AppBundle:Package:renderSearchPackageForm', {"searchText": searchText})) }}
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="col-xs-12 col-md-3 package-list__sort-container">
                                         {% set sortingOrder = order is defined ? order : 'default' %}
-                                        {{ render_esi(controller('app.controller.package:renderSortOrderPackageForm', {"order": sortingOrder})) }}
+                                        {{ render_esi(controller('AppBundle:Package:renderSortOrderPackageForm', {"order": sortingOrder})) }}
                                     </div>
                                 </div>
                                 {% include '@ezdesign/parts/package/list.html.twig' with {

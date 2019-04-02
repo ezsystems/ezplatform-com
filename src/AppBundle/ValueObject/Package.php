@@ -4,73 +4,51 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\ValueObject;
 
+/**
+ * Class Package.
+ */
 class Package
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public $packageId;
 
-    /**
-     * @var \Packagist\Api\Result\Package\Maintainer[]
-     */
+    /** @var \Packagist\Api\Result\Package\Maintainer[] */
     public $maintainers;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $authorAvatarUrl;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $description;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     public $downloads;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     public $forks;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     public $stars;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     public $creationDate;
 
-    /**
-     * @var \DateTime
-     */
+    /** @var \DateTime */
     public $updateDate;
 
-    /**
-     * @var \Packagist\Api\Result\Package\Author
-     */
+    /** @var \Packagist\Api\Result\Package\Author */
     public $author;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $repository;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $readme;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     public $checksum;
 }

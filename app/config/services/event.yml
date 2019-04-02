@@ -2,6 +2,7 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        public: false
 
     AppBundle\Event\Subscriber\PublishOnLastStageSubscriber:
         arguments:

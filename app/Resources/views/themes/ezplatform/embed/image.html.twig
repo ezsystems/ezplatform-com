@@ -1,22 +1,24 @@
 <div class="embed-image">
-    {% if objectParameters.size is defined and objectParameters.size ends with '_lightbox' %}
-        {% set image = ez_field(content, 'image') %}
+    {% if objectParameters.size is defined %}
+        {% if  objectParameters.size ends with '_lightbox'  %}
+            {% set image = ez_field(content, 'image') %}
 
-        {% set originalImageAlias = ez_image_alias( image, content.versionInfo, 'original' ) %}
-        {% set originalSrc = originalImageAlias ? asset( originalImageAlias.uri ) : "//:0" %}
+            {% set originalImageAlias = ez_image_alias( image, content.versionInfo, 'original' ) %}
+            {% set originalSrc = originalImageAlias ? asset( originalImageAlias.uri ) : "//:0" %}
 
-        {% set thumbnailImageAlias = ez_image_alias( image, content.versionInfo, objectParameters.size|default( 'original' ) ) %}
-        {% set thumbnailSrc = thumbnailImageAlias ? asset( thumbnailImageAlias.uri ) : "//:0" %}
+            {% set thumbnailImageAlias = ez_image_alias( image, content.versionInfo, objectParameters.size|default( 'original' ) ) %}
+            {% set thumbnailSrc = thumbnailImageAlias ? asset( thumbnailImageAlias.uri ) : "//:0" %}
 
-        <a class="example-image-link" href="{{ originalSrc }}" data-lightbox="{{ originalImageAlias.imageId }}">
-            <img class="example-image" src="{{ thumbnailSrc }}" alt="{{ image.value.alternativeText }}">
-        </a>
-    {% else %}
-        {{ ez_render_field(content, 'image', {
-            'parameters': {
-                'alias': objectParameters.size
-            }
-        }) }}
+            <a class="example-image-link" href="{{ originalSrc }}" data-lightbox="{{ originalImageAlias.imageId }}">
+                <img class="example-image" src="{{ thumbnailSrc }}" alt="{{ image.value.alternativeText }}">
+            </a>
+        {% else %}
+            {{ ez_render_field(content, 'image', {
+                'parameters': {
+                    'alias': objectParameters.size
+                }
+            }) }}
+        {% endif %}
     {% endif %}
     {% if not ez_is_field_empty(content, 'caption') %}
         <div class="embed-image-caption">

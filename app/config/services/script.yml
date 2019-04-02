@@ -1,6 +1,9 @@
 services:
-    ezplatform.adminui.hotjar.js:
-            parent: EzSystems\EzPlatformAdminUi\Component\ScriptComponent
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    EzSystems\EzPlatformAdminUi\Component\ScriptComponent:
             arguments:
                 $src: "/assets/js/hotjar.js"
             tags:

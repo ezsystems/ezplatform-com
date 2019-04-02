@@ -1,3 +1,0 @@
-services:
-  app.url_builder:
-    class: AppBundle\Url\UrlBuilder

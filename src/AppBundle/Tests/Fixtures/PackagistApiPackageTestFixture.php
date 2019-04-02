@@ -1,25 +1,23 @@
 <?php
+
 /**
- * PackagistApiPackageTestFixture
+ * PackagistApiPackageTestFixture.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Tests\Fixtures;
 
 use Packagist\Api\Result\Package;
 
 /**
- * Class PackagistApiPackageTestFixture
- *
- * @package AppBundle\Tests\Fixtures
+ * Class PackagistApiPackageTestFixture.
  */
 class PackagistApiPackageTestFixture extends AbstractPackageTestFixture
 {
-    /**
-     * @return \Packagist\Api\Result\Package
-     */
+    /** @return \Packagist\Api\Result\Package */
     public function getPackage(): Package
     {
         $package = new Package();

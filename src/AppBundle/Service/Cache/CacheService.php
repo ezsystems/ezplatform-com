@@ -1,11 +1,12 @@
 <?php
 
 /**
- * CacheService
+ * CacheService.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Service\Cache;
 
@@ -13,19 +14,14 @@ use Psr\Cache\CacheItemInterface;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 
 /**
- * Class CacheService
- * @package AppBundle\Service\Cache
+ * Class CacheService.
  */
 class CacheService implements CacheServiceInterface
 {
-    /**
-     * @var \Symfony\Component\Cache\Adapter\TagAwareAdapterInterface
-     */
+    /** @var \Symfony\Component\Cache\Adapter\TagAwareAdapterInterface */
     private $cache;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $cacheExpirationTime;
 
     public function __construct(TagAwareAdapterInterface $cacheItemPool, int $cacheExpirationTime)
@@ -59,7 +55,7 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @param $item
+     * @param \Psr\Cache\CacheItemInterface $item
      *
      * @return bool
      *
@@ -82,9 +78,7 @@ class CacheService implements CacheServiceInterface
         return $this->cache->invalidateTags($tags);
     }
 
-    /**
-     * @return int
-     */
+    /** @return int */
     public function getCacheExpirationTime(): int
     {
         return $this->cacheExpirationTime;

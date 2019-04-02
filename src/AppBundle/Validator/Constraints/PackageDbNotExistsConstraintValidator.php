@@ -26,40 +26,28 @@ use Symfony\Component\Validator\Exception\MissingOptionsException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class PackageDbNotExistsConstraintValidator
- *
- * @package AppBundle\Validator\Constraints
+ * Class PackageDbNotExistsConstraintValidator.
  */
 class PackageDbNotExistsConstraintValidator extends ConstraintValidator
 {
     private static $VALIDATION_MESSAGE = [
         'packagist_url' => 'package',
-        'name' => 'package name'
+        'name' => 'package name',
     ];
 
-    /**
-     * @var \eZ\Publish\API\Repository\PermissionResolver
-     */
+    /** @var \eZ\Publish\API\Repository\PermissionResolver */
     private $permissionResolver;
 
-    /**
-     * @var \eZ\Publish\API\Repository\UserService
-     */
+    /** @var \eZ\Publish\API\Repository\UserService */
     private $userService;
 
-    /**
-     * @var \eZ\Publish\API\Repository\SearchService
-     */
+    /** @var \eZ\Publish\API\Repository\SearchService */
     private $searchService;
 
-    /**
-     * @var \EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset
-     */
+    /** @var \EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset */
     private $contentDraftsDataset;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageContributorId;
 
     public function __construct(
@@ -96,7 +84,7 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
         $params = [
             'parent_location_id' => $constraint->getPackageListLocationId(),
             'target_field' => $constraint->getTargetField(),
-            'search' => $value
+            'search' => $value,
         ];
 
         $this->permissionResolver->setCurrentUserReference(
@@ -147,7 +135,7 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
         $query->query = new LogicalAnd([
             new Query\Criterion\ParentLocationId($params['parent_location_id']),
             new ContentTypeIdentifier('package'),
-            new Field($params['target_field'], Operator::EQ, $params['search'])
+            new Field($params['target_field'], Operator::EQ, $params['search']),
         ]);
 
         return $query;

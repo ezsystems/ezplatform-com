@@ -1,11 +1,10 @@
 services:
-    app.twig_extension.field_options:
-        class: AppBundle\Twig\FieldOptionsTwigExtension
-        arguments:
-            - '@ezpublish.api.service.content_type'
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    AppBundle\Twig\:
+        resource: '../../../src/AppBundle/Twig/*'
         tags:
             - name: twig.extension
-
-    AppBundle\Twig\YoutubeIdExtractorExtension:
-        tags:
-            - { name: twig.extension }

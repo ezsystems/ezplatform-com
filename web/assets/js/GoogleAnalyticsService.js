@@ -67,4 +67,6 @@ class GoogleAnalyticsService {
     }
 }
 
-module.exports = GoogleAnalyticsService;
+if ('undefined' !== typeof module) {
+    module.exports = GoogleAnalyticsService;
+}

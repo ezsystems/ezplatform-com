@@ -18,20 +18,14 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Class PackageUrlConstraintValidator
- *
- * @package AppBundle\Validator\Constraints
+ * Class PackageUrlConstraintValidator.
  */
 class PackagistUrlConstraintValidator extends ConstraintValidator
 {
-    /**
-     * @var \AppBundle\QueryType\PackagesQueryType
-     */
+    /** @var \AppBundle\QueryType\PackagesQueryType */
     private $searchService;
 
-    /**
-     * @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface
-     */
+    /** @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface */
     private $packagistServiceProvider;
 
     public function __construct(
@@ -42,6 +36,9 @@ class PackagistUrlConstraintValidator extends ConstraintValidator
         $this->packagistServiceProvider = $packagistServiceProvider;
     }
 
+    /**
+     * ({@inheritdoc})
+     */
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof PackagistUrlConstraint) {

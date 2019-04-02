@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GitLabServiceProvider
+ * GitLabServiceProvider.
  *
  * Provides method to call GitLab.com API.
  *
@@ -18,9 +18,7 @@ use Gitlab\Client;
 use Gitlab\HttpClient\Message\ResponseMediator;
 
 /**
- * Class GitLabServiceProvider
- *
- * @package AppBundle\Service\GitLab
+ * Class GitLabServiceProvider.
  */
 class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
 {
@@ -33,12 +31,10 @@ class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
 
     const GITLAB_URL_PARTS = [
         'href' => self::GITLAB_HREF_PART,
-        'src' => self::GITLAB_IMG_PART
+        'src' => self::GITLAB_IMG_PART,
     ];
 
-    /**
-     * @var \Gitlab\Client
-     */
+    /** @var \Gitlab\Client */
     private $gitLabClient;
 
     public function __construct(Client $gitLabClient)
@@ -47,7 +43,7 @@ class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
     }
 
     /**
-     * @param RepositoryMetadata $repositoryMetadata
+     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
      * @param string $format
      *
      * @return string|null
@@ -61,13 +57,13 @@ class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
             $rawReadme = $this->getRawReadme($repositoryId);
 
             $headers = [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
             ];
 
             $body = json_encode([
                 'text' => $rawReadme,
                 'gfm' => true,
-                'project' => $repositoryId
+                'project' => $repositoryId,
             ]);
 
             return $this->getReadmeAsHtml($headers, $body);
@@ -77,7 +73,7 @@ class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
     }
 
     /**
-     * @param RepositoryMetadata $repositoryMetadata
+     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
      *
      * @return bool
      */

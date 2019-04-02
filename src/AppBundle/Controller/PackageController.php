@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PackageController
+ * PackageController.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -22,7 +22,7 @@ use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
-use Netgen\TagsBundle\API\Repository\TagsService;
+use Netgen\TagsBundle\API\Repository\TagsService as TagsServiceInterface;
 use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -34,83 +34,55 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 /**
- * Class PackageController
- *
- * @package AppBundle\Controller
+ * Class PackageController.
  */
 class PackageController
 {
     private const DEFAULT_ORDER_CLAUSE = 'default';
-
     private const DEFAULT_PACKAGE_CATEGORY = 'all';
 
-    /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-     */
+    /** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface */
     private $eventDispatcher;
 
-    /**
-     * @var \Symfony\Bundle\TwigBundle\TwigEngine
-     */
+    /** @var \Symfony\Bundle\TwigBundle\TwigEngine */
     private $templating;
 
-    /**
-     * @var \eZ\Publish\API\Repository\SearchService
-     */
+    /** @var \eZ\Publish\API\Repository\SearchService */
     private $searchService;
 
-    /**
-     * @var \eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter
-     */
+    /** @var \eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter */
     private $aliasRouter;
 
-    /**
-     * @var \AppBundle\QueryType\PackagesQueryType
-     */
+    /** var \AppBundle\QueryType\PackagesQueryType */
     private $packagesQueryType;
 
-    /**
-     * @var PackageServiceInterface
-     */
+    /** @var PackageServiceInterface */
     private $packageService;
 
-    /**
-     * @var \Symfony\Component\Form\FormFactory
-     */
+    /** @var \Symfony\Component\Form\FormFactory */
     private $formFactory;
 
-    /**
-     * @var \eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter
-     */
+    /** @var \eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter */
     private $router;
 
-    /**
-     * @var \eZ\Publish\API\Repository\LocationService
-     */
+    /** @var \eZ\Publish\API\Repository\LocationService */
     private $locationService;
 
-    /**
-     * @var \Netgen\TagsBundle\API\Repository\TagsService;
-     */
+    /** @var \Netgen\TagsBundle\API\Repository\TagsService; */
     private $tagsService;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageListLocationId;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageListCardsLimit;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $packageCategoriesParentTagId;
 
     /**
      * PackageController constructor.
+     *
      * @param EventDispatcherInterface $eventDispatcher
      * @param EngineInterface $templating
      * @param SearchServiceInterface $searchService
@@ -119,7 +91,7 @@ class PackageController
      * @param PackageServiceInterface $packageService
      * @param FormFactory $formFactory
      * @param DefaultRouter $router
-     * @param TagsService $tagsService
+     * @param TagsServiceInterface $tagsService
      * @param LocationService $locationService
      * @param int $packageListLocationId
      * @param int $packageListCardsLimit
@@ -134,7 +106,7 @@ class PackageController
         PackageServiceInterface $packageService,
         FormFactory $formFactory,
         DefaultRouter $router,
-        TagsService $tagsService,
+        TagsServiceInterface $tagsService,
         LocationService $locationService,
         int $packageListLocationId,
         int $packageListCardsLimit,
@@ -168,7 +140,7 @@ class PackageController
     {
         $addForm = $this->formFactory->create(PackageAddType::class, [
                 'package_categories' => $this->getPackageCategoriesList(),
-                'packageListLocationId' => $this->packageListLocationId
+                'packageListLocationId' => $this->packageListLocationId,
             ]
         );
         $addForm->handleRequest($request);
@@ -180,13 +152,13 @@ class PackageController
                 $this->eventDispatcher->dispatch(AddPackageEvent::EVENT_NAME, new AddPackageEvent($content));
 
                 return $this->templating->renderResponse('@ezdesign/full/package_submit_success.html.twig', [
-                    'content' => $content
+                    'content' => $content,
                 ]);
             }
         }
 
         return $this->templating->renderResponse('@ezdesign/full/package_add.html.twig', [
-            'addForm' => $addForm->createView()
+            'addForm' => $addForm->createView(),
         ]);
     }
 
@@ -210,8 +182,7 @@ class PackageController
         string $category = self::DEFAULT_PACKAGE_CATEGORY,
         $page = 1, $order = self::DEFAULT_ORDER_CLAUSE,
         $searchText = ''
-    ): Response
-    {
+    ): Response {
         $orderForm = $this->formFactory->create(PackageOrderType::class);
         $orderForm->handleRequest($request);
         if ($orderForm->isSubmitted() && $orderForm->isValid()) {
@@ -249,7 +220,7 @@ class PackageController
             'pager' => $pagerfanta,
             'searchText' => $searchText,
             'packageCategories' => $this->getPackageCategoriesList(),
-            'selectedPackageCategory' => $category !== self::DEFAULT_PACKAGE_CATEGORY ? mb_strtolower($category) : ''
+            'selectedPackageCategory' => $category !== self::DEFAULT_PACKAGE_CATEGORY ? mb_strtolower($category) : '',
         ]);
     }
 
@@ -269,7 +240,7 @@ class PackageController
 
         return $this->templating->renderResponse('@ezdesign/full/package.html.twig', [
             'content' => $content,
-            'package' => $this->packageService->getPackage($content->getName())
+            'package' => $this->packageService->getPackage($content->getName()),
         ]);
     }
 
@@ -295,7 +266,7 @@ class PackageController
             'page' => 1,
             'order' => self::DEFAULT_ORDER_CLAUSE,
             'searchText' => $searchText,
-            'category' => self::DEFAULT_PACKAGE_CATEGORY
+            'category' => self::DEFAULT_PACKAGE_CATEGORY,
         ]));
     }
 
@@ -306,7 +277,7 @@ class PackageController
      *
      * @throws \Twig\Error\Error
      */
-    public function renderSortOrderPackageForm(string $order): Response
+    public function renderSortOrderPackageFormAction(string $order): Response
     {
         $sortOrderPackageForm = $this->formFactory->create(PackageOrderType::class, [
             'order' => $order,
@@ -327,7 +298,7 @@ class PackageController
      *
      * @throws \Twig\Error\Error
      */
-    public function renderSearchPackageForm(string $searchText): Response
+    public function renderSearchPackageFormAction(string $searchText): Response
     {
         $searchPackageForm = $this->formFactory->create(PackageSearchType::class, [
             'search' => $searchText,
@@ -342,9 +313,9 @@ class PackageController
     }
 
     /**
-     * Returns list with package categories
+     * Returns list with package categories.
      *
-     * @var int $categoryId
+     * @var int
      *
      * @return \Netgen\TagsBundle\API\Repository\Values\Tags\Tag[]
      *
@@ -370,7 +341,7 @@ class PackageController
     {
         $tags = $this->tagsService->loadTagsByKeyword($category, $language);
 
-        $tags = array_filter($tags, function(Tag $tag) {
+        $tags = array_filter($tags, function (Tag $tag) {
             return mb_strtolower($tag->parentTagId) === mb_strtolower($this->packageCategoriesParentTagId);
         });
 
@@ -381,13 +352,13 @@ class PackageController
 
     /**
      * @param int $offset
-     * @param null $order
+     * @param string $order
      * @param string $searchText
-     * @param int $tagId
+     * @param int|null $tagId
      *
      * @return \eZ\Publish\API\Repository\Values\Content\LocationQuery
      */
-    private function getPackagesQuery($offset = 0, $order = null, $searchText = '', $tagId = null): LocationQuery
+    private function getPackagesQuery(int $offset = 0, string $order = '', string $searchText = '', int $tagId = null): LocationQuery
     {
         return $this->packagesQueryType->getQuery([
             'parent_location_id' => $this->packageListLocationId,
@@ -395,7 +366,7 @@ class PackageController
             'offset' => $offset,
             'order' => $order,
             'search' => $searchText,
-            'tag_id' => $tagId
+            'tag_id' => $tagId,
         ]);
     }
 
@@ -412,7 +383,7 @@ class PackageController
         foreach ($searchHits as $searchHit) {
             $packages[] = [
                 'package' => $searchHit,
-                'packageDetails' => $this->packageService->getPackage($searchHit->valueObject->contentInfo->name)
+                'packageDetails' => $this->packageService->getPackage($searchHit->valueObject->contentInfo->name),
             ];
         }
 

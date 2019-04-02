@@ -1,11 +1,12 @@
 <?php
 
 /**
- * DOMService
+ * DOMService.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Service\DOM;
 
@@ -13,17 +14,13 @@ use AppBundle\Url\UrlBuilder;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Class DOMService
- *
- * @package AppBundle\Service\DOM
+ * Class DOMService.
  */
 class DOMService implements DOMServiceInterface
 {
     const ABSOLUTE_URL_FILTER_ELEMENTS = ['a', 'img'];
 
-    /**
-     * @var \AppBundle\Url\UrlBuilder
-     */
+    /** @var \AppBundle\Url\UrlBuilder */
     private $urlBuilder;
 
     public function __construct(UrlBuilder $urlBuilder)
@@ -86,7 +83,7 @@ class DOMService implements DOMServiceInterface
 
     /**
      * @param string $element
-     * @param Crawler $crawler
+     * @param \Symfony\Component\DomCrawler\Crawler $crawler
      * @param array $urlAttributes
      *
      * @return array
@@ -96,7 +93,7 @@ class DOMService implements DOMServiceInterface
         return $crawler
             ->filter($element)
             ->each(function (Crawler $crawler) use ($urlAttributes) {
-                foreach($crawler as $node) {
+                foreach ($crawler as $node) {
                     $attributes[] = isset($urlAttributes['repository']) ? $urlAttributes['repository'] : null;
                     $attr = $this->getAttributeType($node);
                     $link = $node->getAttribute($attr);
