@@ -13,3 +13,21 @@
         height: 100%;
     }
 }
+
+.factbox {
+    margin: 40px 0;
+
+    .factbox-card__body {
+        p {
+            font-size: 30px;
+            font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+
+            &:first-child:first-letter {
+                font-size: 30px;
+                padding-right: 0;
+                float: none;
+                line-height: 40px;
+            }
+        }
+    }
+}
