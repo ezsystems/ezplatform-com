@@ -45,10 +45,20 @@ class PackageMapper
         $package->author = $this->getAuthor($packagistApiPackage);
         $package->updateDate = $this->getUpdateDate($packagistApiPackage);
         $package->creationDate = $this->getCreationDate($packagistApiPackage);
-        $package->repository = $packagistApiPackage->getRepository();
+        $package->repository = $this->getRepository($packagistApiPackage);
         $package->checksum = $this->getChecksum($package);
 
         return $package;
+    }
+
+    /**
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return string
+     */
+    private function getRepository(PackagistApiPackage $packagistApiPackage): string
+    {
+        return preg_replace('/\.git$/', '', $packagistApiPackage->getRepository(), 1);
     }
 
     /**

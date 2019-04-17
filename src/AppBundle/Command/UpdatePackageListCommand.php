@@ -119,6 +119,11 @@ class UpdatePackageListCommand extends ContainerAwareCommand
         foreach ($results->searchHits as $searchHit) {
             $currentPackage = $searchHit->valueObject;
             $package = $this->packageService->getPackage($currentPackage->getFieldValue('package_id')->text, $input->getOption('force'));
+
+            if ($output->isVerbose()) {
+                $output->writeln('Package repository: ' . $package->repository);
+            }
+
             $output->write('<question>' . $currentPackage->getFieldValue('package_id') . '</question>');
 
             if (($package->checksum !== $currentPackage->getFieldValue('checksum')->__toString()) || $input->getOption('force')) {
