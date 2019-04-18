@@ -342,7 +342,7 @@ class PackageController
         $tags = $this->tagsService->loadTagsByKeyword($category, $language);
 
         $tags = array_filter($tags, function (Tag $tag) {
-            return mb_strtolower($tag->parentTagId) === mb_strtolower($this->packageCategoriesParentTagId);
+            return $tag->parentTagId === $this->packageCategoriesParentTagId;
         });
 
         $tag = reset($tags);
