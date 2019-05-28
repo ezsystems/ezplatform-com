@@ -8,16 +8,15 @@
  */
 declare(strict_types=1);
 
-namespace AppBundle\Tests\Fixtures;
+namespace AppBundle\Tests\Objects;
 
 use Packagist\Api\Result\Package;
 
-/**
- * Class PackagistApiPackageTestFixture.
- */
-class PackagistApiPackageTestFixture extends AbstractPackageTestFixture
+class PackagistApiPackage extends AbstractPackage
 {
-    /** @return \Packagist\Api\Result\Package */
+    /**
+     * @return \Packagist\Api\Result\Package
+     */
     public function getPackage(): Package
     {
         $package = new Package();

@@ -8,17 +8,15 @@
  */
 declare(strict_types=1);
 
-namespace AppBundle\Tests\Fixtures;
+namespace AppBundle\Tests\Objects;
 
+use AppBundle\ValueObject\PackageMetadata;
 use Packagist\Api\Result\Package\Author;
 use Packagist\Api\Result\Package\Downloads;
 use Packagist\Api\Result\Package\Maintainer;
 use Packagist\Api\Result\Package\Version;
 
-/**
- * Class AbstractPackageTestFixture.
- */
-abstract class AbstractPackageTestFixture
+abstract class AbstractPackage
 {
     /**
      * @param bool $exclude
@@ -52,7 +50,9 @@ abstract class AbstractPackageTestFixture
         return $maintainers;
     }
 
-    /** @return \Packagist\Api\Result\Package\Author */
+    /**
+     * @return \Packagist\Api\Result\Package\Author
+     */
     protected function getAuthor(): Author
     {
         $author = new Author();
@@ -66,7 +66,9 @@ abstract class AbstractPackageTestFixture
         return $author;
     }
 
-    /** @return \Packagist\Api\Result\Package\Version */
+    /**
+     * @return \Packagist\Api\Result\Package\Version
+     */
     protected function getVersion(): Version
     {
         $version = new Version();
@@ -81,7 +83,24 @@ abstract class AbstractPackageTestFixture
         return $version;
     }
 
-    /** @return \Packagist\Api\Result\Package\Downloads */
+    /**
+     * @return \AppBundle\ValueObject\PackageMetadata
+     */
+    protected function getPackageMetadata(): PackageMetadata
+    {
+        $packageMetadata = new PackageMetadata();
+        $packageMetadata->downloads = 222;
+        $packageMetadata->forks = 3;
+        $packageMetadata->stars = 12;
+        $packageMetadata->creationDate = \DateTime::createFromFormat(\DateTime::ISO8601, '2017-11-01T19:00:03+00:00');
+        $packageMetadata->updateDate = \DateTime::createFromFormat(\DateTime::ISO8601, '2017-11-03T19:51:03+00:00');
+
+        return $packageMetadata;
+    }
+
+    /**
+     * @return \Packagist\Api\Result\Package\Downloads
+     */
     protected function getDownloads(): Downloads
     {
         $downloads = new Downloads();

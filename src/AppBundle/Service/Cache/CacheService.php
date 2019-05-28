@@ -24,6 +24,10 @@ class CacheService implements CacheServiceInterface
     /** @var int */
     private $cacheExpirationTime;
 
+    /**
+     * @param \Symfony\Component\Cache\Adapter\TagAwareAdapterInterface $cacheItemPool
+     * @param int $cacheExpirationTime
+     */
     public function __construct(TagAwareAdapterInterface $cacheItemPool, int $cacheExpirationTime)
     {
         $this->cache = $cacheItemPool;
@@ -31,9 +35,7 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @param string $key
-     *
-     * @return \Psr\Cache\CacheItemInterface
+     * {@inheritdoc}
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
@@ -43,9 +45,7 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @param array $keys
-     *
-     * @return array|\Traversable
+     * {@inheritdoc}
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
@@ -55,9 +55,19 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @param \Psr\Cache\CacheItemInterface $item
+     * {@inheritdoc}
      *
-     * @return bool
+     * @throws \Exception
+     */
+    public function saveCacheItems(iterable $cacheItems): void
+    {
+        foreach ($cacheItems as $cacheItem) {
+            $this->save($cacheItem);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @throws \Exception
      */
@@ -67,9 +77,7 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @param array $tags
-     *
-     * @return bool
+     * {@inheritdoc}
      *
      * @throws \Psr\Cache\InvalidArgumentException
      */
@@ -78,7 +86,9 @@ class CacheService implements CacheServiceInterface
         return $this->cache->invalidateTags($tags);
     }
 
-    /** @return int */
+    /**
+     * {@inheritdoc}
+     */
     public function getCacheExpirationTime(): int
     {
         return $this->cacheExpirationTime;

@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Validator\Constraints;
 
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
-use AppBundle\Tests\Fixtures\InvalidConstraintTypeFixture;
+use AppBundle\Tests\Objects\InvalidConstraintTypeFixture;
 use AppBundle\Validator\Constraints\PackagistUrlConstraint;
 use AppBundle\Validator\Constraints\PackagistUrlConstraintValidator;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;

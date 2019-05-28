@@ -31,9 +31,6 @@ use eZ\Publish\API\Repository\ContentService as ContentServiceInterface;
 use eZ\Publish\API\Repository\ContentTypeService as ContentTypeServiceInterface;
 use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
 
-/**
- * Class PackageService.
- */
 class PackageService extends AbstractService implements PackageServiceInterface
 {
     const CONTENT_TYPE_NAME = 'package';
@@ -67,6 +64,21 @@ class PackageService extends AbstractService implements PackageServiceInterface
     /** @var int */
     private $packageContributorId;
 
+    /**
+     * @param \eZ\Publish\API\Repository\PermissionResolver $permissionResolver
+     * @param \eZ\Publish\API\Repository\UserService $userService
+     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeService
+     * @param \eZ\Publish\API\Repository\ContentService $contentService
+     * @param \eZ\Publish\API\Repository\LocationService $locationService
+     * @param \AppBundle\Service\Packagist\PackagistServiceProviderInterface $packagistServiceProvider
+     * @param \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy $packageRepository
+     * @param \AppBundle\Service\Cache\CacheServiceInterface $cacheService
+     * @param \AppBundle\Service\DOM\DOMServiceInterface $domService
+     * @param \Netgen\TagsBundle\API\Repository\TagsService $tagsService
+     * @param \AppBundle\Helper\RichTextHelper $richTextHelper
+     * @param int $parentLocationId
+     * @param int $packageContributorId
+     */
     public function __construct(
         PermissionResolverInterface $permissionResolver,
         UserServiceInterface $userService,
@@ -95,9 +107,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     }
 
     /**
-     * @param array $formData
-     *
-     * @return Content
+     * {@inheritdoc}
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException
      * @throws \eZ\Publish\API\Repository\Exceptions\ContentValidationException
@@ -119,7 +129,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
         );
 
         $repositoryMetadata = new RepositoryMetadata($packageUrl);
-        $packageDetails = $this->getPackageDetails($repositoryMetadata->getRepositoryId());
+        $packageDetails = $this->getPackageFromPackagist($repositoryMetadata->getRepositoryId());
 
         $contentCreateStruct->setField('package_id', $packageDetails->packageId);
         $contentCreateStruct->setField('name', $packageName);
@@ -139,10 +149,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     }
 
     /**
-     * @param string $packageName
-     * @param bool $force
-     *
-     * @return Package
+     * {@inheritdoc}
      */
     public function getPackage(string $packageName, bool $force = false): Package
     {
@@ -152,7 +159,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
         $item = $this->cacheService->getItem($this->removeReservedCharactersFromPackageName($packageName));
 
         if ($force || !$item->isHit()) {
-            $packageDetails = $this->getPackageDetails($packageName);
+            $packageDetails = $this->getPackageFromPackagist($packageName);
             $item->expiresAfter((int) $this->cacheService->getCacheExpirationTime());
             $this->cacheService->save($item->set($packageDetails));
 
@@ -163,31 +170,37 @@ class PackageService extends AbstractService implements PackageServiceInterface
     }
 
     /**
-     * @param string $packageName
-     *
-     * @return Package|null
+     * {@inheritdoc}
      */
-    private function getPackageDetails(string $packageName): ?Package
+    public function getPackageFromPackagist(string $packageName): ?Package
     {
         $packageName = trim($packageName);
 
-        $packageDetails = $this->packagistServiceProvider->getPackageDetails($packageName);
+        $package = $this->packagistServiceProvider->getPackageDetails($packageName);
 
-        $repositoryMetadata = new RepositoryMetadata($packageDetails->repository);
+        $repositoryMetadata = new RepositoryMetadata($package->repository);
         $readme = $this->packageRepository->getReadme($repositoryMetadata);
 
         if ($readme) {
             $crawler = new Crawler($readme);
             $this->domService->removeElementsFromDOM($crawler, ['.anchor', '[data-canonical-src]']);
             $this->domService->setAbsoluteURL($crawler, [
-                'repository' => $packageDetails->repository,
+                'repository' => $package->repository,
                 'link' => $this->getRepositoryUrlParts($repositoryMetadata->getRepositoryPlatform()),
             ]);
 
-            $packageDetails->readme = $crawler->html();
+            $package->readme = $crawler->html();
         }
 
-        return $packageDetails;
+        return $package;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeReservedCharactersFromPackageName(string $packageName): string
+    {
+        return str_replace(['{', '}', '(', ')', '/', '\\', '@', ':'], '-', $packageName);
     }
 
     /**
@@ -201,19 +214,9 @@ class PackageService extends AbstractService implements PackageServiceInterface
     }
 
     /**
-     * @param string $packageName
-     *
-     * @return string
-     */
-    private function removeReservedCharactersFromPackageName(string $packageName): string
-    {
-        return str_replace(['{', '}', '(', ')', '/', '\\', '@', ':'], '-', $packageName);
-    }
-
-    /**
      * @param array $categories
      *
-     * @return Value
+     * @return \Netgen\TagsBundle\Core\FieldType\Tags\Value
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException

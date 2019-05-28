@@ -35,7 +35,6 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
     /** @var \EzSystems\FlexWorkflow\API\Repository\RepositoryInterface */
     private $repository;
 
-    /** @var array */
     private $publishOnLastStageWorkflows;
 
     /**
@@ -59,7 +58,6 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
         $this->publishOnLastStageWorkflows = $publishOnLastStageWorkflows;
     }
 
-    /** @return array */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -67,11 +65,6 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param StageChangeEvent $event
-     *
-     * @throws \EzSystems\EzPlatformWorkflow\Exception\NotFoundException
-     */
     public function onStageChange(StageChangeEvent $event): void
     {
         $workflowName = $event->getWorkflowMetadata()->name;
@@ -93,18 +86,14 @@ class PublishOnLastStageSubscriber implements EventSubscriberInterface
 
             if ($isLastStage) {
                 $this->permissionResolver->sudo(function () use ($event) {
-                    $this->contentService->publishVersion($event->getWorkflowMetadata()->versionInfo);
+                    if ($event->getWorkflowMetadata()->versionInfo->isDraft()) {
+                        $this->contentService->publishVersion($event->getWorkflowMetadata()->versionInfo);
+                    }
                 }, $this->repository);
             }
         }
     }
 
-    /**
-     * @param string $transitionName
-     * @param Definition $workflowDefinition
-     *
-     * @return mixed
-     */
     private function getWorkflowTransitionTos(string $transitionName, Definition $workflowDefinition)
     {
         $workflowTransitions = array_filter($workflowDefinition->getTransitions(), function (Transition $item) use ($transitionName) {

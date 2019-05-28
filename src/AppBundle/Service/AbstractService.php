@@ -36,6 +36,13 @@ abstract class AbstractService
     /** @var \eZ\Publish\API\Repository\LocationService */
     protected $locationService;
 
+    /**
+     * @param \eZ\Publish\API\Repository\PermissionResolver $permissionResolver
+     * @param \eZ\Publish\API\Repository\UserService $userService
+     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeService
+     * @param \eZ\Publish\API\Repository\ContentService $contentService
+     * @param \eZ\Publish\API\Repository\LocationService $locationService
+     */
     public function __construct(
         PermissionResolverInterface $permissionResolver,
         UserServiceInterface $userService,

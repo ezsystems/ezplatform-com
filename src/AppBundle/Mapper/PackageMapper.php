@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace AppBundle\Mapper;
 
 use AppBundle\ValueObject\Package;
+use AppBundle\ValueObject\PackageMetadata;
 use Packagist\Api\Result\Package as PackagistApiPackage;
 
 /**
@@ -21,6 +22,9 @@ class PackageMapper
     /** @var string[] */
     private $excludedMaintainers;
 
+    /**
+     * @param array $excludedMaintainers
+     */
     public function __construct(array $excludedMaintainers = [])
     {
         $this->excludedMaintainers = $excludedMaintainers;
@@ -37,28 +41,14 @@ class PackageMapper
 
         $package->packageId = $packagistApiPackage->getName();
         $package->description = $packagistApiPackage->getDescription();
-        $package->downloads = $this->getDownloads($packagistApiPackage);
         $package->maintainers = $this->getMaintainers($packagistApiPackage);
         $package->authorAvatarUrl = $this->getAuthorAvatarUrl($packagistApiPackage);
-        $package->forks = $this->getForks($packagistApiPackage);
-        $package->stars = $this->getStars($packagistApiPackage);
         $package->author = $this->getAuthor($packagistApiPackage);
-        $package->updateDate = $this->getUpdateDate($packagistApiPackage);
-        $package->creationDate = $this->getCreationDate($packagistApiPackage);
         $package->repository = $this->getRepository($packagistApiPackage);
         $package->checksum = $this->getChecksum($package);
+        $package->packageMetadata = $this->getPackageMetadata($packagistApiPackage);
 
         return $package;
-    }
-
-    /**
-     * @param \Packagist\Api\Result\Package $packagistApiPackage
-     *
-     * @return string
-     */
-    private function getRepository(PackagistApiPackage $packagistApiPackage): string
-    {
-        return preg_replace('/\.git$/', '', $packagistApiPackage->getRepository(), 1);
     }
 
     /**
@@ -89,6 +79,64 @@ class PackageMapper
         $parts = explode('/', $parsedUrl['path']);
 
         return self::GITHUB_AVATAR_BASE_URL . $parts[1];
+    }
+
+    /**
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return mixed
+     */
+    private function getAuthor(PackagistApiPackage $packagistApiPackage)
+    {
+        $version = $this->getCurrentVersion($packagistApiPackage);
+        $authors = $version->getAuthors();
+
+        return reset($authors);
+    }
+
+    /**
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return string
+     */
+    private function getRepository(PackagistApiPackage $packagistApiPackage): string
+    {
+        return preg_replace('/\.git$/', '', $packagistApiPackage->getRepository(), 1);
+    }
+
+    /**
+     * @param \AppBundle\ValueObject\Package $package
+     *
+     * @return string
+     */
+    private function getChecksum(Package $package): string
+    {
+        $checksum = '';
+
+        foreach (get_object_vars($package) as $key => $field) {
+            if (is_string($field) && $key != 'checksum') {
+                $checksum .= $field;
+            }
+        }
+
+        return md5($checksum);
+    }
+
+    /**
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
+     * @return PackageMetadata
+     */
+    private function getPackageMetadata(PackagistApiPackage $packagistApiPackage): PackageMetadata
+    {
+        $packageMetadata = new PackageMetadata();
+        $packageMetadata->downloads = $this->getDownloads($packagistApiPackage);
+        $packageMetadata->forks = $this->getForks($packagistApiPackage);
+        $packageMetadata->stars = $this->getStars($packagistApiPackage);
+        $packageMetadata->updateDate = $this->getUpdateDate($packagistApiPackage);
+        $packageMetadata->creationDate = $this->getCreationDate($packagistApiPackage);
+
+        return $packageMetadata;
     }
 
     /**
@@ -130,19 +178,6 @@ class PackageMapper
     /**
      * @param \Packagist\Api\Result\Package $packagistApiPackage
      *
-     * @return mixed
-     */
-    private function getAuthor(PackagistApiPackage $packagistApiPackage)
-    {
-        $version = $this->getCurrentVersion($packagistApiPackage);
-        $authors = $version->getAuthors();
-
-        return reset($authors);
-    }
-
-    /**
-     * @param \Packagist\Api\Result\Package $packagistApiPackage
-     *
      * @return bool|\DateTime
      */
     private function getUpdateDate(PackagistApiPackage $packagistApiPackage)
@@ -155,11 +190,22 @@ class PackageMapper
     /**
      * @param \Packagist\Api\Result\Package $packagistApiPackage
      *
+     * @return bool|\DateTime
+     */
+    private function getCreationDate(PackagistApiPackage $packagistApiPackage)
+    {
+        return \DateTime::createFromFormat(\DateTime::ISO8601, $packagistApiPackage->getTime());
+    }
+
+    /**
+     * @param \Packagist\Api\Result\Package $packagistApiPackage
+     *
      * @return \Packagist\Api\Result\Package\Version
      */
     private function getCurrentVersion(PackagistApiPackage $packagistApiPackage): PackagistApiPackage\Version
     {
         $versions = $packagistApiPackage->getVersions();
+
         if (isset($versions['dev-master'])) {
             $key = 'dev-master';
         } else {
@@ -167,32 +213,5 @@ class PackageMapper
         }
 
         return $versions[$key];
-    }
-
-    /**
-     * @param \AppBundle\ValueObject\Package $package
-     *
-     * @return string
-     */
-    private function getChecksum(Package $package): string
-    {
-        $checksum = '';
-        foreach (get_object_vars($package) as $key => $field) {
-            if (is_string($field) && $key != 'checksum') {
-                $checksum .= $field;
-            }
-        }
-
-        return md5($checksum);
-    }
-
-    /**
-     * @param \Packagist\Api\Result\Package $packagistApiPackage
-     *
-     * @return bool|\DateTime
-     */
-    private function getCreationDate(PackagistApiPackage $packagistApiPackage)
-    {
-        return \DateTime::createFromFormat(\DateTime::ISO8601, $packagistApiPackage->getTime());
     }
 }

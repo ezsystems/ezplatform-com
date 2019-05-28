@@ -25,20 +25,8 @@ class Package
     /** @var string */
     public $description;
 
-    /** @var int */
-    public $downloads;
-
-    /** @var int */
-    public $forks;
-
-    /** @var int */
-    public $stars;
-
-    /** @var \DateTime */
-    public $creationDate;
-
-    /** @var \DateTime */
-    public $updateDate;
+    /** @var \AppBundle\ValueObject\PackageMetadata */
+    public $packageMetadata;
 
     /** @var \Packagist\Api\Result\Package\Author */
     public $author;

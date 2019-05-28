@@ -13,12 +13,34 @@ namespace AppBundle\Service\Package;
 use AppBundle\ValueObject\Package;
 use eZ\Publish\API\Repository\Values\Content\Content;
 
-/**
- * Interface PackageServiceInterface.
- */
 interface PackageServiceInterface
 {
+    /**
+     * @param array $formData
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\Content
+     */
+    public function addPackage(array $formData): Content;
+
+    /**
+     * @param string $packageName
+     * @param bool $force
+     *
+     * @return \AppBundle\ValueObject\Package
+     */
     public function getPackage(string $packageName): Package;
 
-    public function addPackage(array $formData): Content;
+    /**
+     * @param string $packageName
+     *
+     * @return \AppBundle\ValueObject\Package|null
+     */
+    public function getPackageFromPackagist(string $packageName): ?Package;
+
+    /**
+     * @param string $packageName
+     *
+     * @return string
+     */
+    public function removeReservedCharactersFromPackageName(string $packageName): string;
 }

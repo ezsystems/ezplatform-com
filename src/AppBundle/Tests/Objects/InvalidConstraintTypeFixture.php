@@ -8,13 +8,10 @@
  */
 declare(strict_types=1);
 
-namespace AppBundle\Tests\Fixtures;
+namespace AppBundle\Tests\Objects;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class InvalidConstraintTypeFixture.
- */
 class InvalidConstraintTypeFixture extends Constraint
 {
 }

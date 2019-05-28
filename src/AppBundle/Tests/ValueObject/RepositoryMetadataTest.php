@@ -11,14 +11,9 @@ declare(strict_types=1);
 namespace AppBundle\Tests\ValueObject;
 
 use AppBundle\Tests\AbstractTestCase;
-use AppBundle\Tests\Fixtures\PackageTestFixture;
+use AppBundle\Tests\Objects\PackageValueObject;
 use AppBundle\ValueObject\RepositoryMetadata;
 
-/**
- * Test case for RepositoryMetadata class.
- *
- * Class RepositoryMetadataTest
- */
 class RepositoryMetadataTest extends AbstractTestCase
 {
     /** @var \AppBundle\ValueObject\Package */
@@ -39,10 +34,12 @@ class RepositoryMetadataTest extends AbstractTestCase
     /** @var string */
     protected $repositoryUsername = '';
 
-    /** @throws \ReflectionException */
+    /**
+     * @throws \ReflectionException
+     */
     protected function setUp()
     {
-        $fixture = new PackageTestFixture();
+        $fixture = new PackageValueObject();
         $this->package = $fixture->getPackage();
 
         $this->repositoryName = 'package';
@@ -55,7 +52,9 @@ class RepositoryMetadataTest extends AbstractTestCase
         $this->repositoryMetadata = new RepositoryMetadata($this->package->repository);
     }
 
-    /** Tests instantiation of RepositoryMetadata */
+    /**
+     * Tests instantiation of RepositoryMetadata
+     */
     public function testCreateRepositoryMetadataObjectBasedOnRepositoryUrl()
     {
         $this->assertInstanceOf(RepositoryMetadata::class, $this->repositoryMetadata);

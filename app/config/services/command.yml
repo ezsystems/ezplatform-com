@@ -1,12 +1,26 @@
 services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        public: false
-
     AppBundle\Command\:
         resource: '../../../src/AppBundle/Command/*'
 
+    AppBundle\Command\AbstractUpdatePackageCommand:
+        abstract: true
+        autowire: true
+        autoconfigure: false
+
     AppBundle\Command\UpdatePackageListCommand:
+        parent: AppBundle\Command\AbstractUpdatePackageCommand
+        autoconfigure: false
         arguments:
             $adminId: '%app.admin_id%'
+            $packagesLocationId: '%packages.location_id%'
+        tags:
+            - { name: 'console.command' }
+
+    AppBundle\Command\UpdatePackageMetadataCommand:
+        parent: AppBundle\Command\AbstractUpdatePackageCommand
+        autoconfigure: false
+        arguments:
+            $adminId: '%app.admin_id%'
+            $packagesLocationId: '%packages.location_id%'
+        tags:
+            - { name: 'console.command' }

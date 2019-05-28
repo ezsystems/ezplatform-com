@@ -11,16 +11,11 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Mapper;
 
 use AppBundle\Mapper\PackageMapper;
-use AppBundle\Tests\Fixtures\PackageTestFixture;
-use AppBundle\Tests\Fixtures\PackagistApiPackageTestFixture;
+use AppBundle\Tests\Objects\PackageValueObject;
+use AppBundle\Tests\Objects\PackagistApiPackage;
 use AppBundle\ValueObject\Package;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Test case for mapper.
- *
- * Class MapperTest
- */
 class PackageMapperTest extends TestCase
 {
     /** @var \Packagist\Api\Result\Package */
@@ -34,10 +29,10 @@ class PackageMapperTest extends TestCase
 
     protected function setUp()
     {
-        $packageFixture = new PackageTestFixture();
+        $packageFixture = new PackageValueObject();
         $this->package = $packageFixture->getPackage();
 
-        $packagistPackageFixture = new PackagistApiPackageTestFixture();
+        $packagistPackageFixture = new PackagistApiPackage();
         $this->packagistPackage = $packagistPackageFixture->getPackage();
     }
 
@@ -70,7 +65,7 @@ class PackageMapperTest extends TestCase
     /**
      * @param array $excludedMaintainers
      *
-     * @return Package
+     * @return PackageValueObject
      */
     private function getPackageFromMapper(array $excludedMaintainers = []): Package
     {

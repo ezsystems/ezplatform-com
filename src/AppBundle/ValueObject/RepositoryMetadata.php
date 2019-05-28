@@ -10,9 +10,6 @@
  */
 namespace AppBundle\ValueObject;
 
-/**
- * Class RepositoryMetadata.
- */
 final class RepositoryMetadata
 {
     private const DEFAULT_DELIMITER = '/';
@@ -37,6 +34,9 @@ final class RepositoryMetadata
     /** @var string */
     private $repositoryPlatform;
 
+    /**
+     * @param string $repositoryUrl
+     */
     public function __construct(string $repositoryUrl)
     {
         $this->splitUrl = $this->splitRepositoryUrl($repositoryUrl);
@@ -46,25 +46,33 @@ final class RepositoryMetadata
         $this->repositoryPlatform = $this->getRepositoryPlatformFromRepositoryUrl();
     }
 
-    /** @return string */
+    /**
+     * @return string
+     */
     public function getRepositoryId(): string
     {
         return $this->username . self::DEFAULT_DELIMITER . $this->repositoryName;
     }
 
-    /** @return string */
+    /**
+     * @return string
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /** @return string */
+    /**
+     * @return string
+     */
     public function getRepositoryName(): ?string
     {
         return $this->repositoryName;
     }
 
-    /** @return string */
+    /**
+     * @return string
+     */
     public function getRepositoryPlatform(): ?string
     {
         return $this->repositoryPlatform;
@@ -80,19 +88,25 @@ final class RepositoryMetadata
         return explode(self::DEFAULT_DELIMITER, $repositoryId);
     }
 
-    /** @return string|null */
+    /**
+     * @return string|null
+     */
     private function getUsernameFromRepositoryUrl(): ?string
     {
         return $this->splitUrl[count($this->splitUrl) - 2] ?? '';
     }
 
-    /** @return string|null */
+    /**
+     * @return string|null
+     */
     private function getRepositoryNameFromRepositoryUrl(): ?string
     {
         return end($this->splitUrl);
     }
 
-    /** @return string|null */
+    /**
+     * @return string|null
+     */
     private function getRepositoryPlatformFromRepositoryUrl(): ?string
     {
         $platformDomain = $this->splitUrl[count($this->splitUrl) - 3] ?? '';

@@ -21,63 +21,51 @@ use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 use eZ\Publish\API\Repository\UserService as UserServiceInterface;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\ContentUpdateStruct;
-use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\ValueObject;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class UpdatePackageListCommand.
- */
-class UpdatePackageListCommand extends ContainerAwareCommand
+class UpdatePackageListCommand extends AbstractUpdatePackageCommand
 {
-    /** @var \eZ\Publish\API\Repository\PermissionResolver */
-    private $permissionResolver;
-
-    /** @var \eZ\Publish\API\Repository\ContentService */
-    private $contentService;
-
-    /** @var \eZ\Publish\API\Repository\SearchService */
-    private $searchService;
-
-    /** @var \eZ\Publish\API\Repository\UserService */
-    private $userService;
-
-    /** @var \AppBundle\Service\Cache\CacheServiceInterface */
-    private $cacheService;
-
-    /** @var \AppBundle\Service\Package\PackageServiceInterface */
-    private $packageService;
-
     /** @var \AppBundle\Helper\RichTextHelper */
     private $richTextHelper;
 
-    /** @var int */
-    private $adminId;
-
+    /**
+     * @param \AppBundle\Helper\RichTextHelper $richTextHelper
+     * @param \eZ\Publish\API\Repository\PermissionResolver $permissionResolver
+     * @param \eZ\Publish\API\Repository\UserService $userService
+     * @param \AppBundle\Service\Package\PackageServiceInterface $packageService
+     * @param \eZ\Publish\API\Repository\ContentService $contentService
+     * @param \eZ\Publish\API\Repository\SearchService $searchService
+     * @param \AppBundle\Service\Cache\CacheServiceInterface $cacheService
+     * @param int $adminId
+     * @param int $packagesLocationId
+     */
     public function __construct(
+        RichTextHelper $richTextHelper,
         PermissionResolverInterface $permissionResolver,
+        UserServiceInterface $userService,
+        PackageServiceInterface $packageService,
         ContentServiceInterface $contentService,
         SearchServiceInterface $searchService,
-        UserServiceInterface $userService,
         CacheServiceInterface $cacheService,
-        PackageServiceInterface $packageService,
-        RichTextHelper $richTextHelper,
-        int $adminId
+        int $adminId,
+        int $packagesLocationId
     ) {
-        $this->permissionResolver = $permissionResolver;
-        $this->contentService = $contentService;
-        $this->searchService = $searchService;
-        $this->userService = $userService;
-        $this->cacheService = $cacheService;
-        $this->packageService = $packageService;
         $this->richTextHelper = $richTextHelper;
-        $this->adminId = $adminId;
 
-        parent::__construct();
+        parent::__construct(
+            $permissionResolver,
+            $userService,
+            $packageService,
+            $contentService,
+            $searchService,
+            $cacheService,
+            $adminId,
+            $packagesLocationId
+        );
     }
 
     /**
@@ -108,15 +96,13 @@ class UpdatePackageListCommand extends ContainerAwareCommand
             $output->writeln('Force option enabled. Updating all packages.');
         }
 
-        $this->permissionResolver->setCurrentUserReference(
-            $this->userService->loadUser($this->adminId)
-        );
+        $this->setPermissionResolver();
 
-        $results = $this->searchService->findContent($this->getQuery());
+        $results = $this->getPackages();
 
         $packagesToInvalidate = [];
 
-        foreach ($results->searchHits as $searchHit) {
+        foreach ($results as $searchHit) {
             $currentPackage = $searchHit->valueObject;
             $package = $this->packageService->getPackage($currentPackage->getFieldValue('package_id')->text, $input->getOption('force'));
 
@@ -141,8 +127,10 @@ class UpdatePackageListCommand extends ContainerAwareCommand
                 $contentId = $searchHit->valueObject->versionInfo->contentInfo->id;
 
                 if ($this->updatePackage($contentId, $contentUpdateStruct)) {
-                    $packagesToInvalidate[] = 'content-' . $contentId;
-                    $packagesToInvalidate[] = 'location-' . $currentPackage->versionInfo->contentInfo->mainLocationId;
+                    $packagesToInvalidate = array_merge(
+                        $packagesToInvalidate,
+                        $this->addPackageToInvalidateTag($packagesToInvalidate, $currentPackage)
+                    );
                 }
             } else {
                 $output->writeln(': <comment>Already up-to-date</comment>');
@@ -176,21 +164,6 @@ class UpdatePackageListCommand extends ContainerAwareCommand
         return $this->contentService->publishVersion($contentDraft->versionInfo);
     }
 
-    /** @return \eZ\Publish\API\Repository\Values\Content\Query */
-    private function getQuery(): Query
-    {
-        $query = new Query();
-        $criterion = new Query\Criterion\LogicalAnd([
-            new Query\Criterion\ParentLocationId($this->getContainer()->getParameter('packages.location_id')),
-            new Query\Criterion\ContentTypeIdentifier('package'),
-        ]);
-
-        $query->filter = $criterion;
-        $query->limit = 1000;
-
-        return $query;
-    }
-
     /**
      * @param \AppBundle\ValueObject\Package $package
      *
@@ -200,10 +173,6 @@ class UpdatePackageListCommand extends ContainerAwareCommand
     {
         $contentUpdateStruct = $this->contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = 'eng-GB';
-        $contentUpdateStruct->setField('updated', (int)$package->updateDate->format('U'));
-        $contentUpdateStruct->setField('downloads', $package->downloads);
-        $contentUpdateStruct->setField('stars', $package->stars);
-        $contentUpdateStruct->setField('forks', $package->forks);
         $contentUpdateStruct->setField('checksum', $package->checksum);
         $contentUpdateStruct->setField('readme', $package->readme);
         $contentUpdateStruct->setField('description', $this->richTextHelper->getXmlString($package->description));

@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Validator\Constraints;
 
-use AppBundle\Tests\Fixtures\InvalidConstraintTypeFixture;
+use AppBundle\Tests\Objects\InvalidConstraintTypeFixture;
 use AppBundle\Validator\Constraints\PackageCategoryIdConstraint;
 use AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator;
 use Symfony\Component\Validator\Constraint;

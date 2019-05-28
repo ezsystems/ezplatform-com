@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Validator\Constraints;
 
-use AppBundle\Tests\Fixtures\InvalidConstraintTypeFixture;
+use AppBundle\Tests\Objects\InvalidConstraintTypeFixture;
 use AppBundle\Validator\Constraints\PackageDbNotExistsConstraint;
 use AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator;
 use eZ\Publish\API\Repository\ContentService as ContentServiceInterface;

@@ -72,33 +72,33 @@
                             <h2 class="package__details-section-header">Downloads:</h2>
                             <div class="package__details-section-downloads">
                                 <i class="fa fa-download"></i>
-                                {{ ez_render_field(content, 'downloads') }}
+                                {{ package.packageMetadata.downloads }}
                             </div>
                         </div>
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Stars:</h2>
                             <div class="package__details-section-stars">
                                 <i class="fa fa-star" aria-hidden="true"></i>
-                                {{ ez_render_field(content, 'stars') }}
+                                {{ package.packageMetadata.stars }}
                             </div>
                         </div>
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Forks:</h2>
                             <div class="package__details-section-forks">
                                 <i class="fa fa-code-fork" aria-hidden="true"></i>
-                                {{ ez_render_field(content, 'forks') }}
+                                {{ package.packageMetadata.forks }}
                             </div>
                         </div>
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Created:</h2>
                             <div class="package__details-section-date">
-                                {{ package.creationDate|date("Y-m-d") }}
+                                {{ package.packageMetadata.creationDate|date("Y-m-d") }}
                             </div>
                         </div>
                         <div class="package__details-section">
                             <h2 class="package__details-section-header">Updated:</h2>
                             <div class="package__details-section-date">
-                                {{ ez_field_value(content, 'updated')|date("Y-m-d") }}
+                                {{ package.packageMetadata.updateDate|date("Y-m-d") }}
                             </div>
                         </div>
                     </div>
