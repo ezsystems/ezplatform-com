@@ -10,22 +10,31 @@ declare(strict_types=1);
 
 namespace AppBundle\Validator\Constraints;
 
+use AppBundle\Helper\PackageCategoryListHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class PackageCategoryIdConstraintValidator.
- */
-class PackageCategoryIdConstraintValidator extends ConstraintValidator
+class PackageCategoryIdValidator extends ConstraintValidator
 {
+    /** @var \AppBundle\Helper\PackageCategoryListHelper */
+    private $categoryListHelper;
+
+    /**
+     * @param \AppBundle\Helper\PackageCategoryListHelper $categoryListHelper
+     */
+    public function __construct(PackageCategoryListHelper $categoryListHelper)
+    {
+        $this->categoryListHelper = $categoryListHelper;
+    }
+
     /**
      * ({@inheritdoc})
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof PackageCategoryIdConstraint) {
-            throw new UnexpectedTypeException($constraint, PackageCategoryIdConstraint::class);
+        if (!$constraint instanceof PackageCategoryId) {
+            throw new UnexpectedTypeException($constraint, PackageCategoryId::class);
         }
 
         if (!$value) {
@@ -38,10 +47,12 @@ class PackageCategoryIdConstraintValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'array');
         }
 
-        if (count(array_intersect($value, $constraint->getPackageCategoryIds())) !== count($value)) {
+        $packageCategoryListIds = $this->categoryListHelper->getPackageCategoryList();
+
+        if (count(array_intersect($value, $packageCategoryListIds)) !== count($value)) {
             $this->context
                 ->buildViolation($constraint->message)
-                ->setParameter('{{ categories }}', implode(', ', array_diff($value, $constraint->getPackageCategoryIds())))
+                ->setParameter('{{ categories }}', implode(', ', array_diff($value, $packageCategoryListIds)))
                 ->addViolation();
         }
     }

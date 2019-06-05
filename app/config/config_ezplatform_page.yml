@@ -13,7 +13,7 @@ parameters:
     # app admin id
     app.admin_id: 14
     # package contributor id
-    package_contributor_id: 452
+    app.default.package_contributor_id: 452
     # `blog` locationId
     blog.location_id: 71
     # `blog_post` limit on the `blog` page
@@ -21,11 +21,11 @@ parameters:
     # `authors` folder locationId
     blog.authors_container_location_id: 72
     # `package_list` locationId
-    packages.location_id: 168
+    app.default.package_list_location_id: 168
     # 'package_list` elements limit on `packages_list` page
-    packages.cards_limit: 12
+    app.default.package_cards_limit: 12
     # 'package_categories parent tag id'
-    packages.categories_parent_tag_id: 32
+    app.default.package_categories_parent_tag_id: 32
     # 'package' cache expiration time in seconds
     packages.cache_expiration_time: 604800
     # names of excluded package maintainers

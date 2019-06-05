@@ -13,7 +13,7 @@ ezpublish:
                             omitted_location_ids:
                                 - '%blog.location_id%'
                                 - '%blog.authors_container_location_id%'
-                                - '%packages.location_id%'
+                                - '%app.default.package_list_location_id%'
                             query:
                                 query_type: AppBundle:Children
                                 parameters:

@@ -15,10 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-/**
- * Class AbstractConstraintValidatorTest.
- */
-abstract class AbstractConstraintValidator extends TestCase
+abstract class AbstractValidator extends TestCase
 {
     /** @var \PHPUnit\Framework\MockObject\MockObject */
     private $executionContextMock;
@@ -32,13 +29,17 @@ abstract class AbstractConstraintValidator extends TestCase
         $this->constraintViolationBuilderMock = $this->getMockBuilder(ConstraintViolationBuilderInterface::class)->getMock();
     }
 
-    /** @return \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Validator\Context\ExecutionContextInterface */
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Validator\Context\ExecutionContextInterface
+     */
     protected function getExecutionContextMock(): MockObject
     {
         return $this->executionContextMock;
     }
 
-    /** @return \PHPUnit\Framework\MockObject\MockObject|ConstraintViolationBuilderInterface */
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject|ConstraintViolationBuilderInterface
+     */
     protected function getConstraintViolationBuilderMock(): MockObject
     {
         return $this->constraintViolationBuilderMock;

@@ -10,21 +10,22 @@ declare(strict_types=1);
 
 namespace AppBundle\Tests\Validator\Constraints;
 
+use AppBundle\Helper\PackageCategoryListHelper;
 use AppBundle\Tests\Objects\InvalidConstraintTypeFixture;
-use AppBundle\Validator\Constraints\PackageCategoryIdConstraint;
-use AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator;
+use AppBundle\Validator\Constraints\PackageCategoryId;
+use AppBundle\Validator\Constraints\PackageCategoryIdValidator;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * Class PackageCategoryIdConstraintValidatorTest.
- */
-class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidator
+class PackageCategoryIdValidatorTest extends AbstractValidator
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|Constraint|PackageCategoryIdConstraint */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|Constraint|PackageCategoryId */
     private $constraintMock;
 
-    /** @var \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator */
+    /** @var \AppBundle\Validator\Constraints\PackageCategoryIdValidator */
     private $packageCategoryIdConstraintValidator;
+
+    /** @var \PHPUnit\Framework\MockObject\MockObject|\AppBundle\Helper\PackageCategoryListHelper */
+    private $packageCategoryListHelperMock;
 
     /** @var array */
     private $categories;
@@ -36,24 +37,30 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
     {
         parent::setUp();
 
-        $this->constraintMock = $this->getMockBuilder(PackageCategoryIdConstraint::class)
+        $this->constraintMock = $this->getMockBuilder(PackageCategoryId::class)
             ->disableOriginalConstructor()
             ->setConstructorArgs([['categories' => $this->categories]])
             ->getMock();
 
-        $this->packageCategoryIdConstraintValidator = new PackageCategoryIdConstraintValidator();
+        $this->packageCategoryListHelperMock = $this->getMockBuilder(PackageCategoryListHelper::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->packageCategoryIdConstraintValidator = new PackageCategoryIdValidator($this->packageCategoryListHelperMock);
         $this->categories = [2, 4, 6];
         $this->invalidCategories = [5, 10, 15];
     }
 
-    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator */
+    /**
+     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdValidator
+     */
     public function testCreatePackageCategoryIdConstraintValidatorInstance()
     {
-        $this->assertInstanceOf(PackageCategoryIdConstraintValidator::class, $this->packageCategoryIdConstraintValidator);
+        $this->assertInstanceOf(PackageCategoryIdValidator::class, $this->packageCategoryIdConstraintValidator);
     }
 
     /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate()
+     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdValidator::validate()
      *
      * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      */
@@ -66,7 +73,9 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
         );
     }
 
-    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate() */
+    /**
+     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdValidator::validate()
+     */
     public function testBuildViolationWhenValidationValueIsNull()
     {
         $this->getExecutionContextMock()
@@ -88,7 +97,7 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
     }
 
     /**
-     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate()
+     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdValidator::validate()
      *
      * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      */
@@ -106,12 +115,14 @@ class PackageCategoryIdConstraintValidatorTest extends AbstractConstraintValidat
         );
     }
 
-    /** @covers \AppBundle\Validator\Constraints\PackageCategoryIdConstraintValidator::validate() */
+    /**
+     * @covers \AppBundle\Validator\Constraints\PackageCategoryIdValidator::validate()
+     */
     public function testBuildViolationWhenPackageCategoryIdIsInvalid()
     {
-        $this->constraintMock
+        $this->packageCategoryListHelperMock
             ->expects($this->any())
-            ->method('getPackageCategoryIds')
+            ->method('getPackageCategoryList')
             ->willReturn($this->categories);
 
         $this->getExecutionContextMock()

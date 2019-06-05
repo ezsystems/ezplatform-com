@@ -55,10 +55,7 @@ class UpdatePackageMetadataCommand extends AbstractUpdatePackageCommand
                 if ($this->hasChanged($cachePackage->packageMetadata, $apiPackage->packageMetadata)) {
                     $output->writeln(': <info>Updated.</info>');
                     $cachePackage->packageMetadata = $apiPackage->packageMetadata;
-                    $invalidateTags = array_merge(
-                        $invalidateTags,
-                        $this->addPackageToInvalidateTag($invalidateTags, $package)
-                    );
+                    $invalidateTags = $this->addPackageToInvalidateTag($invalidateTags, $package);
                     $changedPackages[] = $this->setCacheItem($item, $cachePackage);
                 } else {
                     $output->writeln(': <comment>Already up-to-date</comment>');

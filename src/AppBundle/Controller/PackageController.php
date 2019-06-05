@@ -14,13 +14,16 @@ use AppBundle\Event\AddPackageEvent;
 use AppBundle\Form\PackageAddType;
 use AppBundle\Form\PackageOrderType;
 use AppBundle\Form\PackageSearchType;
+use AppBundle\Helper\PackageCategoryListHelper;
+use AppBundle\Model\PackageForm;
 use AppBundle\QueryType\PackagesQueryType;
 use AppBundle\Service\Package\PackageServiceInterface;
 use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter;
 use eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter;
-use eZ\Publish\API\Repository\LocationService;
+use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 use eZ\Publish\API\Repository\Values\Content\LocationQuery;
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter;
 use Netgen\TagsBundle\API\Repository\TagsService as TagsServiceInterface;
 use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
@@ -33,9 +36,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-/**
- * Class PackageController.
- */
 class PackageController
 {
     private const DEFAULT_ORDER_CLAUSE = 'default';
@@ -50,14 +50,23 @@ class PackageController
     /** @var \eZ\Publish\API\Repository\SearchService */
     private $searchService;
 
+    /** @var \AppBundle\Service\Package\PackageServiceInterface */
+    private $packageService;
+
+    /** @var \Netgen\TagsBundle\API\Repository\TagsService; */
+    private $tagsService;
+
+    /** @var \eZ\Publish\API\Repository\LocationService */
+    private $locationService;
+
+    /** @var \eZ\Publish\Core\MVC\ConfigResolverInterface */
+    private $configResolver;
+
     /** @var \eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter */
     private $aliasRouter;
 
     /** var \AppBundle\QueryType\PackagesQueryType */
     private $packagesQueryType;
-
-    /** @var PackageServiceInterface */
-    private $packageService;
 
     /** @var \Symfony\Component\Form\FormFactory */
     private $formFactory;
@@ -65,11 +74,8 @@ class PackageController
     /** @var \eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter */
     private $router;
 
-    /** @var \eZ\Publish\API\Repository\LocationService */
-    private $locationService;
-
-    /** @var \Netgen\TagsBundle\API\Repository\TagsService; */
-    private $tagsService;
+    /** @var \AppBundle\Helper\PackageCategoryListHelper */
+    private $categoryListHelper;
 
     /** @var int */
     private $packageListLocationId;
@@ -81,50 +87,48 @@ class PackageController
     private $packageCategoriesParentTagId;
 
     /**
-     * PackageController constructor.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EngineInterface $templating
-     * @param SearchServiceInterface $searchService
-     * @param UrlAliasRouter $aliasRouter
-     * @param PackagesQueryType $packagesQueryType
-     * @param PackageServiceInterface $packageService
-     * @param FormFactory $formFactory
-     * @param DefaultRouter $router
-     * @param TagsServiceInterface $tagsService
-     * @param LocationService $locationService
-     * @param int $packageListLocationId
-     * @param int $packageListCardsLimit
-     * @param int $packageCategoriesParentTagId
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher
+     * @param \Symfony\Component\Templating\EngineInterface $templating
+     * @param \eZ\Publish\API\Repository\SearchService $searchService
+     * @param \AppBundle\Service\Package\PackageServiceInterface $packageService
+     * @param \Netgen\TagsBundle\API\Repository\TagsService $tagsService
+     * @param \eZ\Publish\API\Repository\LocationService $locationService
+     * @param \eZ\Publish\Core\MVC\ConfigResolverInterface  $configResolver
+     * @param \eZ\Bundle\EzPublishCoreBundle\Routing\UrlAliasRouter $aliasRouter
+     * @param \AppBundle\QueryType\PackagesQueryType $packagesQueryType
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     * @param \eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter $router
+     * @param \AppBundle\Helper\PackageCategoryListHelper $categoryListHelper
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         EngineInterface $templating,
         SearchServiceInterface $searchService,
+        PackageServiceInterface $packageService,
+        TagsServiceInterface $tagsService,
+        LocationServiceInterface $locationService,
+        ConfigResolverInterface $configResolver,
         UrlAliasRouter $aliasRouter,
         PackagesQueryType $packagesQueryType,
-        PackageServiceInterface $packageService,
         FormFactory $formFactory,
         DefaultRouter $router,
-        TagsServiceInterface $tagsService,
-        LocationService $locationService,
-        int $packageListLocationId,
-        int $packageListCardsLimit,
-        int $packageCategoriesParentTagId
+        PackageCategoryListHelper $categoryListHelper
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->templating = $templating;
         $this->searchService = $searchService;
-        $this->aliasRouter = $aliasRouter;
-        $this->packagesQueryType = $packagesQueryType;
         $this->packageService = $packageService;
-        $this->formFactory = $formFactory;
-        $this->router = $router;
         $this->tagsService = $tagsService;
         $this->locationService = $locationService;
-        $this->packageListLocationId = $packageListLocationId;
-        $this->packageListCardsLimit = $packageListCardsLimit;
-        $this->packageCategoriesParentTagId = $packageCategoriesParentTagId;
+        $this->configResolver = $configResolver;
+        $this->aliasRouter = $aliasRouter;
+        $this->packagesQueryType = $packagesQueryType;
+        $this->formFactory = $formFactory;
+        $this->router = $router;
+        $this->categoryListHelper = $categoryListHelper;
+        $this->packageListLocationId = $this->configResolver->getParameter('package_list_location_id', 'app');
+        $this->packageListCardsLimit = $this->configResolver->getParameter('package_cards_limit', 'app');
+        $this->packageCategoriesParentTagId = $this->configResolver->getParameter('package_categories_parent_tag_id', 'app');
     }
 
     /**
@@ -138,11 +142,8 @@ class PackageController
      */
     public function addPackageAction(Request $request): Response
     {
-        $addForm = $this->formFactory->create(PackageAddType::class, [
-                'package_categories' => $this->getPackageCategoriesList(),
-                'packageListLocationId' => $this->packageListLocationId,
-            ]
-        );
+        $addForm = $this->formFactory->create(PackageAddType::class, new PackageForm());
+
         $addForm->handleRequest($request);
 
         if ($addForm->isSubmitted() && $addForm->isValid()) {
@@ -219,7 +220,7 @@ class PackageController
             'order' => $order,
             'pager' => $pagerfanta,
             'searchText' => $searchText,
-            'packageCategories' => $this->getPackageCategoriesList(),
+            'packageCategories' => $this->categoryListHelper->getPackageCategoryTags(),
             'selectedPackageCategory' => $category !== self::DEFAULT_PACKAGE_CATEGORY ? mb_strtolower($category) : '',
         ]);
     }
@@ -310,23 +311,6 @@ class PackageController
                 'searchPackageForm' => $searchPackageForm->createView(),
             ]
         )->setPrivate();
-    }
-
-    /**
-     * Returns list with package categories.
-     *
-     * @var int
-     *
-     * @return \Netgen\TagsBundle\API\Repository\Values\Tags\Tag[]
-     *
-     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
-     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
-     */
-    private function getPackageCategoriesList(): array
-    {
-        $tag = $this->tagsService->loadTag($this->packageCategoriesParentTagId);
-
-        return $this->tagsService->loadTagChildren($tag);
     }
 
     /**

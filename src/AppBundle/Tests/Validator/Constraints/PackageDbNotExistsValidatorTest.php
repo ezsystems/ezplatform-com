@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace AppBundle\Tests\Validator\Constraints;
 
 use AppBundle\Tests\Objects\InvalidConstraintTypeFixture;
-use AppBundle\Validator\Constraints\PackageDbNotExistsConstraint;
-use AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator;
+use AppBundle\Validator\Constraints\PackageDbNotExists;
+use AppBundle\Validator\Constraints\PackageDbNotExistsValidator;
 use eZ\Publish\API\Repository\ContentService as ContentServiceInterface;
 use eZ\Publish\API\Repository\ContentTypeService as ContentTypeServiceInterface;
 use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
@@ -22,16 +22,14 @@ use eZ\Publish\API\Repository\UserService as UserServiceInterface;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use eZ\Publish\API\Repository\Values\User\UserReference;
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\Repository\Values\User\User;
 use EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset;
 use PHPUnit\Framework\MockObject\MockObject;
 
-/**
- * Class PackageDbNotExistsConstraintValidatorTest.
- */
-class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValidator
+class PackageDbNotExistsValidatorTest extends AbstractValidator
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|PackageDbNotExistsConstraint */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|PackageDbNotExists */
     private $constraintMock;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|PermissionResolverInterface */
@@ -46,10 +44,13 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     /** @var \PHPUnit\Framework\MockObject\MockObject|ContentDraftsDataset */
     private $contentDraftsDatasetMock;
 
+    /** @var \PHPUnit\Framework\MockObject\MockObject|eZ\Publish\Core\MVC\ConfigResolverInterface */
+    private $configResolverMock;
+
     /** @var int */
     private $packageContributorId;
 
-    /** @var \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator */
+    /** @var \AppBundle\Validator\Constraints\PackageDbNotExistsValidator */
     private $packageDbNotExistsConstraintValidator;
 
     /** @var int */
@@ -85,25 +86,28 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
                 $this->getMockBuilder(LocationServiceInterface::class)->getMock(),
             ])
             ->getMock();
+        $this->configResolverMock = $this->getMockBuilder(ConfigResolverInterface::class)->getMock();
         $this->packageContributorId = 111;
 
-        $this->packageDbNotExistsConstraintValidator = new PackageDbNotExistsConstraintValidator(
+        $this->packageDbNotExistsConstraintValidator = new PackageDbNotExistsValidator(
             $this->permissionResolverMock,
             $this->userServiceMock,
             $this->searchServiceMock,
             $this->contentDraftsDatasetMock,
-            $this->packageContributorId
+            $this->configResolverMock
         );
     }
 
-    /** @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator */
+    /**
+     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsValidator
+     */
     public function testCreatePackageCategoryIdConstraintValidatorInstance()
     {
-        $this->assertInstanceOf(PackageDbNotExistsConstraintValidator::class, $this->packageDbNotExistsConstraintValidator);
+        $this->assertInstanceOf(PackageDbNotExistsValidator::class, $this->packageDbNotExistsConstraintValidator);
     }
 
     /**
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator::validate
+     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsValidator::validate
      *
      * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      *
@@ -120,7 +124,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     }
 
     /**
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator::validate
+     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsValidator::validate
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
@@ -128,20 +132,20 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     public function testBuildViolationWhenDraftIsWaitingForApproval()
     {
         $constraintMockConstructorArgs = [
-            'packageListLocationId' => $this->packageListLocationId,
             'targetField' => $this->targetField,
         ];
+
         $constraintMock = $this->getConstraintMock($constraintMockConstructorArgs);
 
-        $constraintMock
+        $this->configResolverMock
             ->expects($this->any())
-            ->method('getPackageListLocationId')
+            ->method('getParameter')
             ->willReturn($this->packageListLocationId);
 
-        $constraintMock
+        $this->configResolverMock
             ->expects($this->any())
-            ->method('getTargetField')
-            ->willReturn($this->targetField);
+            ->method('getParameter')
+            ->willReturn($this->packageContributorId);
 
         $this->permissionResolverMock
             ->expects($this->once())
@@ -175,14 +179,14 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
             ->willReturn(null);
 
         $this->packageDbNotExistsConstraintValidator->initialize($this->getExecutionContextMock());
-        $this->packageDbNotExistsConstraintValidator->validate('bundle/bundle-with-existing-draft', $this->constraintMock);
+        $this->packageDbNotExistsConstraintValidator->validate('bundle/bundle-with-existing-draft', $constraintMock);
     }
 
     /**
      * @param string $targetField
      * @param string $messageArg
      *
-     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsConstraintValidator::validate
+     * @covers \AppBundle\Validator\Constraints\PackageDbNotExistsValidator::validate
      *
      * @dataProvider existsPackageProvider()
      *
@@ -192,20 +196,15 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
     public function testBuildViolationWhenPackageIsPublished(string $targetField, string $messageArg)
     {
         $constraintMockConstructorArgs = [
-            'packageListLocationId' => $this->packageListLocationId,
             'targetField' => $targetField,
         ];
+
         $constraintMock = $this->getConstraintMock($constraintMockConstructorArgs);
 
-        $constraintMock
+        $this->configResolverMock
             ->expects($this->any())
-            ->method('getPackageListLocationId')
+            ->method('getParameter')
             ->willReturn($this->packageListLocationId);
-
-        $constraintMock
-            ->expects($this->any())
-            ->method('getTargetField')
-            ->willReturn($targetField);
 
         $this->permissionResolverMock
             ->expects($this->once())
@@ -253,10 +252,12 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
             ->willReturn(null);
 
         $this->packageDbNotExistsConstraintValidator->initialize($this->getExecutionContextMock());
-        $this->packageDbNotExistsConstraintValidator->validate($this->search, $this->constraintMock);
+        $this->packageDbNotExistsConstraintValidator->validate($this->search, $constraintMock);
     }
 
-    /** @return iterable */
+    /**
+     * @return iterable
+     */
     public function existsPackageProvider(): iterable
     {
         return [
@@ -272,8 +273,7 @@ class PackageDbNotExistsConstraintValidatorTest extends AbstractConstraintValida
      */
     private function getConstraintMock(array $constraintMockConstructorArgs): MockObject
     {
-        return $this->constraintMock = $this->getMockBuilder(PackageDbNotExistsConstraint::class)
-            ->disableOriginalConstructor()
+        return $this->constraintMock = $this->getMockBuilder(PackageDbNotExists::class)
             ->setConstructorArgs([$constraintMockConstructorArgs])
             ->getMock();
     }

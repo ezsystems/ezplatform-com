@@ -23,6 +23,7 @@ use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use AppBundle\ValueObject\Package;
 use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\Values\Content\Content;
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use Netgen\TagsBundle\Core\FieldType\Tags\Value;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Component\DomCrawler\Crawler;
@@ -30,6 +31,7 @@ use Netgen\TagsBundle\API\Repository\TagsService as TagsServiceInterface;
 use eZ\Publish\API\Repository\ContentService as ContentServiceInterface;
 use eZ\Publish\API\Repository\ContentTypeService as ContentTypeServiceInterface;
 use eZ\Publish\API\Repository\LocationService as LocationServiceInterface;
+use AppBundle\Model\PackageForm;
 
 class PackageService extends AbstractService implements PackageServiceInterface
 {
@@ -54,6 +56,9 @@ class PackageService extends AbstractService implements PackageServiceInterface
 
     /** @var \Netgen\TagsBundle\API\Repository\TagsService */
     private $tagsService;
+
+    /** @var \eZ\Publish\Core\MVC\ConfigResolverInterface */
+    private $configResolver;
 
     /** @var \AppBundle\Helper\RichTextHelper */
     private $richTextHelper;
@@ -90,18 +95,18 @@ class PackageService extends AbstractService implements PackageServiceInterface
         CacheServiceInterface $cacheService,
         DOMServiceInterface $domService,
         TagsServiceInterface $tagsService,
-        RichTextHelper $richTextHelper,
-        int $parentLocationId,
-        int $packageContributorId
+        ConfigResolverInterface $configResolver,
+        RichTextHelper $richTextHelper
     ) {
         $this->packagistServiceProvider = $packagistServiceProvider;
         $this->packageRepository = $packageRepository;
         $this->cacheService = $cacheService;
         $this->domService = $domService;
         $this->tagsService = $tagsService;
+        $this->configResolver = $configResolver;
         $this->richTextHelper = $richTextHelper;
-        $this->parentLocationId = $parentLocationId;
-        $this->packageContributorId = $packageContributorId;
+        $this->parentLocationId = $this->configResolver->getParameter('package_list_location_id', 'app');
+        $this->packageContributorId = $this->configResolver->getParameter('package_contributor_id', 'app');
 
         parent::__construct($permissionResolver, $userService, $contentTypeService, $contentService, $locationService);
     }
@@ -115,32 +120,28 @@ class PackageService extends AbstractService implements PackageServiceInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
-    public function addPackage(array $formData): Content
+    public function addPackage(PackageForm $package): Content
     {
         $contentType = $this->contentTypeService->loadContentTypeByIdentifier(self::CONTENT_TYPE_NAME);
         $contentCreateStruct = $this->contentService->newContentCreateStruct($contentType, self::DEFAULT_LANG_CODE);
-
-        $packageUrl = $formData['url'] ?? '';
-        $packageName = $formData['name'] ?? '';
-        $packageCategories = $formData['categories'] ?? [];
 
         $this->permissionResolver->setCurrentUserReference(
             $this->userService->loadUser($this->packageContributorId)
         );
 
-        $repositoryMetadata = new RepositoryMetadata($packageUrl);
+        $repositoryMetadata = new RepositoryMetadata($package->getUrl());
         $packageDetails = $this->getPackageFromPackagist($repositoryMetadata->getRepositoryId());
 
         $contentCreateStruct->setField('package_id', $packageDetails->packageId);
-        $contentCreateStruct->setField('name', $packageName);
+        $contentCreateStruct->setField('name', $package->getName());
         $contentCreateStruct->setField('description', $this->richTextHelper->getXmlString($packageDetails->description));
-        $contentCreateStruct->setField('packagist_url', $packageUrl);
-        $contentCreateStruct->setField('downloads', $packageDetails->downloads);
-        $contentCreateStruct->setField('stars', $packageDetails->stars);
-        $contentCreateStruct->setField('forks', $packageDetails->forks);
-        $contentCreateStruct->setField('updated', $packageDetails->updateDate);
+        $contentCreateStruct->setField('packagist_url', $package->getUrl());
+        $contentCreateStruct->setField('downloads', $packageDetails->packageMetadata->downloads);
+        $contentCreateStruct->setField('stars', $packageDetails->packageMetadata->stars);
+        $contentCreateStruct->setField('forks', $packageDetails->packageMetadata->forks);
+        $contentCreateStruct->setField('updated', $packageDetails->packageMetadata->updateDate);
         $contentCreateStruct->setField('checksum', $packageDetails->checksum);
-        $contentCreateStruct->setField('package_category', $this->getTagsFromCategories($packageCategories));
+        $contentCreateStruct->setField('package_category', $this->getTagsFromCategories($package->getCategories()));
         $contentCreateStruct->setField('readme', $packageDetails->readme);
 
         $locationCreateStruct = $this->locationService->newLocationCreateStruct($this->parentLocationId);

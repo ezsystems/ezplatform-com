@@ -10,43 +10,43 @@ declare(strict_types=1);
 
 namespace AppBundle\Form;
 
-use AppBundle\Validator\Constraints\PackageCategoryIdConstraint;
-use AppBundle\Validator\Constraints\PackageDbNotExistsConstraint;
-use AppBundle\Validator\Constraints\PackagistUrlConstraint;
-use Netgen\TagsBundle\API\Repository\Values\Tags\Tag;
+use AppBundle\Helper\PackageCategoryListHelper;
+use AppBundle\Model\PackageForm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class PackageAddType.
- */
 class PackageAddType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $categories = isset($options['data']['package_categories']) ? $this->getCategories($options['data']['package_categories']) : [];
-        $packageListLocationId = isset($options['data']['packageListLocationId']) ? $options['data']['packageListLocationId'] : null;
+    /** @var \AppBundle\Helper\PackageCategoryListHelper */
+    private $categoryListHelper;
 
+    /**
+     * @param \AppBundle\Helper\PackageCategoryListHelper $categoryListHelper
+     */
+    public function __construct(PackageCategoryListHelper $categoryListHelper)
+    {
+        $this->categoryListHelper = $categoryListHelper;
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormBuilderInterface $builder
+     * @param array $options
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
         $builder
             ->add('url', UrlType::class, [
                 'label' => 'Packagist URL',
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'https://packagist.org/packages/repository/bundle',
-                ],
-                'constraints' => [
-                    new NotNull(),
-                    new Url(),
-                    new PackageDbNotExistsConstraint([
-                        'packageListLocationId' => $packageListLocationId,
-                        'targetField' => 'packagist_url',
-                    ]),
-                    new PackagistUrlConstraint(),
                 ],
             ])
             ->add('name', TextType::class, [
@@ -55,43 +55,26 @@ class PackageAddType extends AbstractType
                     'class' => 'form-control',
                     'placeholder' => 'What\'s your package name?',
                 ],
-                'constraints' => [
-                    new NotNull(),
-                    new PackageDbNotExistsConstraint([
-                        'packageListLocationId' => $packageListLocationId,
-                        'targetField' => 'name',
-                    ]),
-                ],
             ])
             ->add('categories', ChoiceType::class, [
                 'label' => 'Categories',
                 'empty_data' => null,
                 'multiple' => true,
-                'choices' => $categories,
+                'choices' => $this->categoryListHelper->getPackageCategoryList(),
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => false,
-                ],
-                'constraints' => [
-                    new PackageCategoryIdConstraint(['categories' => array_values($categories)]),
                 ],
             ]);
     }
 
     /**
-     * @param array $categories
-     *
-     * @return array
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      */
-    private function getCategories(array $categories): array
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $choices = [];
-
-        /** @var Tag $category */
-        foreach ($categories as $category) {
-            $choices[$category->getKeyword()] = $category->id;
-        }
-
-        return $choices;
+        $resolver->setDefaults([
+            'data_class' => PackageForm::class,
+        ]);
     }
 }

@@ -19,16 +19,14 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion\ContentTypeIdentifi
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Field;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\LogicalAnd;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator;
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class PackageDbNotExistsConstraintValidator.
- */
-class PackageDbNotExistsConstraintValidator extends ConstraintValidator
+class PackageDbNotExistsValidator extends ConstraintValidator
 {
     private static $VALIDATION_MESSAGE = [
         'packagist_url' => 'package',
@@ -47,21 +45,28 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
     /** @var \EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset */
     private $contentDraftsDataset;
 
-    /** @var int */
-    private $packageContributorId;
+    /** @var \eZ\Publish\Core\MVC\ConfigResolverInterface */
+    private $configResolver;
 
+    /**
+     * @param \eZ\Publish\API\Repository\PermissionResolver $permissionResolver
+     * @param \eZ\Publish\API\Repository\UserService $userService
+     * @param \eZ\Publish\API\Repository\SearchService $searchService
+     * @param \EzSystems\EzPlatformAdminUi\UI\Dataset\ContentDraftsDataset $contentDraftsDataset
+     * @param \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver
+     */
     public function __construct(
         PermissionResolverInterface $permissionResolver,
         UserServiceInterface $userService,
         SearchServiceInterface $searchService,
         ContentDraftsDataset $contentDraftsDataset,
-        int $packageContributorId
+        ConfigResolverInterface $configResolver
     ) {
         $this->permissionResolver = $permissionResolver;
         $this->userService = $userService;
         $this->searchService = $searchService;
         $this->contentDraftsDataset = $contentDraftsDataset;
-        $this->packageContributorId = $packageContributorId;
+        $this->configResolver = $configResolver;
     }
 
     /**
@@ -71,24 +76,27 @@ class PackageDbNotExistsConstraintValidator extends ConstraintValidator
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof PackageDbNotExistsConstraint) {
-            throw new UnexpectedTypeException($constraint, PackageDbNotExistsConstraint::class);
+        if (!$constraint instanceof PackageDbNotExists) {
+            throw new UnexpectedTypeException($constraint, PackageDbNotExists::class);
         }
 
         if (!$value) {
             return;
         }
 
+        $packageContributorId = $this->configResolver->getParameter('package_contributor_id', 'app');
+        $packageListLocationId = $this->configResolver->getParameter('package_list_location_id', 'app');
+
         $params = [
-            'parent_location_id' => $constraint->getPackageListLocationId(),
-            'target_field' => $constraint->getTargetField(),
+            'parent_location_id' => $packageListLocationId,
+            'target_field' => $constraint->targetField,
             'search' => $value,
         ];
 
         $this->permissionResolver->setCurrentUserReference(
-            $this->userService->loadUser($this->packageContributorId)
+            $this->userService->loadUser($packageContributorId)
         );
 
         $drafts = $this->contentDraftsDataset->load();

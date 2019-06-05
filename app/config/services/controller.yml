@@ -19,9 +19,6 @@ services:
     AppBundle\Controller\PackageController:
         arguments:
             $router: '@router.default'
-            $packageListLocationId: '%packages.location_id%'
-            $packageListCardsLimit: '%packages.cards_limit%'
-            $packageCategoriesParentTagId: '%packages.categories_parent_tag_id%'
 
     AppBundle\Controller\TagController:
         arguments:

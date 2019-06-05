@@ -14,43 +14,31 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 /**
- * Class PackageDbNotExistsConstraint.
+ * @Annotation
+ * @Target({"PROPERTY"})
  */
-class PackageDbNotExistsConstraint extends Constraint
+class PackageDbNotExists extends Constraint
 {
+    /** @var string */
     public $message = 'This {{ name }} is already in the package catalog.';
 
+    /** @var string */
     public $messageWaitingForApproval = 'This package is waiting for approval';
 
-    /** @var int */
-    private $packageListLocationId = 0;
-
     /** @var string */
-    private $targetField = '';
+    public $targetField = '';
 
+    /**
+     * @param array $options
+     */
     public function __construct(array $options)
     {
-        if (!isset($options['packageListLocationId'])) {
-            throw new MissingOptionsException('Required option \'packageListLocationId\' is missing', []);
-        }
-
         if (!isset($options['targetField'])) {
             throw new MissingOptionsException('Required option \'targetField\' is missing', []);
         }
 
-        $this->packageListLocationId = $options['packageListLocationId'];
         $this->targetField = $options['targetField'];
-    }
 
-    /** @return int|mixed */
-    public function getPackageListLocationId(): int
-    {
-        return $this->packageListLocationId;
-    }
-
-    /** @return string */
-    public function getTargetField(): string
-    {
-        return $this->targetField;
+        parent::__construct($options);
     }
 }

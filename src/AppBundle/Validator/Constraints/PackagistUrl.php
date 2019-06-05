@@ -13,9 +13,10 @@ namespace AppBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class PackageUrlConstraint.
+ * @Annotation
+ * @Target({"PROPERTY"})
  */
-class PackagistUrlConstraint extends Constraint
+class PackagistUrl extends Constraint
 {
     public $message = 'We can\'t find this package on packagist.org. Please check that the URL you provided is correct.';
 }

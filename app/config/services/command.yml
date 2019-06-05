@@ -12,7 +12,7 @@ services:
         autoconfigure: false
         arguments:
             $adminId: '%app.admin_id%'
-            $packagesLocationId: '%packages.location_id%'
+            $packagesLocationId: '%app.default.package_list_location_id%'
         tags:
             - { name: 'console.command' }
 
@@ -21,6 +21,6 @@ services:
         autoconfigure: false
         arguments:
             $adminId: '%app.admin_id%'
-            $packagesLocationId: '%packages.location_id%'
+            $packagesLocationId: '%app.default.package_list_location_id%'
         tags:
             - { name: 'console.command' }

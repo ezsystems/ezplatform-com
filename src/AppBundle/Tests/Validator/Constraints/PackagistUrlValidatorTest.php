@@ -12,16 +12,16 @@ namespace AppBundle\Tests\Validator\Constraints;
 
 use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
 use AppBundle\Tests\Objects\InvalidConstraintTypeFixture;
-use AppBundle\Validator\Constraints\PackagistUrlConstraint;
-use AppBundle\Validator\Constraints\PackagistUrlConstraintValidator;
+use AppBundle\Validator\Constraints\PackagistUrl;
+use AppBundle\Validator\Constraints\PackagistUrlValidator;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 
-class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
+class PackagistUrlValidatorTest extends AbstractValidator
 {
-    /** @var \PHPUnit\Framework\MockObject\MockObject|PackagistUrlConstraint */
+    /** @var \PHPUnit\Framework\MockObject\MockObject|PackagistUrl */
     private $constraintMock;
 
-    /** @var \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator */
+    /** @var \AppBundle\Validator\Constraints\PackagistUrlValidator */
     private $packagistUrlConstraintValidator;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject|PackagistServiceProviderInterface */
@@ -34,26 +34,28 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
     {
         parent::setUp();
 
-        $this->constraintMock = $this->getMockBuilder(PackagistUrlConstraint::class)
+        $this->constraintMock = $this->getMockBuilder(PackagistUrl::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->searchServiceMock = $this->getMockBuilder(SearchServiceInterface::class)->getMock();
         $this->packagistServiceProviderMock = $this->getMockBuilder(PackagistServiceProviderInterface::class)->getMock();
-        $this->packagistUrlConstraintValidator = new PackagistUrlConstraintValidator(
+        $this->packagistUrlConstraintValidator = new PackagistUrlValidator(
             $this->searchServiceMock,
             $this->packagistServiceProviderMock
         );
     }
 
-    /** @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator */
+    /**
+     * @covers \AppBundle\Validator\Constraints\PackagistUrlValidator
+     */
     public function testCreatePackageCategoryIdConstraintValidatorInstance()
     {
-        $this->assertInstanceOf(PackagistUrlConstraintValidator::class, $this->packagistUrlConstraintValidator);
+        $this->assertInstanceOf(PackagistUrlValidator::class, $this->packagistUrlConstraintValidator);
     }
 
     /**
-     * @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator::validate
+     * @covers \AppBundle\Validator\Constraints\PackagistUrlValidator::validate
      *
      * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
      */
@@ -66,7 +68,9 @@ class PackagistUrlConstraintValidatorTest extends AbstractConstraintValidator
         );
     }
 
-    /** @covers \AppBundle\Validator\Constraints\PackagistUrlConstraintValidator::validate */
+    /**
+     * @covers \AppBundle\Validator\Constraints\PackagistUrlValidator::validate
+     */
     public function testBuildViolationWhenPackagistUrlIsInvalid()
     {
         $this->packagistServiceProviderMock

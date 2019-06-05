@@ -127,10 +127,7 @@ class UpdatePackageListCommand extends AbstractUpdatePackageCommand
                 $contentId = $searchHit->valueObject->versionInfo->contentInfo->id;
 
                 if ($this->updatePackage($contentId, $contentUpdateStruct)) {
-                    $packagesToInvalidate = array_merge(
-                        $packagesToInvalidate,
-                        $this->addPackageToInvalidateTag($packagesToInvalidate, $currentPackage)
-                    );
+                    $packagesToInvalidate = $this->addPackageToInvalidateTag($packagesToInvalidate, $currentPackage);
                 }
             } else {
                 $output->writeln(': <comment>Already up-to-date</comment>');

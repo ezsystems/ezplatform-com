@@ -10,17 +10,18 @@ declare(strict_types=1);
 
 namespace AppBundle\Service\Package;
 
+use AppBundle\Model\PackageForm;
 use AppBundle\ValueObject\Package;
 use eZ\Publish\API\Repository\Values\Content\Content;
 
 interface PackageServiceInterface
 {
     /**
-     * @param array $formData
+     * @param \AppBundle\Model\PackageForm $package
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Content
      */
-    public function addPackage(array $formData): Content;
+    public function addPackage(PackageForm $package): Content;
 
     /**
      * @param string $packageName
