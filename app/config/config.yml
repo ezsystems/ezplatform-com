@@ -2,6 +2,7 @@ imports:
     - { resource: default_parameters.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: cache_pool/cache.tagaware.filesystem.yml }
     - { resource: env/generic.php }
     - { resource: env/platformsh.php }
     - { resource: services.yml }
@@ -15,6 +16,8 @@ imports:
 parameters:
     locale: en
     ezpublish_rest.csrf_token_intention: authenticate
+    # Enabled token based authentication in PB
+    page_builder.token_authenticator.enabled: true
 
 # Configuration for Database connection, can have several connections used by eZ Repositories in ezplatform.yml
 doctrine:
@@ -27,11 +30,18 @@ doctrine:
                 dbname: '%database_name%'
                 user: '%database_user%'
                 password: '%database_password%'
-                charset: utf8mb4
+                charset: '%database_charset%'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+
+# If you are not using MySQL, you can comment-out this section
+ez_doctrine_schema:
+    tables:
+        options:
+            charset: '%database_charset%'
+            collate: '%database_collation%'
 
 # Base configuration for Solr, for more options see: https://doc.ezplatform.com/en/latest/guide/search/#solr-bundle
 # Can have several connections used by each eZ Repositories in ezplatform.yml
@@ -76,7 +86,10 @@ framework:
         #       Further reading on sessions: http://doc.ezplatform.com/en/latest/guide/sessions/
     fragments: ~
     http_method_override: true
-    assets: true
+    assets:
+        packages:
+            ezplatform:
+                json_manifest_path: '%kernel.project_dir%/web/assets/ezplatform/build/manifest.json'
     php_errors:
         log: true
     workflow:
@@ -98,6 +111,12 @@ assetic:
         scssphp:
             formatter: 'Leafo\ScssPhp\Formatter\Crunched'
             import_paths: ['%kernel.project_dir%/web/']
+
+# Webpack Encore Configuration
+webpack_encore:
+    output_path: "%kernel.project_dir%/web/assets/build"
+    builds:
+        ezplatform: "%kernel.project_dir%/web/assets/ezplatform/build"
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -170,3 +189,16 @@ jms_translation:
 
 gregwar_captcha:
     as_url: true
+
+lexik_jwt_authentication:
+    secret_key: '%secret%'
+    encoder:
+        signature_algorithm: HS256
+    # Disabled by default, because Page builder use an custom extractor
+    token_extractors:
+        authorization_header:
+            enabled: false
+        cookie:
+            enabled: false
+        query_parameter:
+            enabled: false

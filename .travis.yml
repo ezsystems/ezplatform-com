@@ -1,10 +1,8 @@
-language: node_js
-
-node_js:
-  - '11'
-
-install:
-  - npm install
+# Tests cannot be run from metarepo - it's a public repository, which doesn't have access to private repositories on Travis (for security reasons).
+# The actual test setup is in Page Builder bundle.
+language: php
+php:
+  - '7.1'
 
 script:
-  - npm test
+  - echo 'Test suite moved to PageBuilder bundle'

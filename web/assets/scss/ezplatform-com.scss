@@ -75,6 +75,12 @@ a {
     &:hover {
         color: #da3c03;
         text-decoration: underline;
+        background-color: transparent;
+    }
+
+    &:active, &:focus, &:visited {
+        border: none;
+        outline: none;
     }
 }
 
@@ -342,4 +348,8 @@ section#top-banner {
 .btn.btn-blue {
     color: $white;
     background-color: #0094ce;
+
+    &:hover {
+        background-color: #0589bc;
+    }
 }

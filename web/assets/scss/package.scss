@@ -15,7 +15,6 @@
         font-size: 35px;
         font-weight: 600;
         color: $white;
-        width: 50%;
         display: inline-block;
         float: left;
     }
@@ -87,6 +86,16 @@
                 color: $grey;
                 font-weight: 600;
                 margin-bottom: 5px;
+            }
+
+            &-categories {
+                a {
+                    &:hover {
+                        background-color: #494948;
+                        text-decoration: none;
+                        color: $primary;
+                    }
+                }
             }
 
             &-stars .fa-star {

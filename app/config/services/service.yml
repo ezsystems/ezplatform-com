@@ -15,6 +15,7 @@ services:
     AppBundle\Service\Cache\CacheService:
         arguments:
             $cacheExpirationTime: '%packages.cache_expiration_time%'
+            $cacheItemPool: '@ezpublish.cache_pool.inner'
 
     AppBundle\Service\GitHub\GitHubServiceProvider:
         arguments:

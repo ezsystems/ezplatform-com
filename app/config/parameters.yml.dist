@@ -15,6 +15,8 @@ parameters:
     env(DATABASE_NAME): ezplatform
     env(DATABASE_USER): root
     env(DATABASE_PASSWORD):
+    env(DATABASE_CHARSET): utf8mb4
+    env(DATABASE_COLLATION): utf8mb4_unicode_520_ci
     env(GITHUB_TOKEN):
     env(MAILER_TRANSPORT):
     env(MAILER_HOST):
