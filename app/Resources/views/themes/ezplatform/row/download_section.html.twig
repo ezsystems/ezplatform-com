@@ -51,7 +51,6 @@
                             </div>
                         </div>
                     {% endif %}
-
                     {% if not ez_is_field_empty(content, 'download_description') %}
                         <div role="tabpanel" class="tab-pane" id="download-option">
                             <div class="details">
@@ -69,40 +68,42 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% if betas is not empty %}
-                                    <tr class="beta" data-ga-action="Download" data-ga-label="{{ ez_field_value(release, 'release_version') }}">
+                                {% if betas is defined and betas is not empty %}
+                                    {% set betaUrl = path(ez_route( 'ez_content_download', { 'content': betas|first, 'fieldIdentifier': 'file' } )) %}
+                                    <tr class="beta" data-ga-action="Download" data-ga-label="{{ ez_field_value(betas|first, 'release_version') }}">
                                         <th scope="row">
-                                            <a href="{{ ez_field_value(betas|first, 'file') }}">{{ ez_render_field(betas|first, 'release_version') }}</a>
+                                            <a href="{{ betaUrl }}">{{ ez_render_field(betas|first, 'release_version') }}</a>
                                         </th>
                                         <td class="file">
-                                            <a href="{{ ez_field_value(betas|first, 'file') }}">Download {{ ez_render_field(betas|first, 'release_version') }}</a>
+                                            <a href="{{ betaUrl }}">Download {{ ez_render_field(betas|first, 'release_version') }}</a>
                                         </td>
                                         <td class="date">
-                                            <a href="{{ ez_field_value(betas|first, 'file') }}">
+                                            <a href="{{ betaUrl }}">
                                                 <span>{{ ez_field_value(betas|first, 'release_date')|date('d M Y') }}</span>
                                             </a>
                                         </td>
                                     </tr>
                                 {% endif %}
-
-                                {% for release in releases %}
-                                    <tr class="releases" data-ga-action="Download" data-ga-label="{{ ez_field_value(release, 'release_version') }}">
-                                        <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>
-                                            <a href="{{ ez_field_value(release, 'file') }}">{{ ez_render_field(release, 'release_version') }}</a>
-                                        </th>
-                                        <td class="file">
-                                            <a href="{{ ez_field_value(release, 'file') }}">
-                                                {{ ez_field_value(release, 'file').fileName }}
-                                            </a>
-                                        </td>
-                                        <td class="date">
-                                            <a href="{{ ez_field_value(release, 'file') }}">
-                                                <span>{{ ez_field_value(release, 'release_date')|date('d M Y') }}</span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-
+                                {% if releases is defined %}
+                                    {% for release in releases %}
+                                        {% set url = path(ez_route( 'ez_content_download', { 'content': release, 'fieldIdentifier': 'file' } )) %}
+                                        <tr class="releases" data-ga-action="Download" data-ga-label="{{ ez_field_value(release, 'release_version') }}">
+                                            <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>
+                                                <a href="{{ url }}">{{ ez_render_field(release, 'release_version') }}</a>
+                                            </th>
+                                            <td class="file">
+                                                <a href="{{ url }}">
+                                                    {{ ez_field_value(release, 'file').fileName }}
+                                                </a>
+                                            </td>
+                                            <td class="date">
+                                                <a href="{{ url }}">
+                                                    <span>{{ ez_field_value(release, 'release_date')|date('d M Y') }}</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                                 <tr class="releases ezpublish">
                                     <th colspan="3">
                                         Looking for <a href="http://share.ez.no" data-ga-action="Download eZ publish">eZ Publish / eZ Publish Platform</a> ?
@@ -112,7 +113,6 @@
                             </table>
                         </div>
                     {% endif %}
-
                     {% if not ez_is_field_empty(content, 'platform_sh_description') %}
                         <div role="tabpanel" class="tab-pane" id="platform-sh-option">
                             <div class="details">
@@ -128,7 +128,6 @@
                             </div>
                         </div>
                     {% endif %}
-
                     <div role="tabpanel" class="tab-pane" id="ezlaunchpad-option">
                         <div class="details" data-ga-action="eZ launchpad documentation">
                             <h3>eZ Launchpad</h3>
