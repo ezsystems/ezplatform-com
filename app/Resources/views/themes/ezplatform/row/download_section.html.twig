@@ -52,6 +52,8 @@
                         </div>
                     {% endif %}
                     {% if not ez_is_field_empty(content, 'download_description') %}
+                        {{ fos_httpcache_tag('location-' ~ app_releases_folder_location_id ) }}
+
                         <div role="tabpanel" class="tab-pane" id="download-option">
                             <div class="details">
                                 <h3>Download</h3>
@@ -85,7 +87,7 @@
                                     </tr>
                                 {% endif %}
                                 {% if releases is defined %}
-                                    {% for release in releases %}
+                                    {% for release in releases if not ez_is_field_empty(release, 'file')  %}
                                         {% set url = path(ez_route( 'ez_content_download', { 'content': release, 'fieldIdentifier': 'file' } )) %}
                                         <tr class="releases" data-ga-action="Download" data-ga-label="{{ ez_field_value(release, 'release_version') }}">
                                             <th scope="row"{% if ez_field_value(release, 'lts').bool %} class="lts"{% endif %}>

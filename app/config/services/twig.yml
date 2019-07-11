@@ -8,3 +8,6 @@ services:
         resource: '../../../src/AppBundle/Twig/*'
         tags:
             - name: twig.extension
+
+    AppBundle\Twig\AppConfigExtension:
+        $releasesFolderLocationId: '%app.releases_folder_location_id%'
