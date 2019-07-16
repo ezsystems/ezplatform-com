@@ -12,11 +12,13 @@ Encore.setOutputPath('web/assets/build')
     .enableReactPreset()
     .enableSingleRuntimeChunk();
 
-// Put your config here.
+Encore.addEntry('ezp-com', [
+    path.resolve(__dirname, './web/assets/scss/page.scss'),
+    path.resolve(__dirname, './web/assets/js/prism.js'),
+    path.resolve(__dirname, './web/assets/js/stringUtils.helper.js'),
+    path.resolve(__dirname, './web/assets/js/GoogleAnalyticsService.js'),
+    path.resolve(__dirname, './web/assets/js/app.js'),
+]);
 
-// uncomment the two lines below, if you added a new entry (by Encore.addEntry() or Encore.addStyleEntry() method) to your own Encore configuration for your project
-// const projectConfig = Encore.getWebpackConfig();
-// module.exports = [ eZConfig, ...customConfigs, projectConfig ];
-
-// comment-out this line if you've uncommented the above lines
-module.exports = [ eZConfig, ...customConfigs ];
+const projectConfig = Encore.getWebpackConfig();
+module.exports = [ eZConfig, ...customConfigs, projectConfig ];

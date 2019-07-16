@@ -1,3 +1,5 @@
+import GoogleAnalyticsService from './GoogleAnalyticsService';
+
 (function() {
 
     const $ = jQuery,
