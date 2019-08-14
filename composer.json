@@ -11,7 +11,7 @@
         }
     ],
     "repositories": [
-        { "type": "composer", "url": "https://updates.ez.no/ttl" }
+        { "type": "composer", "url": "https://updates.ez.no/bul" }
     ],
     "replace": {
         "ezsystems/ezstudio": "*",
