@@ -22,7 +22,7 @@ class AppConfigExtension extends AbstractExtension implements GlobalsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getGlobals(): array
     {

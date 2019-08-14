@@ -1,8 +1,6 @@
 <?php
 
 /**
- * PackagistServiceProvider.
- *
  * Provides method to call Packagist.org API.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
@@ -12,24 +10,22 @@ declare(strict_types=1);
 
 namespace AppBundle\Service\Packagist;
 
+use AppBundle\Helper\LoggerTrait;
 use AppBundle\Mapper\PackageMapper;
 use AppBundle\ValueObject\Package;
 use Packagist\Api\Client;
 
-/**
- * Class PackagistServiceProvider.
- */
-class PackagistServiceProvider implements PackagistServiceProviderInterface
+class PackagistService implements PackagistServiceInterface
 {
+    use LoggerTrait;
+
     /** @var \Packagist\Api\Client */
     private $packagistClient;
 
     /** @var \AppBundle\Mapper\PackageMapper */
     private $mapper;
 
-    /**
-     * PackagistServiceProvider constructor.
-     *
+    /***
      * @param \Packagist\Api\Client $packagistClient
      * @param \AppBundle\Mapper\PackageMapper $mapper
      */
@@ -42,15 +38,16 @@ class PackagistServiceProvider implements PackagistServiceProviderInterface
     }
 
     /**
-     * @param $packageName
-     *
-     * @return \AppBundle\ValueObject\Package|null
+     * {@inheritdoc}
      */
-    public function getPackageDetails($packageName): ?Package
+    public function getPackageDetails(string $packageName): ?Package
     {
         try {
             return $this->mapper->createPackageFromPackagistApiResult($this->packagistClient->get($packageName));
         } catch (\Exception $exception) {
+            $this->logError(
+                sprintf('Packagist API Exception: %s | PackageName: %s', $exception->getMessage(), $packageName)
+            );
             return null;
         }
     }

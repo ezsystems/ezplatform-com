@@ -1,8 +1,6 @@
 <?php
 
 /**
- * PackageService.
- *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -14,12 +12,12 @@ use AppBundle\Helper\RichTextHelper;
 use AppBundle\Service\AbstractService;
 use AppBundle\Service\Cache\CacheServiceInterface;
 use AppBundle\Service\DOM\DOMServiceInterface;
-use AppBundle\Service\GitHub\GitHubServiceProvider;
-use AppBundle\Service\GitLab\GitLabServiceProvider;
-use AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy;
+use AppBundle\Service\PackageRepository\GitHubService;
+use AppBundle\Service\PackageRepository\GitLabService;
+use AppBundle\Service\PackageRepository\PackageRepositoryStrategy;
 use eZ\Publish\API\Repository\PermissionResolver as PermissionResolverInterface;
 use eZ\Publish\API\Repository\UserService as UserServiceInterface;
-use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
+use AppBundle\Service\Packagist\PackagistServiceInterface;
 use AppBundle\ValueObject\Package;
 use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\Values\Content\Content;
@@ -38,14 +36,14 @@ class PackageService extends AbstractService implements PackageServiceInterface
     const CONTENT_TYPE_NAME = 'package';
     const DEFAULT_LANG_CODE = 'eng-GB';
     private const REPOSITORY_PLATFORMS = [
-        'github' => GitHubServiceProvider::GITHUB_URL_PARTS,
-        'gitlab' => GitLabServiceProvider::GITLAB_URL_PARTS,
+        'github' => GitHubService::GITHUB_URL_PARTS,
+        'gitlab' => GitLabService::GITLAB_URL_PARTS,
     ];
 
-    /** @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface */
-    private $packagistServiceProvider;
+    /** @var \AppBundle\Service\Packagist\PackagistServiceInterface */
+    private $packagistService;
 
-    /** @var \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy */
+    /** @var \AppBundle\Service\PackageRepository\PackageRepositoryStrategy */
     private $packageRepository;
 
     /** @var \AppBundle\Service\Cache\CacheServiceInterface */
@@ -75,14 +73,13 @@ class PackageService extends AbstractService implements PackageServiceInterface
      * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeService
      * @param \eZ\Publish\API\Repository\ContentService $contentService
      * @param \eZ\Publish\API\Repository\LocationService $locationService
-     * @param \AppBundle\Service\Packagist\PackagistServiceProviderInterface $packagistServiceProvider
-     * @param \AppBundle\Service\PackageRepository\PackageRepositoryProviderStrategy $packageRepository
+     * @param \AppBundle\Service\Packagist\PackagistServiceInterface $packagistService
+     * @param \AppBundle\Service\PackageRepository\PackageRepositoryStrategy $packageRepository
      * @param \AppBundle\Service\Cache\CacheServiceInterface $cacheService
      * @param \AppBundle\Service\DOM\DOMServiceInterface $domService
      * @param \Netgen\TagsBundle\API\Repository\TagsService $tagsService
+     * @param \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver
      * @param \AppBundle\Helper\RichTextHelper $richTextHelper
-     * @param int $parentLocationId
-     * @param int $packageContributorId
      */
     public function __construct(
         PermissionResolverInterface $permissionResolver,
@@ -90,15 +87,15 @@ class PackageService extends AbstractService implements PackageServiceInterface
         ContentTypeServiceInterface $contentTypeService,
         ContentServiceInterface $contentService,
         LocationServiceInterface $locationService,
-        PackagistServiceProviderInterface $packagistServiceProvider,
-        PackageRepositoryProviderStrategy $packageRepository,
+        PackagistServiceInterface $packagistService,
+        PackageRepositoryStrategy $packageRepository,
         CacheServiceInterface $cacheService,
         DOMServiceInterface $domService,
         TagsServiceInterface $tagsService,
         ConfigResolverInterface $configResolver,
         RichTextHelper $richTextHelper
     ) {
-        $this->packagistServiceProvider = $packagistServiceProvider;
+        $this->packagistService = $packagistService;
         $this->packageRepository = $packageRepository;
         $this->cacheService = $cacheService;
         $this->domService = $domService;
@@ -177,7 +174,7 @@ class PackageService extends AbstractService implements PackageServiceInterface
     {
         $packageName = trim($packageName);
 
-        $package = $this->packagistServiceProvider->getPackageDetails($packageName);
+        $package = $this->packagistService->getPackageDetails($packageName);
 
         $repositoryMetadata = new RepositoryMetadata($package->repository);
         $readme = $this->packageRepository->getReadme($repositoryMetadata);

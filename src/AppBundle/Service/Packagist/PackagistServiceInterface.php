@@ -1,8 +1,6 @@
 <?php
 
 /**
- * PackagistServiceProviderInterface.
- *
  * Provides method to call Packagist.org API.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
@@ -14,10 +12,12 @@ namespace AppBundle\Service\Packagist;
 
 use AppBundle\ValueObject\Package;
 
-/**
- * Interface PackagistServiceProviderInterface.
- */
-interface PackagistServiceProviderInterface
+interface PackagistServiceInterface
 {
-    public function getPackageDetails($packageName): ?Package;
+    /**
+     * @param string $packageName
+     *
+     * @return \AppBundle\ValueObject\Package|null
+     */
+    public function getPackageDetails(string $packageName): ?Package;
 }

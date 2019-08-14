@@ -17,7 +17,7 @@ services:
             $cacheExpirationTime: '%packages.cache_expiration_time%'
             $cacheItemPool: '@ezpublish.cache_pool.inner'
 
-    AppBundle\Service\GitHub\GitHubServiceProvider:
+    AppBundle\Service\PackageRepository\GitHubService:
         arguments:
             $authenticationToken: '%env(GITHUB_TOKEN)%'
 

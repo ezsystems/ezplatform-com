@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Validator\Constraints;
 
-use AppBundle\Service\Packagist\PackagistServiceProviderInterface;
+use AppBundle\Service\Packagist\PackagistServiceInterface;
 use AppBundle\ValueObject\RepositoryMetadata;
 use eZ\Publish\API\Repository\SearchService as SearchServiceInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,23 +22,23 @@ class PackagistUrlValidator extends ConstraintValidator
     /** @var \eZ\Publish\API\Repository\SearchService */
     private $searchService;
 
-    /** @var \AppBundle\Service\Packagist\PackagistServiceProviderInterface */
-    private $packagistServiceProvider;
+    /** @var \AppBundle\Service\Packagist\PackagistServiceInterface */
+    private $packagistService;
 
     /**
      * @param \eZ\Publish\API\Repository\SearchService $searchService
-     * @param \AppBundle\Service\Packagist\PackagistServiceProviderInterface $packagistServiceProvider
+     * @param \AppBundle\Service\Packagist\PackagistServiceInterface $packagistService
      */
     public function __construct(
         SearchServiceInterface $searchService,
-        PackagistServiceProviderInterface $packagistServiceProvider
+        PackagistServiceInterface $packagistService
     ) {
         $this->searchService = $searchService;
-        $this->packagistServiceProvider = $packagistServiceProvider;
+        $this->packagistService = $packagistService;
     }
 
     /**
-     * ({@inheritdoc})
+     * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint): void
     {
@@ -53,7 +53,7 @@ class PackagistUrlValidator extends ConstraintValidator
         $repositoryMetadata = new RepositoryMetadata($value);
         $repositoryId = $repositoryMetadata->getRepositoryId();
 
-        if (!$this->packagistServiceProvider->getPackageDetails($repositoryId)) {
+        if (!$this->packagistService->getPackageDetails($repositoryId)) {
             $this->context
                 ->buildViolation($constraint->message, [])
                 ->addViolation();

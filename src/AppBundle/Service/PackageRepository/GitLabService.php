@@ -1,8 +1,6 @@
 <?php
 
 /**
- * GitLabServiceProvider.
- *
  * Provides method to call GitLab.com API.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
@@ -10,18 +8,17 @@
  */
 declare(strict_types=1);
 
-namespace AppBundle\Service\GitLab;
+namespace AppBundle\Service\PackageRepository;
 
-use AppBundle\Service\PackageRepository\PackageRepositoryServiceProviderInterface;
+use AppBundle\Helper\LoggerTrait;
 use AppBundle\ValueObject\RepositoryMetadata;
 use Gitlab\Client;
 use Gitlab\HttpClient\Message\ResponseMediator;
 
-/**
- * Class GitLabServiceProvider.
- */
-class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
+class GitLabService implements PackageRepositoryServiceInterface
 {
+    use LoggerTrait;
+
     private const REPOSITORY_PLATFORM_NAME = 'gitlab';
     private const README_FILE_PATH = 'README.md';
     private const README_REF = 'master';
@@ -37,16 +34,16 @@ class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
     /** @var \Gitlab\Client */
     private $gitLabClient;
 
+    /**
+     * @param \Gitlab\Client $gitLabClient
+     */
     public function __construct(Client $gitLabClient)
     {
         $this->gitLabClient = $gitLabClient;
     }
 
     /**
-     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
-     * @param string $format
-     *
-     * @return string|null
+     * {@inheritdoc}
      *
      * @throws \Http\Client\Exception
      */
@@ -68,16 +65,20 @@ class GitLabServiceProvider implements PackageRepositoryServiceProviderInterface
 
             return $this->getReadmeAsHtml($headers, $body);
         } catch (\Exception $exception) {
+            $this->logError(
+                sprintf(
+                    'GitLab API Exception: %s | RepositoryId: %s',
+                    $exception->getMessage(), $repositoryMetadata->getRepositoryId()
+                )
+            );
             return null;
         }
     }
 
     /**
-     * @param \AppBundle\ValueObject\RepositoryMetadata $repositoryMetadata
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function canGetClientProvider(RepositoryMetadata $repositoryMetadata): bool
+    public function canGetClientService(RepositoryMetadata $repositoryMetadata): bool
     {
         return $repositoryMetadata->getRepositoryPlatform() === self::REPOSITORY_PLATFORM_NAME;
     }

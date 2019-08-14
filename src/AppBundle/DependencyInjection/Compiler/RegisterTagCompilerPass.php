@@ -10,19 +10,16 @@ declare(strict_types=1);
 
 namespace AppBundle\DependencyInjection\Compiler;
 
-use AppBundle\Service\PackageRepository\PackageRepositoryServiceProviderInterface;
+use AppBundle\Service\PackageRepository\PackageRepositoryServiceInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * Class RegisterPackageRepositoryProviderTagCompilerPass.
- */
 class RegisterTagCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
         $container
-            ->registerForAutoconfiguration(PackageRepositoryServiceProviderInterface::class)
-            ->addTag(PackageRepositoryProviderCompilerPass::STRATEGY_TAG_NAME);
+            ->registerForAutoconfiguration(PackageRepositoryServiceInterface::class)
+            ->addTag(PackageRepositoryCompilerPass::STRATEGY_TAG_NAME);
     }
 }

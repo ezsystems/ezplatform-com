@@ -1,8 +1,6 @@
 <?php
 
 /**
- * PackageServiceInterface.
- *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
@@ -29,7 +27,7 @@ interface PackageServiceInterface
      *
      * @return \AppBundle\ValueObject\Package
      */
-    public function getPackage(string $packageName): Package;
+    public function getPackage(string $packageName, bool $force = false): Package;
 
     /**
      * @param string $packageName
