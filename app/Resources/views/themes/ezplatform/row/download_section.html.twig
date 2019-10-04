@@ -52,8 +52,11 @@
                         </div>
                     {% endif %}
                     {% if not ez_is_field_empty(content, 'download_description') %}
-                        {{ fos_httpcache_tag('location-' ~ app_releases_folder_location_id ) }}
-
+                        {% if releaseFolderLocations is defined and releaseFolderLocations|length > 0 %}
+                            {% for location in releaseFolderLocations %}
+                                {{ fos_httpcache_tag('location-' ~ location ) }}
+                            {% endfor %}
+                        {% endif %}
                         <div role="tabpanel" class="tab-pane" id="download-option">
                             <div class="details">
                                 <h3>Download</h3>

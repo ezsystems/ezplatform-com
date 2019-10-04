@@ -10,4 +10,6 @@ services:
             - name: twig.extension
 
     AppBundle\Twig\AppConfigExtension:
-        $releasesFolderLocationId: '%app.releases_folder_location_id%'
+        $configParameters:
+            releases_folder_location_id: '%releases_folder_location_id%'
+            betas_folder_location_id: '%betas_folder_location_id%'

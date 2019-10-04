@@ -20,10 +20,10 @@ use AppBundle\QueryType\LatestReleasesQueryType;
 class DownloadController
 {
     /** @var int */
-    private $releaseContainerLocationId;
+    private $releasesFolderLocationId;
 
     /** @var int */
-    private $betaContainerLocationId;
+    private $betasFolderLocationId;
 
     /** @var \eZ\Publish\API\Repository\SearchService */
     private $searchService;
@@ -34,19 +34,19 @@ class DownloadController
     /**
      * @param \eZ\Publish\API\Repository\SearchService $searchService
      * @param \AppBundle\QueryType\LatestReleasesQueryType $latestReleasesQueryType
-     * @param int $releaseContainerLocationId
-     * @param int $betaContainerLocationId
+     * @param int $releasesFolderLocationId
+     * @param int $betasFolderLocationId
      */
     public function __construct(
         SearchServiceInterface $searchService,
         LatestReleasesQueryType $latestReleasesQueryType,
-        $releaseContainerLocationId,
-        $betaContainerLocationId
+        int $releasesFolderLocationId,
+        int $betasFolderLocationId
     ) {
         $this->searchService = $searchService;
         $this->latestReleasesQueryType = $latestReleasesQueryType;
-        $this->releaseContainerLocationId = $releaseContainerLocationId;
-        $this->betaContainerLocationId = $betaContainerLocationId;
+        $this->releasesFolderLocationId = $releasesFolderLocationId;
+        $this->betasFolderLocationId = $betasFolderLocationId;
     }
 
     /**
@@ -58,11 +58,11 @@ class DownloadController
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      */
-    public function showAction(ContentView $view)
+    public function showAction(ContentView $view): ContentView
     {
         $view->addParameters([
-            'releases' => $this->getSearchResults($this->releaseContainerLocationId),
-            'betas' => $this->getSearchResults($this->betaContainerLocationId),
+            'releases' => $this->getSearchResults($this->releasesFolderLocationId),
+            'betas' => $this->getSearchResults($this->betasFolderLocationId),
         ]);
 
         return $view;
@@ -71,13 +71,13 @@ class DownloadController
     /**
      * Returns releases search results for the given $parentLocationId.
      *
-     * @param $parentLocationId
+     * @param int $parentLocationId
      *
      * @return array
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      */
-    private function getSearchResults($parentLocationId): array
+    private function getSearchResults(int $parentLocationId): array
     {
         $query = $this->latestReleasesQueryType->getQuery([
             'parent_location_id' => $parentLocationId,

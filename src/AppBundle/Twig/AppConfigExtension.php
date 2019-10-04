@@ -13,12 +13,15 @@ use Twig\Extension\GlobalsInterface;
 
 class AppConfigExtension extends AbstractExtension implements GlobalsInterface
 {
-    /** @var int */
-    private $releasesFolderLocationId;
+    /** @var array */
+    private $configParameters;
 
-    public function __construct(int $releasesFolderLocationId)
+    /**.
+     * @param array $configParameters
+     */
+    public function __construct(array $configParameters)
     {
-        $this->releasesFolderLocationId = $releasesFolderLocationId;
+        $this->configParameters = $configParameters;
     }
 
     /**
@@ -27,7 +30,10 @@ class AppConfigExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'app_releases_folder_location_id' => $this->releasesFolderLocationId
+            'releaseFolderLocations' => [
+                $this->configParameters['releases_folder_location_id'] ?? null,
+                $this->configParameters['betas_folder_location_id'] ?? null,
+            ],
         ];
     }
 }

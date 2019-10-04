@@ -57,9 +57,6 @@ parameters:
     # Session save path as used by symfony session handlers (eg. used for dsn with redis)
     ezplatform.session.save_path: '%env(SESSION_SAVE_PATH)%'
 
-    # Releases folder location id
-    app.releases_folder_location_id: 57
-
     # Recommendation Bundle params
     ez_recommendation.default.yoochoose.customer_id: '%env(RECOMMENDATIONS_CUSTOMER_ID)%'
     ez_recommendation.default.yoochoose.license_key: '%env(RECOMMENDATIONS_LICENSE_KEY)%'

@@ -8,8 +8,8 @@ services:
 
     AppBundle\Controller\DownloadController:
         arguments:
-            $releaseContainerLocationId: '%release_container_location_id%'
-            $betaContainerLocationId: '%beta_container_location_id%'
+            $releasesFolderLocationId: '%releases_folder_location_id%'
+            $betasFolderLocationId: '%betas_folder_location_id%'
 
     AppBundle\Controller\BlogController:
         arguments:

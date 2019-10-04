@@ -7,9 +7,9 @@ parameters:
     layout_id: 54
 
     # `folder` in the media library containing all the releases
-    release_container_location_id: 57
+    releases_folder_location_id: 57
     # `folder` in the media library containing all the betas
-    beta_container_location_id: 58
+    betas_folder_location_id: 58
     # app admin id
     app.admin_id: 14
     # package contributor id
