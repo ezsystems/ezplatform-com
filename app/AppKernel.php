@@ -67,6 +67,7 @@ class AppKernel extends Kernel
             new Lolautruche\EzCoreExtraBundle\EzCoreExtraBundle(),
             new Netgen\TagsBundle\NetgenTagsBundle(),
             new EzSystems\EzPlatformWorkflowBundle\EzPlatformWorkflowBundle(),
+            new Novactive\Bundle\eZSEOBundle\NovaeZSEOBundle(),
             // Application
             new AppBundle\AppBundle(),
         ];

@@ -1,0 +1,38 @@
+nova_ezseo:
+  system:
+    default:
+      default_metas:
+          author: "eZ Systems and community"
+          generator: "eZ Platform"
+      fieldtype_metas_identifier: "seo_metadata"
+      fieldtype_metas:
+        canonical:
+            label: 'Canonical URL'
+            default_pattern: ~
+        title:
+            label: 'Title'
+            default_pattern: "<title|name>"
+        description:
+            label: 'Description'
+            default_pattern: "<intro>"
+        keywords:
+            label: 'Keywords'
+            default_pattern: ~
+        og:title:
+            label: 'OG Title'
+            default_pattern: "<title|name>"
+        og:description:
+            label: 'OG Description'
+            default_pattern: "<intro>"
+        og:image:
+            label: 'OG Image'
+            default_pattern: "<listing_image>"
+        twitter:title:
+            label: 'Twitter Title'
+            default_pattern: "<title|name>"
+        twitter:description:
+            label: 'Twitter Description'
+            default_pattern: "<intro>"
+        twitter:image:
+            label: 'Twitter Image'
+            default_pattern: "<listing_image>"
