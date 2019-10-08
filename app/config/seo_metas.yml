@@ -27,6 +27,9 @@ nova_ezseo:
         og:image:
             label: 'OG Image'
             default_pattern: "<listing_image>"
+        twitter:card:
+            label: "Twitter card type"
+            default_pattern: "summary"
         twitter:title:
             label: 'Twitter Title'
             default_pattern: "<title|name>"
