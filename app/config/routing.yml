@@ -143,3 +143,8 @@ overblog_graphql_endpoint:
     defaults:
         _controller: Overblog\GraphQLBundle\Controller\GraphController::endpointAction
         _format: json
+
+_novaezseoRoutes:
+    resource: "@NovaeZSEOBundle/Controller/"
+    type:     annotation
+    prefix:   /

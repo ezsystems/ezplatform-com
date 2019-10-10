@@ -4,6 +4,8 @@ nova_ezseo:
       default_metas:
           author: "eZ Systems and community"
           generator: "eZ Platform"
+      sitemap_excludes:
+          contentTypeIdentifiers: ['folder','author','top_banner']
       fieldtype_metas_identifier: "seo_metadata"
       fieldtype_metas:
         canonical:
