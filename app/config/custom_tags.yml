@@ -3,7 +3,7 @@ ezpublish:
         admin_group:
             fieldtypes:
                 ezrichtext:
-                    custom_tags: [ezbutton, ezyoutube, eztwitter, factbox]
+                    custom_tags: [ezbutton, ezyoutube, eztwitter, factbox, jsfiddle]
     ezrichtext:
         custom_tags:
             ezbutton:
@@ -83,3 +83,18 @@ ezpublish:
                 attributes:
                     title:
                         type: 'string'
+
+            jsfiddle:
+                template: '@ezdesign/fields/ezrichtext/custom_tags/jsfiddle.html.twig'
+                icon: '/bundles/ezplatformadminui/img/ez-icons.svg#components'
+                attributes:
+                    user_id:
+                        type: 'string'
+                        required: true
+                    script_id:
+                        type: 'string'
+                        required: true
+                    version_id:
+                        type: 'string'
+                        required: true
+
