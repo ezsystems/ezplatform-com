@@ -1,0 +1,32 @@
+{% extends '@ezdesign/pagelayout.html.twig' %}
+
+{% block content %}
+    <section class="blog-post">
+        <div class="blog-post-header">
+            <div class="container">
+                <h1>
+                    {{ ez_content_name(content) }}
+                </h1>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="security-advisory-details">
+                Publication date: {{ ez_render_field(content,'publication_date')}}<br />
+                Severity: {{ ez_render_field(content,'severity')}}<br />
+                Affected versions: {{ ez_render_field(content,'affected_versions')}}<br />
+                Resolving versions: {{ ez_render_field(content,'resolving_versions')}}
+            </div>
+
+            <div class="blog-post-body">
+                {{ ez_render_field(content, 'body') }}
+            </div>
+
+            <hr />
+
+            <p><a href="./">All security advisories <i class="fa fa-angle-double-right"></i></a></p>
+
+        </div>
+    </section>
+{% endblock %}

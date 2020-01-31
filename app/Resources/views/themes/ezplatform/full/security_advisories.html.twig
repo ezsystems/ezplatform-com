@@ -4,12 +4,13 @@
     <section class="blog">
         <div class="blog-top-banner">
             <div class="container">
-                Developer Blog
+                Security Advisories
             </div>
         </div>
 
         <div class="container">
-            <div class="blog-posts-container">
+
+            <div class="blog-posts-container security-advisory-details">
                 {% include '@ezdesign/parts/content_list.html.twig' with {
                     'items': posts,
                     'viewType': 'line',
@@ -17,6 +18,11 @@
                         'page': 1
                     }
                 } only %}
+            </div>
+            <div class="row">
+                <div class="button-load-more col-md-8">
+                    {{ ez_render_field(content,'body')}}
+                </div>
             </div>
             <div class="row">
                 <div class="button-load-more col-md-6 offset-3">

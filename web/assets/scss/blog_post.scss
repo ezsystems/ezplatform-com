@@ -159,3 +159,12 @@
     color: #dd4a40;
     border: 2px solid #dd4a40;
 }
+
+.blog-post .security-advisory-details {
+    margin: 1em 0 1em 0;
+}
+
+.security-advisory-details .ezdatetime-field,
+.security-advisory-details .ezselection-field {
+    display: inline;
+}

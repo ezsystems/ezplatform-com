@@ -18,6 +18,10 @@ parameters:
     blog.location_id: 71
     # `blog_post` limit on the `blog` page
     blog.posts_limit: 10
+    # `blog` locationId
+    security_advisories.location_id: 629
+    # `blog_post` limit on the `blog` page
+    security_advisories.posts_limit: 20
     # `authors` folder locationId
     blog.authors_container_location_id: 72
     # `package_list` locationId

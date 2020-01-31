@@ -1,0 +1,20 @@
+<div class="blog-post-line{% if extra.page is defined %} page-{{ extra.page }}{% endif %}">
+    <div class="blog-post-line-border security-advisory-details">
+
+        <div class="blog-post-line-date">
+            {{ ez_field_value(content, 'publication_date')|date('M d, Y') }}
+        </div>
+
+        <h2>
+            <a href="{{ path(location) }}">
+                {{ ez_render_field(content, 'id') }}:
+                {{ ez_render_field(content, 'title') }}
+            </a>
+        </h2>
+
+        Severity: {{ ez_render_field(content, 'severity') }}
+
+        <p><a href="{{ path(location) }}">Full details <i class="fa fa-angle-double-right"></i></a></p>
+
+    </div>
+</div>
