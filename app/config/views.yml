@@ -45,6 +45,10 @@ ezpublish:
                         template: "@ezdesign/full/blog_post.html.twig"
                         match:
                             Identifier\ContentType: blog_post
+                    documentation_center:
+                        template: "@ezdesign/full/documentation_center.html.twig"
+                        match:
+                            Id\Location: [639]
                     security_advisories:
                         controller: ez_query:LocationQueryAction
                         params:
