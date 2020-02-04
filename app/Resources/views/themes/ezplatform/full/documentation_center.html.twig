@@ -6,73 +6,12 @@
 
 {% block content %}
 
-    <style>
-
-        .documentation-center .btn {
-            width: 100%;
-        }
-
-        .documentation-center h3 {
-            margin-top: 1em;
-        }
-
-        .documentation-center .row-header div div {
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .documentation-center .row-header .documentation-center-content div {
-            background-color: #f59331;
-        }
-
-        .documentation-center .row-header .documentation-center-commerce div {
-            background-color: #7a68a6;
-        }
-
-        .documentation-center .row-header .documentation-center-personalization div {
-            background-color: #1fa667;
-        }
-
-        .documentation-center-content .btn-primary {
-            background-color: #f59331;
-        }
-
-        .documentation-center-commerce .btn-primary {
-            background-color: #7a68a6;
-        }
-
-        .documentation-center-personalization .btn-primary {
-            background-color: #1fa667;
-        }
-
-
-/*
-        .documentation-center .theme-content > div:first-child {
-            border-radius: 10px;
-            background-image: url("{{ asset('/assets/images/theme-content.png') }}");
-            background-size: cover;
-
-        background-color: #f59331;
-        background-color: #7a68a6;
-        background-color: #1fa667;
-
-
-
-        }
-*/
-        .documentation-center img {
-            width: auto;
-            height:200px;
-        }
-
-    </style>
-
     <div class="container article documentation-center">
 
         <div class="row" style="margin-bottom: 2em;">
             <div class="article-body col-md-6" style="font-size:1.25em;">
                 <h1>{{ ez_content_name(content) }}</h1>
-                {{ ez_render_field(content, 'body') }}
+                {{ ez_render_field(content, 'intro') }}
             </div>
             <div class="col-md-5">
                 <img src="{{ asset('/assets/images/study.png') }}" style="width:100%;height:auto;">
@@ -93,61 +32,23 @@
         <div class="row">
             <div class="col-md-4 documentation-center-content">
                 <h3>eZ Platform</h3>
-                <p>eZ Platform is a tool for constructing uncompromised online experiences. Built on the Symfony framework, it allows developers to create power technical solutions  with an intuitive management interface for editors.</p>
-                <p><a href="https://doc.ezplatform.com/projects/userguide/en/2.5/" class="btn btn-primary">User documentation</a></p>
-                <p><a href="https://doc.ezplatform.com/en/2.5/" class="btn btn-primary">Developer documentation</a></p>
+                <p>Z Platform is a tool for constructing uncompromising online experiences. Built on the Symfony framework, it allows developers to create powerful technical solutions with an intuitive interface for editors.</p>
+                <p><a href="https://doc.ezplatform.com/projects/userguide/en/latest/" class="btn btn-primary">User documentation</a></p>
+                <p><a href="https://doc.ezplatform.com/en/latest/" class="btn btn-primary">Developer documentation</a></p>
             </div>
             <div class="col-md-4 documentation-center-commerce">
                 <h3>eZ Commerce</h3>
-                <p>eZ Commerce is an add-on to eZ Platform that turns it into a high performance e-Commerce platform with an integrated price engine, product data management, integrations to price and stock management and much more.</p>
+                <p>eZ Commerce is an add-on for eZ Platform that turns it into a high-performance e-Commerce platform with an integrated price engine, product data management, integrations to price and stock management and much more.</p>
                 <p><a href="https://doc.silver-eshop.de/display/EZC14/User+manual" class="btn btn-primary">User documentation</a></p>
                 <p><a href="https://doc.silver-eshop.de/display/EZC14/Developer+manual" class="btn btn-primary">Developer documentation</a></p>
             </div>
             <div class="col-md-4 documentation-center-personalization">
                 <h3>eZ Personalization</h3>
-                <p>eZ Personalization is a service for offering personalized recommendations to visitors. It can be used to serve targeted content to users based on their preferences and behavior on online stores as well as content driven sites.
-                </p>
+                <p>eZ Personalization is a service for offering tailor-made recommendations to visitors. It can be used to serve targeted content to users based on their preferences and behavior in online stores as well as on content-driven sites.</p>
                 <p><a href="https://doc.ezplatform.com/projects/ezpersonalization/en/latest/personalization/user_guide/introduction/" class="btn btn-primary">User documentation</a></p>
                 <p><a href="https://doc.ezplatform.com/projects/ezpersonalization/en/latest/personalization/developer_guide/tracking_api" class="btn btn-primary">Developer documentation</a></p>
             </div>
         </div>
-
-        <!--
-
-        <div class="row theme-content">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
-                <div class="body-text">
-                    <h2>eZ Platform</h2>
-                    <p>eZ Platform Editorasdasdas....</p>
-                    <p><a href="#composer-option" class="btn btn-primary">Documentation for developers</a></p>
-                    <p><a href="#composer-option" class="btn btn-primary">Documentation for editors</a></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row theme-commerce">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
-                <div class="body-text">
-                    <h2>eZ Commerce</h2>
-                    <p>eZ Platform Editorasdasdas....</p>
-                    <p><a href="#composer-option" class="btn btn-primary">Documentation for developers</a></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row theme-personalization">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
-                <div class="body-text">
-                    <h2>eZ Personalization</h2>
-                    <p>eZ Platform Editorasdasdas....</p>
-                    <p><a href="#composer-option" class="btn btn-primary">Documentation for developers</a></p>
-                </div>
-            </div>
-        </div>
--->
 
     </div>
 
