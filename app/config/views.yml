@@ -58,8 +58,8 @@ ezpublish:
                                     parent_location_id: '%security_advisories.location_id%'
                                     limit: '%security_advisories.posts_limit%'
                                     sorting_content_type: security_advisory
-#                                    sorting_field: publication_date
-#                                    sorting_order: desc
+                                    sorting_field: publication_date
+                                    sorting_order: desc
                                 assign_results_to: posts
                         template: "@ezdesign/full/security_advisories.html.twig"
                         match:
