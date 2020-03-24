@@ -27,7 +27,7 @@
             {% include "NovaeZSEOBundle::seometas_head.html.twig" %}
         {% endblock %}
     </head>
-    <body data-ga-category="{% block gaCategory %}{% endblock %}">
+    <body data-ga-category="{% block gaCategory %}{% endblock %}" class="object-{{ content.id|default('none')}} location-{{ location.id|default('none')}}">
         {% block main %}
             <main>
         {% endblock %}
