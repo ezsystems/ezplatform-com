@@ -26,6 +26,12 @@
         {% block seo_metas %}
             {% include "NovaeZSEOBundle::seometas_head.html.twig" %}
         {% endblock %}
+
+<style>
+
+
+</style>
+
     </head>
     <body data-ga-category="{% block gaCategory %}{% endblock %}" class="object-{{ content.id|default('none')}} location-{{ location.id|default('none')}}">
         {% block main %}
