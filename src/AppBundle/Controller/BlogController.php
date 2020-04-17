@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\EngineInterface;
 use eZ\Publish\API\Repository\SearchService;
 use AppBundle\QueryType\ChildrenQueryType;
@@ -93,4 +96,11 @@ class BlogController
             'showLoadMoreButton' => $searchResults->totalCount > ($offset + count($searchResults->searchHits)),
         ]);
     }
+
+    public function redirectToExternalBlogAction(Request $request)
+    {
+        $url = 'https://ez.no' . $request->getPathInfo();
+        return new RedirectResponse($url, 301);
+    }
+
 }
