@@ -99,7 +99,14 @@ class BlogController
 
     public function redirectToExternalBlogAction(Request $request)
     {
-        $url = 'https://www.ibexa.co' . $request->getPathInfo();
+
+        $path = $request->getPathInfo();
+
+        if($path === '/blog'){
+            $path = '/tags/view/Blog%20post%20categories/Developer%20insights';
+        }
+        
+        $url = 'https://www.ibexa.co' . $path;
         return new RedirectResponse($url, 301);
     }
 
