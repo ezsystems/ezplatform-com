@@ -19,17 +19,10 @@ class GitLabService implements PackageRepositoryServiceInterface
 {
     use LoggerTrait;
 
-    private const REPOSITORY_PLATFORM_NAME = 'gitlab';
+    public const REPOSITORY_PLATFORM_NAME = 'gitlab';
     private const README_FILE_PATH = 'README.md';
     private const README_REF = 'master';
     private const MARKDOWN_API_ENDPOINT = 'https://gitlab.com/api/v4/markdown';
-    const GITLAB_HREF_PART = 'blob';
-    const GITLAB_IMG_PART = 'raw';
-
-    const GITLAB_URL_PARTS = [
-        'href' => self::GITLAB_HREF_PART,
-        'src' => self::GITLAB_IMG_PART,
-    ];
 
     /** @var \Gitlab\Client */
     private $gitLabClient;

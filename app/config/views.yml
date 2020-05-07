@@ -22,6 +22,7 @@ ezpublish:
                                         - layout
                                         - article
                                         - package_list
+                                        - security_advisories
                                 assign_results_to: items
                         template: "@ezdesign/full/home.html.twig"
                         match:

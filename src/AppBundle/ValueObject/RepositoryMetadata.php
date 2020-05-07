@@ -10,6 +10,8 @@
  */
 namespace AppBundle\ValueObject;
 
+use GuzzleHttp\Psr7\Uri;
+
 final class RepositoryMetadata
 {
     private const DEFAULT_DELIMITER = '/';
@@ -19,8 +21,8 @@ final class RepositoryMetadata
         'gitlab',
     ];
 
-    /** @var array */
-    private $splitUrl = [];
+    /** @var \Psr\Http\Message\UriInterface */
+    private $uri;
 
     /** @var string */
     private $repositoryId = '';
@@ -34,16 +36,20 @@ final class RepositoryMetadata
     /** @var string */
     private $repositoryPlatform;
 
+    /** @var string */
+    private $repositoryHost;
+
     /**
      * @param string $repositoryUrl
      */
     public function __construct(string $repositoryUrl)
     {
-        $this->splitUrl = $this->splitRepositoryUrl($repositoryUrl);
+        $this->uri = new Uri($repositoryUrl);
         $this->username = $this->getUsernameFromRepositoryUrl();
         $this->repositoryName = $this->getRepositoryNameFromRepositoryUrl();
         $this->repositoryId = $this->getRepositoryId();
         $this->repositoryPlatform = $this->getRepositoryPlatformFromRepositoryUrl();
+        $this->repositoryHost = $this->getRepositoryHost();
     }
 
     /**
@@ -51,7 +57,7 @@ final class RepositoryMetadata
      */
     public function getRepositoryId(): string
     {
-        return $this->username . self::DEFAULT_DELIMITER . $this->repositoryName;
+        return $this->getUsername() . self::DEFAULT_DELIMITER . $this->getRepositoryName();
     }
 
     /**
@@ -79,13 +85,25 @@ final class RepositoryMetadata
     }
 
     /**
-     * @param string $repositoryId
-     *
-     * @return array
+     * @return string|null
      */
-    private function splitRepositoryUrl(string $repositoryId): array
+    public function getRepositoryHost(): string
     {
-        return explode(self::DEFAULT_DELIMITER, $repositoryId);
+        return $this->uri->getScheme() . '://' . $this->uri->getHost();
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPathParts(): array
+    {
+        $pathParts = explode(self::DEFAULT_DELIMITER, $this->uri->getPath());
+
+        return array_values(
+            array_filter($pathParts, function (string $pathPart) {
+                return !empty($pathPart);
+            })
+        );
     }
 
     /**
@@ -93,7 +111,9 @@ final class RepositoryMetadata
      */
     private function getUsernameFromRepositoryUrl(): ?string
     {
-        return $this->splitUrl[count($this->splitUrl) - 2] ?? '';
+        $pathParts = $this->getPathParts();
+
+        return $pathParts[count($pathParts) - 2] ?? null;
     }
 
     /**
@@ -101,7 +121,9 @@ final class RepositoryMetadata
      */
     private function getRepositoryNameFromRepositoryUrl(): ?string
     {
-        return end($this->splitUrl);
+        $pathParts = $this->getPathParts();
+
+        return end($pathParts);
     }
 
     /**
@@ -109,12 +131,11 @@ final class RepositoryMetadata
      */
     private function getRepositoryPlatformFromRepositoryUrl(): ?string
     {
-        $platformDomain = $this->splitUrl[count($this->splitUrl) - 3] ?? '';
-        $platform = explode('.', $platformDomain)[0] ?? '';
+        $platform = explode('.', $this->uri->getHost())[0] ?? '';
 
         return in_array(
             $platform,
                 self::ALLOWED_REPOSITORY_PLATFORMS
-            ) ? $platform : '';
+            ) ? $platform : null;
     }
 }

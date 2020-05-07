@@ -18,7 +18,8 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class DOMService implements DOMServiceInterface
 {
-    const ABSOLUTE_URL_FILTER_ELEMENTS = ['a', 'img'];
+    public const ABSOLUTE_URL_FILTER_ELEMENTS = ['a', 'img'];
+    public const DATA_SRC_ATTR = 'data-src';
 
     /** @var \AppBundle\Url\UrlBuilder */
     private $urlBuilder;
@@ -93,14 +94,24 @@ class DOMService implements DOMServiceInterface
         return $crawler
             ->filter($element)
             ->each(function (Crawler $crawler) use ($urlAttributes) {
+                /** @var \DOMElement $node */
                 foreach ($crawler as $node) {
-                    $attributes[] = isset($urlAttributes['repository']) ? $urlAttributes['repository'] : null;
                     $attr = $this->getAttributeType($node);
-                    $link = $node->getAttribute($attr);
+                    $pattern = '/http/';
+                    $link = $node->attributes->getNamedItem(self::DATA_SRC_ATTR)->value ?? $node->getAttribute($attr);
 
-                    if ($link && false === strpos($link, 'http')) {
-                        $attributes[] = isset($urlAttributes['link'][$attr]) ? $urlAttributes['link'][$attr] : null;
-                        $attributes[] = $link;
+                    if ($node->attributes->getNamedItem(self::DATA_SRC_ATTR)
+                        && 1 === preg_match($pattern, $link)) {
+                        $node->setAttribute($attr, $link);
+                    }
+
+                    if (1 !== preg_match($pattern, $link)) {
+                        $attributes = [
+                            $urlAttributes['host'] ?? null,
+                            $urlAttributes['link'][$attr] ?? null,
+                            $link
+                        ];
+
                         $this->setLinkAttribute($node, $attr, $attributes);
                     }
                 }

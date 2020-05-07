@@ -33,11 +33,10 @@ use AppBundle\Model\PackageForm;
 
 class PackageService extends AbstractService implements PackageServiceInterface
 {
-    const CONTENT_TYPE_NAME = 'package';
-    const DEFAULT_LANG_CODE = 'eng-GB';
+    public const CONTENT_TYPE_NAME = 'package';
+    public const DEFAULT_LANG_CODE = 'eng-GB';
     private const REPOSITORY_PLATFORMS = [
         'github' => GitHubService::GITHUB_URL_PARTS,
-        'gitlab' => GitLabService::GITLAB_URL_PARTS,
     ];
 
     /** @var \AppBundle\Service\Packagist\PackagistServiceInterface */
@@ -183,7 +182,8 @@ class PackageService extends AbstractService implements PackageServiceInterface
             $crawler = new Crawler($readme);
             $this->domService->removeElementsFromDOM($crawler, ['.anchor', '[data-canonical-src]']);
             $this->domService->setAbsoluteURL($crawler, [
-                'repository' => $package->repository,
+                'host' => $repositoryMetadata->getRepositoryPlatform() === GitLabService::REPOSITORY_PLATFORM_NAME
+                    ? $repositoryMetadata->getRepositoryHost() : $package->repository,
                 'link' => $this->getRepositoryUrlParts($repositoryMetadata->getRepositoryPlatform()),
             ]);
 
