@@ -76,7 +76,7 @@ class GitHubService implements PackageRepositoryServiceInterface
      */
     private function getPackageRepository(): Repo
     {
-        $this->gitHubClient->authenticate($this->authenticationToken, null, Client::AUTH_URL_TOKEN);
+        $this->gitHubClient->authenticate($this->authenticationToken, null, Client::AUTH_HTTP_TOKEN);
 
         return $this->gitHubClient->repository();
     }
