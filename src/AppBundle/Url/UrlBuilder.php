@@ -25,7 +25,9 @@ class UrlBuilder
         $absoluteUrl = '';
 
         foreach ($arguments as $argument) {
-            $argument = trim($argument, '/');
+            $argument = !empty($argument) && is_string($argument)
+                ? trim($argument, '/')
+                : null;
 
             $absoluteUrl .= $argument;
 

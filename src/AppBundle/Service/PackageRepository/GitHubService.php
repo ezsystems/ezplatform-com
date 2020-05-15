@@ -19,12 +19,11 @@ class GitHubService implements PackageRepositoryServiceInterface
 {
     use LoggerTrait;
 
-    const REPOSITORY_PLATFORM_NAME = 'github';
-    const GITHUB_DEFAULT_BRANCH = 'HEAD';
-    const GITHUB_HREF_PART = 'blob';
-    const GITHUB_IMG_PART = 'raw';
-
-    const GITHUB_URL_PARTS = [
+    public const REPOSITORY_PLATFORM_NAME = 'github';
+    public const GITHUB_DEFAULT_BRANCH = 'HEAD';
+    public const GITHUB_HREF_PART = 'blob';
+    public const GITHUB_IMG_PART = 'raw';
+    public const GITHUB_URL_PARTS = [
         'href' => self::GITHUB_HREF_PART . '/' . self::GITHUB_DEFAULT_BRANCH,
         'src' => self::GITHUB_IMG_PART . '/' . self::GITHUB_DEFAULT_BRANCH,
     ];
@@ -77,7 +76,7 @@ class GitHubService implements PackageRepositoryServiceInterface
      */
     private function getPackageRepository(): Repo
     {
-        $this->gitHubClient->authenticate($this->authenticationToken, null, Client::AUTH_URL_TOKEN);
+        $this->gitHubClient->authenticate($this->authenticationToken, null, Client::AUTH_HTTP_TOKEN);
 
         return $this->gitHubClient->repository();
     }
