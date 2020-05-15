@@ -9,7 +9,7 @@
     font-family: 'MavenPro', sans-serif;
     font-size: 90px;
     font-weight: 900;
-    color: #63605d;
+    color: $ibexa-dark-grey;
     margin: 106px 0 0 0;
     text-transform: uppercase;
 }
@@ -18,7 +18,7 @@
     font-family: 'MavenPro', sans-serif;
     font-size: 20px;
     font-weight: 700;
-    color: #63605d;
+    color: $ibexa-dark-grey;
     padding: 45px 0;
     margin: 0;
     text-transform: uppercase;
@@ -35,7 +35,7 @@
 
 .content-error-page .btn-outline:hover,
 .content-error-page .btn-outline:visited:hover {
-    background: #63605d;
-    border: 2px solid #63605d;
-    color: #fff;
+    background: $ibexa-dark-grey;
+    border: 2px solid $ibexa-dark-grey;
+    color: $ibexa-white;
 }

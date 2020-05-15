@@ -3,11 +3,11 @@
 }
 
 .blog-top-banner {
-    background: #3f3f3f url('/assets/images/blog_banner.png') no-repeat center;
+    background: $ibexa-dark-grey url('/assets/images/blog_banner.png') no-repeat center;
     background-size: cover;
     height: 247px;
     width: 100%;
-    color: #fff;
+    color: $ibexa-white;
     font-size: 45px;
     font-weight: 500;
     display: flex;
@@ -28,7 +28,7 @@
 }
 
 .blog-post-line-border {
-    border: 1px solid #d0d0d0;
+    border: 1px solid $ibexa-mouse-grey;
     background: #fff;
     padding: 25px;
 }
@@ -48,28 +48,28 @@
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    color: #63605d;
+    color: $ibexa-dark-grey;
 }
 
 .blog-author-name span {
-    color: #f15a22;
+    color: $ibexa-orange;
     font-size: 15px;
 }
 
 .blog-author-bio {
     font-size: 14px;
-    color: #63605d;
+    color: $ibexa-dark-grey;
     font-family: 'Open Sans', sans-serif;
 }
 
 .blog-date {
     font-size: 13px;
-    color: #63605d;
+    color: $ibexa-dark-grey;
     font-family: 'Open Sans', sans-serif;
 }
 
 .blog-post-line-thumbnail img {
-    border: 1px solid #ddd;
+    border: 1px solid $ibexa-mouse-grey;
 }
 
 .blog-post-line h2 {
@@ -81,31 +81,31 @@
 .blog-post-line h2 a:link,
 .blog-post-line h2 a:visited {
     font-size: 40px;
-    color: #63605d;
+    color: $ibexa-dark-grey;
     font-family: 'Open Sans Condensed', sans-serif;
     font-weight: 700;
 }
 
 .blog-post-line h2 a:hover {
-    color: #f15a22;
+    color: $ibexa-orange;
     text-decoration: none;
 }
 
 .blog-post-line-intro {
     font-size: 16px;
-    color: #63605d;
+    color: $ibexa-dark-grey;
     font-family: 'Open Sans', sans-serif;
 }
 
 .blog-post-line-link a:link,
 .blog-post-line-link a:visited {
     font-size: 15px;
-    color: #f15a22;
+    color: $ibexa-orange;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
 }
 
 .blog-post-line-link a:hover {
-    color: #f15a22;
+    color: $ibexa-orange;
     text-decoration: none;
 }

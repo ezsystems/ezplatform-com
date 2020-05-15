@@ -1,15 +1,15 @@
 .blog-post-header {
     min-height: 380px;
-    background: #3f3f3f;
+    background: $ibexa-dark-grey;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid $ibexa-mouse-grey;
 }
 
 .blog-post-header h1 {
     font-size: 55px;
-    color: #fff;
+    color: $ibexa-white;
     font-weight: bold;
     font-family: "Open Sans", sans-serif;
     text-align: center;
@@ -29,7 +29,7 @@
     border-top: 1px solid #dbdbdb;
     font-size: 19px;
     line-height: 1.6;
-    color: #000;
+    color: $ibexa-black;
     word-wrap: break-word;
     font-family: 'Open Sans', sans-serif;
 }
@@ -100,11 +100,11 @@
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    color: #000;
+    color: $ibexa-black;
 }
 
 .blog-post-author-name span {
-    color: #f15a22;
+    color: $ibexa-orange;
     font-size: 15px;
 }
 
@@ -121,10 +121,10 @@
 
 .blog-post-author-profiles i.fa {
     border-radius: 75px;
-    color: #a3a3a3;
+    color: $ibexa-dark-grey;
     width: 35px;
     height: 35px;
-    border: 2px solid #a3a3a3;
+    border: 2px solid $ibexa-dark-grey;
     font-size: 20px;
     text-align: center;
     margin: 2px 10px 0 0;

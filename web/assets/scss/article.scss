@@ -3,12 +3,12 @@
 }
 
 .article h1 {
-    color: #f15a22;
+    color: $ibexa-orange;
     margin-bottom: 40px;
 }
 
 .article .article-intro,
 .article .article-body {
     font-size: 16px;
-    color: #63605d;
+    color: $ibexa-dark-grey;
 }

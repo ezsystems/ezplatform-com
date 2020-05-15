@@ -45,7 +45,7 @@
         &__name {
             h2 {
                 font-size: 19px;
-                color: #333;
+                color: $ibexa-black;
                 font-weight: 600;
                 margin-top: 20px;
                 word-break: break-word;
@@ -54,7 +54,7 @@
 
         &__description {
             font-size: 15px;
-            color: #63605d;
+            color: $ibexa-black;
             font-weight: 400;
 
             p {
@@ -70,7 +70,7 @@
         width: 75%;
         float: left;
         margin-left: 10px;
-        color: #63605d;
+        color: $ibexa-black;
 
         &__label {
             display: block;

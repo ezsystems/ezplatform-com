@@ -8,7 +8,7 @@ footer .container {
 
 /* HEADER - NAV */
 .navbar-default .navbar-brand {
-    color: #777;
+    color: $ibexa-dark-grey;
 }
 
 .navbar-brand, .navbar-nav li a {
@@ -62,7 +62,7 @@ footer .container {
 }
 
 .navbar-nav>li>a {
-    color: #63605d;
+    color: $ibexa-dark-grey;
     font-size: 18px;
     font-weight: 400;
 }
@@ -78,7 +78,7 @@ footer .footer-content a:visited {
 }
 
 footer .copyright-content a:visited {
-    color: #f7941d;
+    color: $ibexa-orange;
 }
 
 footer .logo {
@@ -87,8 +87,8 @@ footer .logo {
 }
 
 .footer-content {
-    color: #e6e7e8;
-    background-color: #4c4c4c;
+    color: $ibexa-mouse-grey;
+    background-color: $ibexa-dark-grey;
     padding-top: 50px;
     padding-bottom: 50px;
 }
@@ -113,7 +113,7 @@ footer .logo {
 }
 
 .footer-content a:hover {
-    color: #f7941d;
+    color: $ibexa-orange;
 }
 
 footer .footer-social i.fa {
@@ -131,15 +131,15 @@ footer .footer-social i.fa {
 }
 
 .copyright-content {
-    background-color: #3a3a3a;
-    color: #d2c5bd;
+    background-color: $ibexa-dark-grey;
+    color: $ibexa-mouse-grey;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
 .copyright-content a,
 .copyright-content a:hover {
-    color: #f7941d;
+    color: $ibexa-orange;
 }
 
 .footer-social a:hover i.fa-youtube,
@@ -147,8 +147,8 @@ footer .footer-social i.fa {
 .footer-social a:hover i.fa-facebook,
 .footer-social a:hover i.fa-linkedin,
 .footer-social a:hover i.fa-twitter {
-    color: #f7941d;
-    border-color: #f7941d;
+    color: $ibexa-orange;
+    border-color: $ibexa-orange;
 }
 
 /* RESPONSIVE */

@@ -69,11 +69,11 @@ h5 {
 }
 
 a {
-    color: #f15a22;
+    color: $ibexa-orange;
     text-decoration: none;
 
     &:hover {
-        color: #da3c03;
+        color: $ibexa-orange;
         text-decoration: underline;
         background-color: transparent;
     }
@@ -91,7 +91,7 @@ a {
 .ez-platform-label {
     position: absolute;
     margin: 0;
-    color: #e88501;
+    color: $ibexa-orange;
     display: inline;
     left: 18.5%;
     top: 25%;
@@ -117,11 +117,11 @@ a {
 }
 .btn.btn-primary {
     border: none;
-    background: #f15a22;
+    background: $ibexa-orange;
 }
 
 .btn.btn-primary:hover {
-    background: #cb4716;
+    background: $ibexa-red;
     border: none;
 }
 
@@ -130,18 +130,18 @@ a.btn:visited {
 }
 
 .btn.btn-outline {
-    border: 2px solid #63605d;
-    color: #63605d;
+    border: 2px solid $ibexa-dark-grey;
+    color: $ibexa-dark-grey;
 }
 
 a.btn.btn-outline:visited {
-    color: #63605d;
+    color: $ibexa-dark-grey;
 }
 
 .btn.btn-outline:hover {
-    background: #b1b1b1;
-    border: 2px solid #b1b1b1;
-    color: #fff;
+    background: $ibexa-mouse-grey;
+    border: 2px solid $ibexa-mouse-grey;
+    color: $ibexa-white;
 }
 
 .navbar {
@@ -156,14 +156,14 @@ a.btn.btn-outline:visited {
 }
 
 .navbar-nav>li>a {
-    color: #63605d;
+    color: $ibexa-dark-grey;
     font-size: 18px;
     font-weight: 400;
 }
 
 .navbar-default .navbar-nav>li>a:focus,
 .navbar-default .navbar-nav>li>a:hover {
-    color: #f15a22;
+    color: $ibexa-orange;
     background-color: transparent;
 }
 
@@ -186,8 +186,8 @@ footer .logo {
 }
 
 .footer-content {
-    color: #e6e7e8;
-    background-color: #4c4c4c;
+    color: $ibexa-grey;
+    background-color: $ibexa-black;
     padding-top: 50px;
     padding-bottom: 50px;
 }
@@ -212,7 +212,7 @@ footer .logo {
 }
 
 .footer-content a:hover {
-    color: #f7941d;
+    color: $ibexa-orange;
 }
 
 footer .footer-social i.fa {
@@ -230,15 +230,15 @@ footer .footer-social i.fa {
 }
 
 .copyright-content {
-    background-color: #3a3a3a;
-    color: #d2c5bd;
+    background-color: $ibexa-dark-grey;
+    color: $ibexa-mouse-grey;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
 .copyright-content a,
 .copyright-content a:hover {
-    color: #f7941d;
+    color: $ibexa-orange;
 }
 
 .footer-social a:hover i.fa-youtube,
@@ -246,8 +246,8 @@ footer .footer-social i.fa {
 .footer-social a:hover i.fa-facebook,
 .footer-social a:hover i.fa-linkedin,
 .footer-social a:hover i.fa-twitter {
-    color: #f7941d;
-    border-color: #f7941d;
+    color: $ibexa-orange;
+    border-color: $ibexa-orange;
 }
 
 .button-load-more {
@@ -258,20 +258,20 @@ footer .footer-social i.fa {
     text-transform: uppercase;
     font-family: 'Open Sans', sans-serif;
     font-weight: 600;
-    border: 2px solid #b1b1b1;
+    border: 2px solid $ibexa-mouse-grey;
     border-radius: 23px;
     font-size: 17px;
     padding: 10px 0;
     width: 100%;
     white-space: normal;
-    color: #b1b1b1;
+    color: $ibexa-mouse-grey;
     background: inherit;
     outline: none;
 }
 
 .button-load-more button:hover {
-    background: #b1b1b1;
-    color: #fff;
+    background: $ibexa-mouse-grey;
+    color: $ibexa-white;
 }
 
 .button-load-more-progress {
@@ -295,7 +295,7 @@ footer .footer-social i.fa {
 .button-load-more-error {
     text-align: center;
     font-size: 17px;
-    color: #c34111;
+    color: $ibexa-red;
     font-weight: 600;
 }
 
@@ -310,7 +310,7 @@ footer .footer-social i.fa {
 .banner-slider-text {
     padding-top: 20px;
     padding-bottom: 10px;
-    background: #fe5923;
+    background: $ibexa-orange;
     text-align: center;
     color: #fff;
     font-size: 14pt;

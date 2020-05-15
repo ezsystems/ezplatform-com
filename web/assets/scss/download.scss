@@ -1,17 +1,17 @@
 section#download {
-    background-color: #f9fafa;
+    background-color: $ibexa-grey;
 
     h2 {
         padding-top: 90px;
         margin-bottom: 70px;
-        color: #f15a22;
+        color: $ibexa-orange;
         font-size: 45px;
         font-weight: 300;
         text-align: center;
     }
 
     h3 {
-        color: #63605d;
+        color: $ibexa-dark-grey;
         font-size: 26px;
         font-weight: 400;
         text-align: center;
@@ -20,8 +20,8 @@ section#download {
 
     li.nav-item,
     div.details {
-        border: 3px solid #f7f5f2;
-        background: #fff;
+        border: 3px solid $ibexa-grey;
+        background: $ibexa-grey;
     }
 
     li.nav-item img {
@@ -30,7 +30,7 @@ section#download {
 
     div.details {
         margin-top: 20px;
-        background: #fff;
+        background: $ibexa-white;
     }
 
     div.details h3 {
@@ -53,7 +53,7 @@ section#download {
     .nav-pills > li > a.active:focus,
     .nav-pills > li > a.active:hover {
         color: #fff;
-        background: #fc5a2d;
+        background: $ibexa-mouse-grey;
         border-radius: 0;
 
         .label {
@@ -91,12 +91,12 @@ section#download {
         display: block;
         font-size: 18px;
         font-weight: 500;
-        color: #63605d;
+        color: $ibexa-dark-grey;
         margin-top: 15px;
     }
 
     li.active .label {
-        color: #f15a22;
+        color: $ibexa-orange;
     }
 
     li.nav-item img {
@@ -104,7 +104,7 @@ section#download {
     }
 
     .description {
-        color: #63605d;
+        color: $ibexa-dark-grey;
         font-size: 17px;
         padding-bottom: 10px;
     }
@@ -123,7 +123,7 @@ section#download {
         height: auto;
         margin: auto;
         margin-top: 3.5vh;
-        background: #2e2e2e;
+        background: $ibexa-dark-grey;
         border: none;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
@@ -135,7 +135,7 @@ section#download {
     }
 
     .window .orange {
-        color: #f15a22;
+        color: $ibexa-orange;
     }
 
     .window .green {
@@ -154,8 +154,8 @@ section#download {
     }
 
     .titlebar {
-        background: #e3e5e5;
-        color: #4d494d;
+        background: $ibexa-grey;
+        color: $ibexa-dark-grey;
         font-size: 11pt;
         line-height: 35px;
         text-align: center;
@@ -182,11 +182,11 @@ section#download {
     }
 
     .close {
-        background: #ff5c5c;
+        background: $ibexa-orange;
         font-size: 9pt;
         width: 13px;
         height: 13px;
-        border: 1px solid #e33e41;
+        border: 1px solid $ibexa-red;
         border-radius: 50%;
         display: inline-block;
         float: none;
@@ -194,16 +194,16 @@ section#download {
     }
 
     .close:active {
-        background: #c14645;
-        border: 1px solid #b03537;
+        background: $ibexa-graphite;
+        border: 1px solid $ibexa-graphite;
     }
 
     .close:active .closebutton {
-        color: #4e0002;
+        color: $ibexa-dark-grey;
     }
 
     .closebutton {
-        color: #820005;
+        color: $ibexa-graphite;
         visibility: hidden;
         cursor: default;
     }
@@ -283,9 +283,9 @@ section#download {
     }
 
     .download-table thead th {
-        background: #806459;
+        background: $ibexa-dark-grey;
         border: none;
-        color: #fff;
+        color: $ibexa-white;
         font-size: 16px;
         font-weight: 600;
         text-align: center;
@@ -317,8 +317,8 @@ section#download {
     .download-table tr.beta td,
     .download-table tr.beta th {
         height: 80px;
-        background: #e06436;
-        color: #fff;
+        background: $ibexa-dark-grey;
+        color: $ibexa-white;
         padding: 0;
         margin: 0;
         border-top: none;
@@ -342,8 +342,8 @@ section#download {
     }
 
     .download-table tr.releases {
-        border-left: 1px solid #ccc;
-        border-right: 1px solid #ccc;
+        border-left: 1px solid $ibexa-mouse-grey;
+        border-right: 1px solid $ibexa-mouse-grey;
         background: #fff;
     }
 
