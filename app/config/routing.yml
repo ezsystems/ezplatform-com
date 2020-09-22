@@ -148,3 +148,8 @@ _novaezseoRoutes:
     resource: "@NovaeZSEOBundle/Controller/"
     type:     annotation
     prefix:   /
+
+ez_content_export_list:
+    path: /export-2020/type/{contentTypeId}
+    defaults:
+        _controller: AppBundle:Export:export
