@@ -23,3 +23,7 @@ services:
     AppBundle\Controller\TagController:
         arguments:
             $relatedContentLimit: '%eztags.default.tag_view.related_content_list.limit%'
+
+    AppBundle\Controller\ExportController:
+        arguments:
+            $richTextOutputConverter: '@ezrichtext.converter.output.xhtml5'

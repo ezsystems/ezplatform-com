@@ -20,6 +20,7 @@ use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Repository;
+use EzSystems\EzPlatformRichText\eZ\RichText\Converter as RichTextConverterInterface;
 
 class ExportController extends Controller
 {
@@ -48,17 +49,8 @@ class ExportController extends Controller
 
     private $tagService;
 
-    /**
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param \eZ\Publish\Core\MVC\Symfony\Controller\Content\ViewController $viewController
-     * @param \eZ\Publish\API\Repository\UserService $userService
-     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeService
-     * @param \eZ\Publish\API\Repository\SearchService $searchService
-     * @param \eZ\Publish\API\Repository\LocationService $locationService
-     * @param \EzSystems\EzNoDesignBundle\Criteria\Blog $blogCriteria
-     * @param int $blogPostLimit
-     * @param int $blogRootLocationId
-     */
+    private $richTextOutputConverter;
+
     public function __construct(
         RequestStack $requestStack,
         ViewController $viewController,
@@ -68,7 +60,8 @@ class ExportController extends Controller
         LocationService $locationService,
         TagsService $tagService,
         UrlAliasGenerator $urlAliasGenerator,
-        Repository $repository
+        Repository $repository,
+        RichTextConverterInterface $richTextOutputConverter
     ) {
         $this->requestStack = $requestStack;
         $this->viewController = $viewController;
@@ -79,6 +72,7 @@ class ExportController extends Controller
         $this->tagService = $tagService;
         $this->repository = $repository;
         $this->urlAliasGenerator = $urlAliasGenerator;
+        $this->richTextOutputConverter = $richTextOutputConverter;
     }
 
     public function exportAction($contentTypeId){
@@ -109,7 +103,9 @@ class ExportController extends Controller
         $fieldValue = $object->getFieldValue($identifier);
         $customFieldValue = [];
 
-        if($fieldValue instanceof \Netgen\TagsBundle\Core\FieldType\Tags\Value){
+        if($fieldValue instanceof \EzSystems\EzPlatformRichText\eZ\FieldType\RichText\Value){
+            $fieldValue = $this->richTextOutputConverter->convert($fieldValue->xml)->saveHTML();
+        } else if($fieldValue instanceof \Netgen\TagsBundle\Core\FieldType\Tags\Value){
             $firstTag = $this->tagService->loadTag($fieldValue->tags[0]->id);
             $fieldValue =  $firstTag->getKeyword();
         }
