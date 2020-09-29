@@ -24,6 +24,7 @@ parameters:
     security_advisories.posts_limit: 20
     # `authors` folder locationId
     blog.authors_container_location_id: 72
+
     # `package_list` locationId
     app.default.package_list_location_id: 168
     # 'package_list` elements limit on `packages_list` page
@@ -35,6 +36,7 @@ parameters:
     # names of excluded package maintainers
     packages.excluded_maintainers: ['ezrobot']
     # overwrites default tag view page template
+
     netgen_tags.default.tag_view.pagelayout: 'pagelayout.html.twig'
     # overwrites default tag related content limit
     eztags.default.tag_view.related_content_list.limit: 10

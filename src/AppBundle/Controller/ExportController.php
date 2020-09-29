@@ -81,6 +81,8 @@ class ExportController extends Controller
 
         if($contentTypeId == 'package') {
             $payload = $this->getPackages();
+        }else if($contentTypeId == 'security_advisory') {
+            $payload = $this->getSecurityAdvisories();
         }
 
         $response = new JsonResponse($payload);
@@ -91,6 +93,17 @@ class ExportController extends Controller
 
         $contentTypeId = 26;
         $parentLocationId = 168;
+
+        $items = $this->getObjectData($parentLocationId,$contentTypeId);
+
+        return $items;
+
+    }
+
+    private function getSecurityAdvisories(){
+
+        $contentTypeId = 32;
+        $parentLocationId = 629;
 
         $items = $this->getObjectData($parentLocationId,$contentTypeId);
 
