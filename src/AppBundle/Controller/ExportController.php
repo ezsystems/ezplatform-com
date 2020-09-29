@@ -165,7 +165,7 @@ class ExportController extends Controller
             $location = $this->locationService->loadLocation($contentObject->versionInfo->contentInfo->mainLocationId);
 
             $objectData = [
-                'id' => $searchHit->valueObject->id,
+                'objectid' => $searchHit->valueObject->id,
                 'urlpath' => $this->urlAliasGenerator->getPathPrefixByRootLocationId($location->id)
             ];
 
